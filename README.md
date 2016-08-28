@@ -16,6 +16,7 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	git clone https://github.com/hoangtungdinh/rats.git
 	cd rats/
 	git submodule init
+	git submodule update
 	```
 
 4. Install the ros driver (bebop-autonomy) for bebops
