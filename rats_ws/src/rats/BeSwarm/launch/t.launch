@@ -1,0 +1,6 @@
+<launch>
+    <!-- records flight -->
+    <node pkg="rosbag" type="rosbag" name="rosbag_record_all"
+       args="record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose" />
+</launch>
+

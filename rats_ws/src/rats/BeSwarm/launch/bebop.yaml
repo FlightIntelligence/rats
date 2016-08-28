@@ -1,0 +1,25 @@
+!!python/object/new:dynamic_reconfigure.encoding.Config
+dictitems:
+  GPSSettingsHomeTypeType: 0
+  GPSSettingsReturnHomeDelayDelay: 60
+  NetworkSettingsWifiSelectionBand: 0
+  NetworkSettingsWifiSelectionChannel: 4
+  NetworkSettingsWifiSelectionType: 1
+  PictureSettingsVideoStabilizationModeMode: 0
+  PilotingSettingsAbsolutControlOn: 0
+  PilotingSettingsBankedTurnValue: 0
+  PilotingSettingsCirclingAltitudeValue: 0
+  PilotingSettingsCirclingDirectionValue: 0
+  PilotingSettingsCirclingRadiusValue: 0
+  PilotingSettingsLandingModeValue: 0
+  PilotingSettingsMaxAltitudeCurrent: 30.0
+  PilotingSettingsMaxDistanceValue: 160.0
+  PilotingSettingsMaxTiltCurrent: 20.0
+  PilotingSettingsMinAltitudeCurrent: 0.0
+  PilotingSettingsNoFlyOverMaxDistanceShouldnotflyover: 0
+  PilotingSettingsPitchModeValue: 0
+  SpeedSettingsHullProtectionPresent: 1
+  SpeedSettingsMaxPitchRollRotationSpeedCurrent: 200.0
+  SpeedSettingsMaxRotationSpeedCurrent: 100.0
+  SpeedSettingsMaxVerticalSpeedCurrent: 10.0
+  SpeedSettingsOutdoorOutdoor: 0

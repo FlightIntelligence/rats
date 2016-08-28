@@ -1,0 +1,6 @@
+<launch>
+    <include file="$(find bebop_driver)/launch/bebop_node.launch"/>
+    <include file="$(find bebop_tools)/launch/joy_teleop.launch"/>
+    <param name="/beswarm/ot/xboxcontroller" value="disable"/>
+    <!--<param name="/beswarm/ot/xboxcontroller" value="enable"/>-->
+</launch>

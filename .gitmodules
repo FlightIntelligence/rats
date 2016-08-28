@@ -1,12 +1,12 @@
 [submodule "bebop_autonomy"]
-	path = bebop_autonomy
+	path = bebop_ws/src/bebop_autonomy
 	url = https://github.com/hoangtungdinh/bebop_autonomy.git
 	branch = rats
 [submodule "rats/BeSwarm"]
-	path = rats/BeSwarm
+	path = rats_ws/src/rats/BeSwarm
 	url = https://github.com/hoangtungdinh/BeSwarm.git
 	branch = rats
 [submodule "rats/ARLocROS"]
-	path = rats/ARLocROS
+	path = rats_ws/src/rats/ARLocROS
 	url = https://github.com/hoangtungdinh/ARLocROS.git
 	branch = rats
