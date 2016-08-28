@@ -1,0 +1,4 @@
+[submodule "bebop_autonomy"]
+	path = bebop_autonomy
+	url = https://github.com/hoangtungdinh/bebop_autonomy.git
+	branch = rats
