@@ -6,3 +6,7 @@
 	path = rats/BeSwarm
 	url = https://github.com/hoangtungdinh/BeSwarm.git
 	branch = rats
+[submodule "rats/ARLocROS"]
+	path = rats/ARLocROS
+	url = https://github.com/hoangtungdinh/ARLocROS.git
+	branch = rats
