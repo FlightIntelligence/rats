@@ -46,7 +46,7 @@ allprojects {
       Example below, but you may wish to switch to your own unique url.
     */
     group 'io.github.hoangtungdinh.rats'
-    version = v0.0.1
+    version = project.catkin.pkg.version
 }
 
 subprojects {
