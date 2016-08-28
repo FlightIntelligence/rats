@@ -28,6 +28,7 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	rosdep install --from-paths src -i
 	catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo
 	cd ..
+	source bebop_ws/devel/setup.zsh
 	```
 
 5. Install java packages (BeSwarm and ARLocROS)
@@ -38,13 +39,6 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	cd ..
 	catkin_make
 	cd ..
-	```
-
-6. Source the two workspaces
-
-	```
-	source bebop_ws/devel/setup.zsh
 	source rats_ws/devel/setup.zsh
-
 	```
 	
