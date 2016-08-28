@@ -2,3 +2,7 @@
 	path = bebop_autonomy
 	url = https://github.com/hoangtungdinh/bebop_autonomy.git
 	branch = rats
+[submodule "rats/BeSwarm"]
+	path = rats/BeSwarm
+	url = https://github.com/hoangtungdinh/BeSwarm.git
+	branch = rats
