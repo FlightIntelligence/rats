@@ -7,7 +7,7 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	sudo apt-get install build-essential python-rosdep python-catkin-tools
 	```
 
-2. Install [RosJava](http://wiki.ros.org/rosjava/Tutorials/indigo/Installation). If you install RosJava from source, remember to source the package before move on to the next step.
+2. Install [RosJava](http://wiki.ros.org/rosjava/Tutorials/indigo/Installation). If you install RosJava from source, remember to source the package before moving on to the next step.
 
 3. Clone the repository and initialize submodules
 
