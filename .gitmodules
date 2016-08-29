@@ -12,4 +12,6 @@
 	branch = rats
 [submodule "bebop_linux_configuration"]
 	path = bebop_linux_configuration
-	url = https://github.com/mhct/bebop_linux_configuration.git
+    url = https://github.com/mhct/bebop_linux_configuration.git
+    branch = master
+
