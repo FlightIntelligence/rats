@@ -7,7 +7,7 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	sudo apt-get install build-essential python-rosdep python-catkin-tools
 	```
 
-2. Install [RosJava](http://wiki.ros.org/rosjava/Tutorials/indigo/Installation)
+2. Install [RosJava](http://wiki.ros.org/rosjava/Tutorials/indigo/Installation). If you install RosJava from source, remember to source the package before moving on to the next step.
 
 3. Clone the repository and initialize submodules
 
@@ -41,4 +41,5 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	cd ..
 	source rats_ws/devel/setup.zsh
 	```
+	If you have **peer not authenticated** error, make sure that you are using Java 8.
 	
