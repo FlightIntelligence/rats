@@ -41,4 +41,5 @@ This project works with Ubuntu 14.04 and ROS-indigo
 	cd ..
 	source rats_ws/devel/setup.zsh
 	```
+	If you have **peer not authenticated** error, make sure that you are using Java 8.
 	
