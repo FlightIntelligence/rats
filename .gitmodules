@@ -10,3 +10,6 @@
 	path = rats_ws/src/rats/BeSwarm
 	url = https://github.com/hoangtungdinh/BeSwarm.git
 	branch = rats
+[submodule "bebop_linux_configuration"]
+	path = bebop_linux_configuration
+	url = https://github.com/mhct/bebop_linux_configuration.git
