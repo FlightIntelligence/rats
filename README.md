@@ -1,3 +1,5 @@
+A detailed installation guide could be found [here](install.txt).
+
 #  Installation guide
 This project works with Ubuntu 14.04 and ROS-indigo
 
