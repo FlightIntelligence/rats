@@ -1,0 +1,94 @@
+# start from ubuntu 14.04
+sudo apt-get update
+sudo apt-get upgrade
+
+# install vim (optional)
+sudo apt-get install vim
+
+# install tmux (optional)
+sudo apt-get install tmux
+
+# install git
+sudo apt-get install git
+
+# install zsh
+sudo apt-get install zsh
+chsh -s $(which zsh)
+# log out and then log in again
+
+# install oh-my-zsh (optional)
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# install ros indigo
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
+sudo apt-get update
+sudo apt-get install ros-indigo-desktop-full
+sudo rosdep init
+rosdep update
+echo "source /opt/ros/indigo/setup.zsh" >> ~/.zshrc
+source ~/.zshrc
+sudo apt-get install python-rosinstall
+
+# install oracle jdk 8
+sudo add-apt-repository ppa:webupd8team/java
+sudo apt-get update
+sudo apt-get install oracle-java8-installer
+
+# install rosjava
+sudo apt-get install ros-indigo-catkin ros-indigo-rospack python-wstool
+mkdir -p ~/rosjava/src
+# here we rely on the install script rosjava.rosinstall without any guarantee about version, need to improve it
+wstool init -j4 ~/rosjava/src https://raw.githubusercontent.com/rosjava/rosjava/indigo/rosjava.rosinstall
+# we need to source ROS again since we installed some packages from deb
+source ~/.zshrc
+cd ~/rosjava
+rosdep update
+rosdep install --from-paths src -i -y
+catkin_make
+echo "source ~/rosjava/devel/setup.zsh" >> ~/.zshrc
+source ~/.zshrc
+
+# we have to change java/javac version again since rosjava installed and set openjdk 1.7 as default java/javac versions.
+sudo update-alternatives --config java
+# select java 1.8 (normally it will be the number 2)
+sudo update-alternatives --config javac
+# select java 1.8 (normally it will be the number 2)
+
+# install rats
+sudo apt-get install build-essential python-rosdep python-catkin-tools
+cd ~
+git clone https://github.com/hoangtungdinh/rats.git
+# need git checkout to specify the tag
+cd rats/
+git submodule init
+git submodule update
+
+# install ARLocROS and BeSwarm
+# we have to install java packages before installing bebop-autonomy. It is because of a weird bug that says bebop_msgs package does not exist if we install bebop_autonomy first (it could be because there is another ros package named bebop_msgs as well in bebop-autonomy). If you already have bebop-autonomy, a way to work around is not sourcing bebop-autonomy before installing java packages.
+cd ~/rats/rats_ws/src/
+catkin_init_workspace
+cd ..
+catkin_make
+echo "source ~/rats/rats_ws/devel/setup.zsh" >> ~/.zshrc
+source ~/.zshrc
+
+# install bebop-autonomy
+cd ..
+cd bebop_ws/
+catkin init
+rosdep update
+rosdep install --from-paths src -i
+catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+echo "source ~/rats/bebop_ws/devel/setup.zsh" >> ~/.zshrc
+source ~/.zshrc
+
+# install opencv 2.4.8
+sudo add-apt-repository ppa:xqms/opencv-nonfree
+sudo apt-get update
+sudo apt-get install libopencv-nonfree-dev
+echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/jni/" >> ~/.zshrc
+source ~/.zshrc
+
+# General tools (optional)
+sudo apt-get install openssh-server
