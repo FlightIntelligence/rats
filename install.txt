@@ -90,5 +90,12 @@ sudo apt-get install libopencv-nonfree-dev
 echo "export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/jni/" >> ~/.zshrc
 source ~/.zshrc
 
+# install multimaster_fkie
+sudo apt-get install ros-indigo-multimaster-fkie
+# enable multicast for multi ros masters
+sudo sh -c "echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts"
+sudo echo "net.ipv4.icmp_echo_ignore_broadcasts=0" >> /etc/sysctl.conf
+sudo service procps restart
+
 # General tools (optional)
 sudo apt-get install openssh-server
