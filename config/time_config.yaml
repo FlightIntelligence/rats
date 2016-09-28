@@ -1,0 +1,7 @@
+take_off_times:
+  drone_0: 5
+  drone_1: 10
+
+start_following_trajectory_time:
+  drone_0: 15
+  drone_1: 20
