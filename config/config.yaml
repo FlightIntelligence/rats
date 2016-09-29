@@ -1,0 +1,13 @@
+bebop_one:
+  port: '11311'
+  bebop_ip: '192.168.32.1'
+  local_drone_ip: '192.168.32.23'
+  master_sync_config_file: ${abs_path}/master_sync.yaml
+  arlocros_config_file: ${abs_path}/arlocros.yaml
+
+bebop_two:
+  port: '11312'
+  bebop_ip: '192.168.42.1'
+  local_drone_ip: '192.168.42.87'
+  master_sync_config_file: ${abs_path}/master_sync.yaml
+  arlocros_config_file: ${abs_path}/arlocros.yaml

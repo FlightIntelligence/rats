@@ -1,9 +1,0 @@
-bebop_one:
-  port: '11311'
-  bebop_ip: '192.168.32.1'
-  local_drone_ip: '192.168.32.23'
-
-bebop_two:
-  port: '11312'
-  bebop_ip: '192.168.42.1'
-  local_drone_ip: '192.168.42.87'

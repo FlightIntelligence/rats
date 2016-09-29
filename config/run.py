@@ -9,20 +9,14 @@ import glob
 
 def start():
     current_path = os.path.dirname(os.path.realpath(__file__))
-
-    network_configs = read_yaml_file(current_path + '/network.yaml')
-    master_sync_config_file = parse_yaml_file(current_path + '/master_sync.yaml')
-    arlocros_config_file = parse_yaml_file(current_path + '/arlocros.yaml')
+    parsed_config_file = parse_yaml_file(current_path + '/config.yaml')
+    configs = read_yaml_file(parsed_config_file)
 
     processes = []
     print('Start the program...')
 
-    for key, value in network_configs.items():
-        start_single_master(
-            process_list=processes,
-            network_config=value,
-            master_sync_config_file=master_sync_config_file,
-            arlocros_config_file=arlocros_config_file)
+    for key, value in configs.items():
+        start_single_master(process_list=processes, config=value)
 
     atexit.register(clean_up, processes)
     input()
@@ -51,16 +45,16 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_master(process_list, network_config, master_sync_config_file,
-                        arlocros_config_file):
-    my_env = create_env(network_config['local_drone_ip'], network_config['port'])
-    launch_ros_master(my_env, network_config['port'], process_list, master_sync_config_file)
-    launch_bebop_autonomy(network_config['bebop_ip'], my_env, process_list)
-    launch_arlocros(my_env, process_list, arlocros_config_file)
+def start_single_master(process_list, config):
+    my_env = create_env(config['local_drone_ip'], config['port'])
+    launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'])
+    launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
+    launch_arlocros(my_env, process_list, config['arlocros_config_file'])
 
 
 def launch_arlocros(my_env, process_list, arlocros_config_file):
-    load_param_cmd = 'rosparam load ' + arlocros_config_file
+    parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file)
+    load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
     process_list.append(subprocess.Popen(load_param_cmd.split(), env=my_env))
     time.sleep(2)
     arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
@@ -74,13 +68,14 @@ def launch_bebop_autonomy(bebop_ip, my_env, process_list):
     time.sleep(2)
 
 
-def launch_ros_master(my_env, port, process_list, sync_config):
+def launch_ros_master(my_env, port, process_list, master_sync_config_file):
     process_list.append(subprocess.Popen(['roscore', '-p', port], env=my_env))
     time.sleep(2)
     master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery _mcast_group:=224.0.0.1'
     process_list.append(subprocess.Popen(master_discovery_cmd.split(), env=my_env))
     time.sleep(2)
-    sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + sync_config
+    parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file)
+    sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + parsed_master_sync_config_file
     process_list.append(subprocess.Popen(sync_cmd.split(), env=my_env))
     time.sleep(2)
 
