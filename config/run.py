@@ -17,7 +17,7 @@ def start():
     print('Start the program...')
 
     for key, value in configs.items():
-        start_single_master(process_list=processes, config=value)
+        start_single_bebop(process_list=processes, config=value)
 
     input()
 
@@ -58,11 +58,30 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_master(process_list, config):
+def start_single_bebop(process_list, config):
     my_env = create_env(config['local_drone_ip'], config['port'])
     launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'])
     launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
     launch_arlocros(my_env, process_list, config['arlocros_config_file'])
+    launch_beswarm(my_env, process_list, config['beswarm_config'])
+
+
+def set_ros_parameters(my_env, process_list, ros_params):
+    for key, value in ros_params.items():
+        set_param_cmd = 'rosparam set ' + key + ' ' + value
+        process_list.append(subprocess.Popen(set_param_cmd.split(), env=my_env))
+
+
+def launch_beswarm(my_env, process_list, beswarm_config):
+    parsed_beswarm_config_file = parse_yaml_file(beswarm_config['beswarm_config_file'])
+    load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
+    process_list.append(subprocess.Popen(load_param_cmd.split(), env=my_env))
+    time.sleep(2)
+    set_ros_parameters(my_env, process_list, beswarm_config['rosparam'])
+    time.sleep(2)
+    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=BeSwarm'
+    process_list.append(subprocess.Popen(beswarm_launch_cmd.split(), env=my_env))
+    time.sleep(2)
 
 
 def launch_arlocros(my_env, process_list, arlocros_config_file):
