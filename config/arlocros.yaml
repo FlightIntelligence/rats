@@ -1,4 +1,4 @@
-pattern_dir: ${abs_path}/marker_patterns
+pattern_dir: ${abs_path}/marker_patterns/
 marker_frame_name: 'markers'
 camera_frame_name: 'camera_optical'
 camera_image_topic: '/bebop/image_raw'
