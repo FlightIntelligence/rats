@@ -13,12 +13,12 @@ def start():
     configs = read_yaml_file(parsed_config_file)
 
     processes = []
+    atexit.register(clean_up, processes)
     print('Start the program...')
 
     for key, value in configs.items():
         start_single_master(process_list=processes, config=value)
 
-    atexit.register(clean_up, processes)
     input()
 
 
