@@ -111,6 +111,8 @@ def start_single_bebop(process_list, config):
     launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'])
     # launch the bebop_autonomy
     launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
+    # point the camera downward
+    point_camera_downward(my_env, process_list)
     # launch ARLocROS
     launch_arlocros(my_env, process_list, config['arlocros_config_file'])
     # launch BeSwarm
@@ -233,6 +235,18 @@ def create_env(local_drone_ip, port):
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + port
     my_env['LOCAL_DRONE_IP'] = local_drone_ip
     return my_env
+
+
+def point_camera_downward(my_env, process_list):
+    """
+    Point the front camera downward
+    :param my_env: the environment
+    :type my_env: _Environ
+    :param process_list: the list of active processes
+    :type process_list: list
+    """
+    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist "[0.0,0.0,0.0]" "[0.0,-50.0,0.0]"'
+    process_list.append(subprocess.Popen(point_camera_cmd.split(), env=my_env))
 
 
 def clean_up(processes):
