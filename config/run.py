@@ -39,15 +39,14 @@ def parse_yaml_file(yaml_file):
     content = file.read()
     file.close()
 
-    current_path = os.path.realpath(__file__)
-    parsed_content = content.replace('${abs_path}', current_path)
+    parsed_content = content.replace('${abs_path}', os.path.dirname(os.path.realpath(__file__)))
 
-    parsed_file_name = yaml_file.replace('.yaml', '_tmp.yaml')
-    tmp_file = open(parsed_file_name, 'w')
+    parsed_file = yaml_file.replace('.yaml', '_tmp.yaml')
+    tmp_file = open(parsed_file, 'w')
     tmp_file.write(parsed_content)
     tmp_file.close()
 
-    return current_path + '/' + parsed_file_name
+    return parsed_file
 
 
 def start_single_master(process_list, port, bebop_ip, local_drone_ip, master_sync_config_file,
