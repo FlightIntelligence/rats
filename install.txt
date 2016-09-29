@@ -97,5 +97,8 @@ sudo sh -c "echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts"
 sudo echo "net.ipv4.icmp_echo_ignore_broadcasts=0" >> /etc/sysctl.conf
 sudo service procps restart
 
+#install python yaml parser
+sudo apt-get install python3-yaml
+
 # General tools (optional)
 sudo apt-get install openssh-server
