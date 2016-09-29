@@ -58,7 +58,7 @@ def start_single_master(process_list, port, bebop_ip, local_drone_ip, master_syn
 
 
 def launch_arlocros(my_env, process_list, arlocros_config_file):
-    load_param_cmd = 'rosparam load ' + arlocros_config_file + ' ARLocROS'
+    load_param_cmd = 'rosparam load ' + arlocros_config_file
     process_list.append(subprocess.Popen(load_param_cmd.split(), env=my_env))
     time.sleep(2)
     arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
