@@ -4,6 +4,7 @@ import atexit
 import signal
 import time
 import yaml
+import glob
 
 
 def start():
@@ -92,9 +93,19 @@ def create_env(local_drone_ip, port):
 
 
 def clean_up(processes):
+    remove_tmp_files()
+    terminate_all_processes(processes)
+
+
+def terminate_all_processes(processes):
     for p in processes:
         os.killpg(os.getpgid(p.pid), signal.SIGTERM)
     print('cleaned up')
+
+
+def remove_tmp_files():
+    for file_name in glob.glob('./*_tmp.yaml'):
+        os.remove(file_name)
 
 
 if __name__ == '__main__':
