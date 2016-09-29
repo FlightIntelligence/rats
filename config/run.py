@@ -16,7 +16,7 @@ def start():
     processes = []
     print('Start the program...')
 
-    for key, value in network_configs:
+    for key, value in network_configs.items():
         start_single_master(
             process_list=processes,
             network_config=value,

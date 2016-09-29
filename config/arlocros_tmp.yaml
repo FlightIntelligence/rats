@@ -1,0 +1,10 @@
+pattern_dir: /Users/Tung/GitHub/rats/config/marker_patterns/
+marker_frame_name: 'markers'
+camera_frame_name: 'camera_optical'
+camera_image_topic: '/bebop/image_raw'
+camera_info_topic: '/bebop/camera_info'
+marker_config_file: /Users/Tung/GitHub/rats/config/markerPingPongExtended.cfg
+bad_pose_reject: true
+pose_topic_name: 'arlocros/pose'
+visualization: false
+use_threshold: false
