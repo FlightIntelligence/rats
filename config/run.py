@@ -44,8 +44,10 @@ def parse_yaml_file(yaml_file):
     for key, value in variables.items():
         content = content.replace('${' + key + '}', value)
 
-    if content.find('${') != -1:
-        print('Cannot parse ' + yaml_file)
+    index = content.find('${')
+    if index != -1:
+        print('Cannot parse ' + yaml_file + '. Variable ' + content[index:content.find('}')] +
+              ' is not defined in variables.yaml')
         exit()
 
     parsed_file = yaml_file.replace('.yaml', '_tmp.yaml')
