@@ -35,11 +35,22 @@ def parse_yaml_file(yaml_file):
     content = file.read()
     file.close()
 
-    parsed_content = content.replace('${abs_path}', os.path.dirname(os.path.realpath(__file__)))
+    # replace the absolute path variables
+    content = content.replace('${abs_path}', os.path.dirname(os.path.realpath(__file__)))
+
+    # read all other variables
+    variables = read_yaml_file(os.path.dirname(os.path.realpath(__file__)) + '/variables.yaml')
+
+    for key, value in variables.items():
+        content = content.replace('${' + key + '}', value)
+
+    if content.find('${') != -1:
+        print('Cannot parse ' + yaml_file)
+        exit()
 
     parsed_file = yaml_file.replace('.yaml', '_tmp.yaml')
     tmp_file = open(parsed_file, 'w')
-    tmp_file.write(parsed_content)
+    tmp_file.write(content)
     tmp_file.close()
 
     return parsed_file

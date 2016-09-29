@@ -1,2 +1,2 @@
-sync_topics: ["/dump_topic"]
+sync_topics: ["/dump_topic", '${time_sync_topic}']
 sync_nodes: ["/dump_node"]
