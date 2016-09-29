@@ -3,35 +3,36 @@ import os
 import atexit
 import signal
 import time
+import yaml
 
 
 def start():
-    master_sync_config_file = parse_yaml_file(
-        os.path.dirname(os.path.realpath(__file__)) + '/master_sync.yaml')
-    arlocros_config_file = parse_yaml_file(
-        os.path.dirname(os.path.realpath(__file__)) + '/arlocros.yaml')
+    current_path = os.path.dirname(os.path.realpath(__file__))
+
+    network_configs = read_yaml_file(current_path + '/network.yaml')
+    master_sync_config_file = parse_yaml_file(current_path + '/master_sync.yaml')
+    arlocros_config_file = parse_yaml_file(current_path + '/arlocros.yaml')
 
     processes = []
     print('Start the program...')
 
-    start_single_master(
-        process_list=processes,
-        port='11311',
-        bebop_ip='192.168.32.1',
-        local_drone_ip='192.168.32.23',
-        master_sync_config_file=master_sync_config_file,
-        arlocros_config_file=arlocros_config_file)
-
-    start_single_master(
-        process_list=processes,
-        port='11312',
-        bebop_ip='192.168.42.1',
-        local_drone_ip='192.168.42.87',
-        master_sync_config_file=master_sync_config_file,
-        arlocros_config_file=arlocros_config_file)
+    for key, value in network_configs:
+        start_single_master(
+            process_list=processes,
+            network_config=value,
+            master_sync_config_file=master_sync_config_file,
+            arlocros_config_file=arlocros_config_file)
 
     atexit.register(clean_up, processes)
     input()
+
+
+def read_yaml_file(yaml_file):
+    with open(yaml_file, 'r') as stream:
+        try:
+            return yaml.load(stream)
+        except yaml.YAMLError as exc:
+            print(exc)
 
 
 def parse_yaml_file(yaml_file):
@@ -49,11 +50,11 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_master(process_list, port, bebop_ip, local_drone_ip, master_sync_config_file,
+def start_single_master(process_list, network_config, master_sync_config_file,
                         arlocros_config_file):
-    my_env = create_env(local_drone_ip, port)
-    launch_ros_master(my_env, port, process_list, master_sync_config_file)
-    launch_bebop_autonomy(bebop_ip, my_env, process_list)
+    my_env = create_env(network_config['local_drone_ip'], network_config['port'])
+    launch_ros_master(my_env, network_config['port'], process_list, master_sync_config_file)
+    launch_bebop_autonomy(network_config['bebop_ip'], my_env, process_list)
     launch_arlocros(my_env, process_list, arlocros_config_file)
 
 
