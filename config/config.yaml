@@ -30,6 +30,6 @@ bebops:
 synchronizer:
   port: '11313'
   master_sync_config_file: ${abs_path}/master_sync.yaml
-  javanode: applications.timesync.StartTimeAnnouncer
+  python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}

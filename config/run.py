@@ -136,8 +136,7 @@ def start_synchronizer(synchronizer_config, process_list):
     launch_ros_master(my_env, synchronizer_config['port'], process_list,
                       synchronizer_config['master_sync_config_file'])
     set_ros_parameters(my_env, process_list, synchronizer_config['rosparam'])
-    synchronizer_launch_cmd = 'rosrun rats BeSwarm ' + synchronizer_config[
-        'javanode'] + ' __name:=synchronizer'
+    synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
     process_list.append(subprocess.Popen(synchronizer_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
