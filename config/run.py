@@ -30,13 +30,18 @@ def start():
     # here we go
     print('Start the program...')
 
-    # iterate over all bebops
-    for bebop, config in configs.items():
-        # start a bebop using her own config
-        start_single_bebop(process_list=processes, config=config)
+    start_bebops(configs['bebops'], processes)
+    start_synchronizer(configs['synchronizer'], processes)
 
     # to keep the script alive
     input()
+
+
+def start_bebops(bebop_configs, processes):
+    # iterate over all bebops
+    for bebop, config in bebop_configs.items():
+        # start a bebop using her own config
+        start_single_bebop(process_list=processes, config=config)
 
 
 def read_yaml_file(yaml_file):
@@ -121,6 +126,18 @@ def start_single_bebop(process_list, config):
     launch_arlocros(my_env, process_list, config['arlocros_config_file'])
     # launch BeSwarm
     launch_beswarm(my_env, process_list, config['beswarm_config'])
+
+
+def start_synchronizer(synchronizer_config, process_list):
+    my_env = os.environ.copy()
+    my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
+    launch_ros_master(my_env, synchronizer_config['port'], process_list,
+                      synchronizer_config['master_sync_config_file'])
+    set_ros_parameters(my_env, process_list, synchronizer_config['rosparam'])
+    synchronizer_launch_cmd = 'rosrun rats BeSwarm ' + synchronizer_config[
+        'javanode'] + ' __name:=Synchronizer'
+    process_list.append(subprocess.Popen(synchronizer_launch_cmd.split(), env=my_env))
+    time.sleep(2)
 
 
 def launch_xbox_controller(my_env, process_list):

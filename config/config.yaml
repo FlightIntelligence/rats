@@ -1,27 +1,35 @@
-bebop_one:
-  port: '11311'
-  bebop_ip: '192.168.32.1'
-  local_drone_ip: '192.168.32.23'
-  master_sync_config_file: ${abs_path}/master_sync.yaml
-  arlocros_config_file: ${abs_path}/arlocros.yaml
-  beswarm_config:
-    beswarm_config_file: ${abs_path}/beswarm.yaml
-    javanode: applications.parrot.bebop.rats.BebopOne
-    rosparam:
-      drone_name: bebop_one
-      takeoff_time_in_secs: 5.0
-      start_flying_time_in_secs: 10.0
+bebops:
+  bebop_one:
+    port: '11311'
+    bebop_ip: '192.168.32.1'
+    local_drone_ip: '192.168.32.23'
+    master_sync_config_file: ${abs_path}/master_sync.yaml
+    arlocros_config_file: ${abs_path}/arlocros.yaml
+    beswarm_config:
+      beswarm_config_file: ${abs_path}/beswarm.yaml
+      javanode: applications.parrot.bebop.rats.BebopOne
+      rosparam:
+        drone_name: bebop_one
+        takeoff_time_in_secs: 5.0
+        start_flying_time_in_secs: 10.0
 
-bebop_two:
-  port: '11312'
-  bebop_ip: '192.168.42.1'
-  local_drone_ip: '192.168.42.87'
+  bebop_two:
+    port: '11312'
+    bebop_ip: '192.168.42.1'
+    local_drone_ip: '192.168.42.87'
+    master_sync_config_file: ${abs_path}/master_sync.yaml
+    arlocros_config_file: ${abs_path}/arlocros.yaml
+    beswarm_config:
+      beswarm_config_file: ${abs_path}/beswarm.yaml
+      javanode: applications.parrot.bebop.rats.BebopTwo
+      rosparam:
+        drone_name: bebop_two
+        takeoff_time_in_secs: 10.0
+        start_flying_time_in_secs: 20.0
+
+synchronizer:
+  port: '11313'
   master_sync_config_file: ${abs_path}/master_sync.yaml
-  arlocros_config_file: ${abs_path}/arlocros.yaml
-  beswarm_config:
-    beswarm_config_file: ${abs_path}/beswarm.yaml
-    javanode: applications.parrot.bebop.rats.BebopTwo
-    rosparam:
-      drone_name: bebop_two
-      takeoff_time_in_secs: 10.0
-      start_flying_time_in_secs: 20.0
+  javanode: applications.parrot.bebop.rats.BebopOne
+  rosparam:
+    time_sync_topic: ${time_sync_topic}
