@@ -124,7 +124,7 @@ def start_single_bebop(process_list, config):
 
 
 def launch_xbox_controller(my_env, process_list):
-    launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch'
+    launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch joy_config:=xbox360'
     process_list.append(subprocess.Popen(launch_xbox_controller_cmd.split(), env=my_env))
 
 
