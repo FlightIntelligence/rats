@@ -113,10 +113,24 @@ def start_single_bebop(process_list, config):
     launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
     # point the camera downward
     point_camera_downward(my_env, process_list)
+    # record rosbag
+    record_rosbag(my_env, process_list)
+    # launch bebop xbox controller
+    launch_xbox_controller(my_env, process_list)
     # launch ARLocROS
     launch_arlocros(my_env, process_list, config['arlocros_config_file'])
     # launch BeSwarm
     launch_beswarm(my_env, process_list, config['beswarm_config'])
+
+
+def launch_xbox_controller(my_env, process_list):
+    launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch'
+    process_list.append(subprocess.Popen(launch_xbox_controller_cmd.split(), env=my_env))
+
+
+def record_rosbag(my_env, process_list):
+    record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose'
+    process_list.append(subprocess.Popen(record_rosbag_cmd.split(), env=my_env))
 
 
 def set_ros_parameters(my_env, process_list, ros_params):
