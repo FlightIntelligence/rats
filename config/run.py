@@ -9,16 +9,18 @@ import signal
 import time
 import yaml
 import glob
+import sys
 
 
 def start():
     """
     Main entrance of the scripts.
     """
+    main_config_file_name = sys.argv[1]
     # get the current path of the script
     current_path = os.path.dirname(os.path.realpath(__file__))
     # parse the main config file
-    parsed_config_file = parse_yaml_file(current_path + '/config.yaml')
+    parsed_config_file = parse_yaml_file(current_path + '/' + main_config_file_name)
     # convert the parsed config file to python dictionary
     configs = read_yaml_file(parsed_config_file)
 
