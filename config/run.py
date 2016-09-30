@@ -137,7 +137,7 @@ def start_synchronizer(synchronizer_config, process_list):
                       synchronizer_config['master_sync_config_file'])
     set_ros_parameters(my_env, process_list, synchronizer_config['rosparam'])
     synchronizer_launch_cmd = 'rosrun rats BeSwarm ' + synchronizer_config[
-        'javanode'] + ' __name:=Synchronizer'
+        'javanode'] + ' __name:=synchronizer'
     process_list.append(subprocess.Popen(synchronizer_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
@@ -164,7 +164,7 @@ def set_ros_parameters(my_env, process_list, ros_params):
     :type ros_params: dict
     """
     for key, value in ros_params.items():
-        set_param_cmd = 'rosparam set ' + key + ' ' + value
+        set_param_cmd = 'rosparam set ' + str(key) + ' ' + str(value)
         process_list.append(subprocess.Popen(set_param_cmd.split(), env=my_env))
 
 
