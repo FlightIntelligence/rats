@@ -9,7 +9,8 @@ bebops:
       beswarm_config_file: ${abs_path}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopOne
       rosparam:
-        drone_name: bebop_one
+        drone_name: bebop
+        logger_name: drone_one
         takeoff_time_in_secs: 5.0
         start_flying_time_in_secs: 10.0
 
@@ -23,7 +24,8 @@ bebops:
       beswarm_config_file: ${abs_path}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopTwo
       rosparam:
-        drone_name: bebop_two
+        drone_name: bebop
+        logger_name: drone_two
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 20.0
 
