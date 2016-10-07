@@ -97,8 +97,11 @@ sudo sh -c "echo 0 >/proc/sys/net/ipv4/icmp_echo_ignore_broadcasts"
 sudo echo "net.ipv4.icmp_echo_ignore_broadcasts=0" >> /etc/sysctl.conf
 sudo service procps restart
 
-#install python yaml parser
+# install python yaml parser
 sudo apt-get install python3-yaml
+
+# add cplex
+echo "export LD_LIBRARY_PATH=/opt/ibm/ILOG/CPLEX_Studio1263/cplex/bin/x86-64_linux/:$LD_LIBRARY_PATH" >> ~/.zshrc
 
 # General tools (optional)
 sudo apt-get install openssh-server
