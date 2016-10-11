@@ -10,6 +10,7 @@ import time
 import yaml
 import glob
 import sys
+import datetime
 
 
 def start():
@@ -32,18 +33,25 @@ def start():
     # here we go
     print('Start the program...')
 
-    start_bebops(configs['bebops'], processes)
-    start_synchronizer(configs['synchronizer'], processes)
+    log_dir_abs_path = os.path.expanduser('~') + '/run_script_log/' + datetime.datetime.now(
+    ).strftime("%Y-%m-%d-%H-%M-%S") + '/'
+
+    start_bebops(configs['bebops'], processes, log_dir_abs_path)
+    test_xbox_controller()
+    start_synchronizer(configs['synchronizer'], processes, log_dir_abs_path + 'synchronizer')
 
     # to keep the script alive
     input()
 
 
-def start_bebops(bebop_configs, processes):
+def start_bebops(bebop_configs, processes, log_dir_abs_path):
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
-        start_single_bebop(process_list=processes, config=config)
+        start_single_bebop(
+            process_list=processes,
+            config=config,
+            log_file_prefix_abs_path=log_dir_abs_path + bebop)
 
 
 def read_yaml_file(yaml_file):
@@ -104,7 +112,7 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_bebop(process_list, config):
+def start_single_bebop(process_list, config, log_file_prefix_abs_path):
     """
     Starts a single bebop.
     :param process_list: the list of active processes
@@ -113,59 +121,39 @@ def start_single_bebop(process_list, config):
     :type config: dict
     """
     my_env = create_env(config['local_drone_ip'], config['port'])
-    launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'])
-    launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
-    point_camera_downward(my_env, process_list)
-    record_rosbag(my_env, process_list)
-    launch_xbox_controller(my_env, process_list)
-    test_xbox_controller()
-    launch_arlocros(my_env, process_list, config['arlocros_config_file'])
-    launch_beswarm(my_env, process_list, config['beswarm_config'])
+    launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'],
+                      log_file_prefix_abs_path)
+    launch_bebop_autonomy(config['bebop_ip'], my_env, process_list,
+                          log_file_prefix_abs_path + '_launch_bebop_autonomy.log')
+    point_camera_downward(my_env, process_list,
+                          log_file_prefix_abs_path + '_point_camera_downward.log')
+    record_rosbag(my_env, process_list, log_file_prefix_abs_path + '_record_rosbag.log')
+    launch_xbox_controller(my_env, process_list,
+                           log_file_prefix_abs_path + '_launch_xbog_controller.log')
+    launch_arlocros(my_env, process_list, config['arlocros_config_file'],
+                    log_file_prefix_abs_path + '_launch_arlocros.log')
+    launch_beswarm(my_env, process_list, config['beswarm_config'], log_file_prefix_abs_path)
 
 
 def test_xbox_controller():
-    print("TEST XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!")
+    print("TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!")
     input()
 
 
-def start_synchronizer(synchronizer_config, process_list):
+def start_synchronizer(synchronizer_config, process_list, log_file_prefix_abs_path):
     my_env = os.environ.copy()
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
     launch_ros_master(my_env, synchronizer_config['port'], process_list,
-                      synchronizer_config['master_sync_config_file'])
-    set_ros_parameters(my_env, process_list, synchronizer_config['rosparam'])
-    synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
+                      synchronizer_config['master_sync_config_file'], log_file_prefix_abs_path)
+    set_ros_parameters(my_env, process_list, synchronizer_config['rosparam'],
+                       log_file_prefix_abs_path + '_set_rosparam.log')
+    synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config[
+        'python_node'] + ' >> ' + log_file_prefix_abs_path + '_launch_synchronizer'
     process_list.append(subprocess.Popen(synchronizer_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
 
-def launch_xbox_controller(my_env, process_list):
-    launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch joy_config:=xbox360'
-    process_list.append(subprocess.Popen(launch_xbox_controller_cmd.split(), env=my_env))
-
-
-def record_rosbag(my_env, process_list):
-    record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose'
-    process_list.append(subprocess.Popen(record_rosbag_cmd.split(), env=my_env))
-
-
-def set_ros_parameters(my_env, process_list, ros_params):
-    """
-    Sets the ros parameters to the parameter server.
-    :param my_env: the environment
-    :type my_env: _Environ
-    :param process_list: the list of active processes
-    :type process_list: list
-    :param ros_params: the parameters to be set to the parameter server. It is a dictionary with
-    keys being parameters name and values being parameter values
-    :type ros_params: dict
-    """
-    for key, value in ros_params.items():
-        set_param_cmd = 'rosparam set ' + str(key) + ' ' + str(value)
-        process_list.append(subprocess.Popen(set_param_cmd.split(), env=my_env))
-
-
-def launch_beswarm(my_env, process_list, beswarm_config):
+def launch_beswarm(my_env, process_list, beswarm_config, log_file_prefix_abs_path):
     """
     Launches BeSwarm.
     :param my_env: the environment
@@ -177,78 +165,79 @@ def launch_beswarm(my_env, process_list, beswarm_config):
     """
     # parse the beswarm config file and load it to the parameter server
     parsed_beswarm_config_file = parse_yaml_file(beswarm_config['beswarm_config_file'])
-    load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
+    load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file + ' >> ' + log_file_prefix_abs_path + '_rosparam_load.log'
     process_list.append(subprocess.Popen(load_param_cmd.split(), env=my_env))
     time.sleep(2)
     # set some remaining parameters to the parameter server
-    set_ros_parameters(my_env, process_list, beswarm_config['rosparam'])
+    set_ros_parameters(my_env, process_list, beswarm_config['rosparam'],
+                       log_file_prefix_abs_path + '_set_rosparam.log')
     time.sleep(2)
     # launch the java node
-    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=BeSwarm'
+    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config[
+        'javanode'] + ' __name:=BeSwarm >> ' + log_file_prefix_abs_path + '_launch_beswarm.log'
     process_list.append(subprocess.Popen(beswarm_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
 
-def launch_arlocros(my_env, process_list, arlocros_config_file):
+def launch_xbox_controller(my_env, process_list, log_file_abs_path):
+    launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch joy_config:=xbox360 >> ' + log_file_abs_path
+    process_list.append(subprocess.Popen(launch_xbox_controller_cmd.split(), env=my_env))
+
+
+def record_rosbag(my_env, process_list, log_file_abs_path):
+    record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose >> ' + log_file_abs_path
+    process_list.append(subprocess.Popen(record_rosbag_cmd.split(), env=my_env))
+
+
+def set_ros_parameters(my_env, process_list, ros_params, log_file_abs_path):
     """
-    Launches ARLocROS
+    Sets the ros parameters to the parameter server.
     :param my_env: the environment
     :type my_env: _Environ
     :param process_list: the list of active processes
     :type process_list: list
-    :param arlocros_config_file: the absolute path of the configuration file for ARLocROS
-    :type arlocros_config_file: str
+    :param ros_params: the parameters to be set to the parameter server. It is a dictionary with
+    keys being parameters name and values being parameter values
+    :type ros_params: dict
+    :param log_file_abs_path: the absolute path of the log file
     """
+    for key, value in ros_params.items():
+        set_param_cmd = 'rosparam set ' + str(key) + ' ' + str(value) + ' >> ' + log_file_abs_path
+        process_list.append(subprocess.Popen(set_param_cmd.split(), env=my_env))
+
+
+def launch_arlocros(my_env, process_list, arlocros_config_file_abs_path, log_file_prefix_abs_path):
     # parse the configuration file and load it to the parameter server
-    parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file)
-    load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
+    parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file_abs_path)
+    load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file + ' >> ' + log_file_prefix_abs_path + '_rosparam_load.log'
     process_list.append(subprocess.Popen(load_param_cmd.split(), env=my_env))
     time.sleep(2)
     # launch the java node
-    arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
+    arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS >> ' + log_file_prefix_abs_path + '_arlocros_launch.log'
     process_list.append(subprocess.Popen(arlocros_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
 
-def launch_bebop_autonomy(bebop_ip, my_env, process_list):
-    """
-    Launches the bebop autonomy
-    :param bebop_ip: the ip of the bebop
-    :type bebop_ip: str
-    :param my_env: the environment
-    :type my_env: _Environ
-    :param process_list: the list of active processes
-    :type process_list: list
-    """
-    bebop_launch_cmd = 'roslaunch bebop_driver bebop_node.launch ip:=' + bebop_ip
+def launch_bebop_autonomy(bebop_ip, my_env, process_list, log_file_abs_path):
+    bebop_launch_cmd = 'roslaunch bebop_driver bebop_node.launch ip:=' + bebop_ip + ' >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(bebop_launch_cmd.split(), env=my_env))
     time.sleep(2)
 
 
-def launch_ros_master(my_env, port, process_list, master_sync_config_file):
-    """
-    Launches a ros master and fkie packages.
-    :param my_env: the environment
-    :type my_env: _Environ
-    :param port: the port of the master
-    :type port: str
-    :param process_list: the list of active processes
-    :type process_list: list
-    :param master_sync_config_file: the absolute path of the configuration file for the
-    master_sync_fkie package
-    :type master_sync_config_file: str
-    """
+def launch_ros_master(my_env, port, process_list, master_sync_config_file_abs_path,
+                      log_file_prefix_abs_path):
     # start a ros master
-    process_list.append(subprocess.Popen(['roscore', '-p', port], env=my_env))
+    roscore_cmd = 'roscore -p ' + port + ' >> ' + log_file_prefix_abs_path + '_roscore.log'
+    process_list.append(subprocess.Popen(roscore_cmd.split(), env=my_env))
     time.sleep(2)
     # start master_discovery_fkie (to discover other ros masters)
-    master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery _mcast_group:=224.0.0.1'
+    master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery _mcast_group:=224.0.0.1 >> ' + log_file_prefix_abs_path + '_master_discovery.log'
     process_list.append(subprocess.Popen(master_discovery_cmd.split(), env=my_env))
     time.sleep(2)
     # start master_sync_fkie (to sync with other ros masters
-    parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file)
+    parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file_abs_path)
     sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + \
-               parsed_master_sync_config_file
+               parsed_master_sync_config_file + ' >> ' + log_file_prefix_abs_path + '_sync_cmd.log'
     process_list.append(subprocess.Popen(sync_cmd.split(), env=my_env))
     time.sleep(2)
 
@@ -267,15 +256,8 @@ def create_env(local_drone_ip, port):
     return my_env
 
 
-def point_camera_downward(my_env, process_list):
-    """
-    Point the front camera downward
-    :param my_env: the environment
-    :type my_env: _Environ
-    :param process_list: the list of active processes
-    :type process_list: list
-    """
-    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist "[0.0,0.0,0.0]" "[0.0,-50.0,0.0]"'
+def point_camera_downward(my_env, process_list, log_file_abs_path):
+    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist "[0.0,0.0,0.0]" "[0.0,-50.0,0.0]" >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(point_camera_cmd.split(), env=my_env))
 
 
