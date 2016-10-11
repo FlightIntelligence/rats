@@ -300,7 +300,7 @@ def terminate_all_processes(processes):
     :type processes: list
     """
     for p in processes:
-        os.killpg(os.getpgid(p.pid), signal.SIGTERM)
+        os.killpg(os.getpgid(p.pid), signal.SIGINT)
     print('cleaned up')
 
 
