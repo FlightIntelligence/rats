@@ -191,7 +191,8 @@ def launch_arlocros(my_env, tracker, arlocros_config_file_abs_path, log_file_pre
     time.sleep(2)
     # launch the java node
     arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
-    execute_cmd(arlocros_launch_cmd, my_env, log_file_prefix_abs_path + '_arlocros_launch.log', tracker)
+    execute_cmd(arlocros_launch_cmd, my_env, log_file_prefix_abs_path + '_arlocros_launch.log',
+                tracker)
     time.sleep(2)
 
 
@@ -209,7 +210,8 @@ def launch_ros_master(my_env, port, tracker, master_sync_config_file_abs_path,
     time.sleep(2)
     # start master_discovery_fkie (to discover other ros masters)
     master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery _mcast_group:=224.0.0.1'
-    execute_cmd(master_discovery_cmd, my_env, log_file_prefix_abs_path + '_master_discovery.log', tracker)
+    execute_cmd(master_discovery_cmd, my_env, log_file_prefix_abs_path + '_master_discovery.log',
+                tracker)
     time.sleep(2)
     # start master_sync_fkie (to sync with other ros masters
     parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file_abs_path)
@@ -280,7 +282,9 @@ def execute_cmd(cmd, my_env, log_file_abs_path, tracker):
     print(cmd)
     os.makedirs(os.path.dirname(log_file_abs_path), exist_ok=True)
     log_file = open(log_file_abs_path, 'a+')
-    tracker['processes'].append(subprocess.Popen(cmd.split(), env=my_env, stdout=log_file))
+    tracker['processes'].append(
+        subprocess.Popen(
+            cmd.split(), env=my_env, stdout=log_file, stderr=subprocess.STDOUT))
     tracker['opened_files'].append(log_file)
 
 
