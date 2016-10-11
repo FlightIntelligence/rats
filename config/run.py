@@ -112,22 +112,20 @@ def start_single_bebop(process_list, config):
     :param config: the configuration of the bebop
     :type config: dict
     """
-    # initialize the environment
     my_env = create_env(config['local_drone_ip'], config['port'])
-    # launch the ros master
     launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'])
-    # launch the bebop_autonomy
     launch_bebop_autonomy(config['bebop_ip'], my_env, process_list)
-    # point the camera downward
     point_camera_downward(my_env, process_list)
-    # record rosbag
     record_rosbag(my_env, process_list)
-    # launch bebop xbox controller
     launch_xbox_controller(my_env, process_list)
-    # launch ARLocROS
+    test_xbox_controller()
     launch_arlocros(my_env, process_list, config['arlocros_config_file'])
-    # launch BeSwarm
     launch_beswarm(my_env, process_list, config['beswarm_config'])
+
+
+def test_xbox_controller():
+    print("TEST XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!")
+    input()
 
 
 def start_synchronizer(synchronizer_config, process_list):
