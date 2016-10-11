@@ -120,6 +120,7 @@ def start_single_bebop(process_list, config, log_file_prefix_abs_path):
     :param config: the configuration of the bebop
     :type config: dict
     """
+    print('Start a bebop.')
     my_env = create_env(config['local_drone_ip'], config['port'])
     launch_ros_master(my_env, config['port'], process_list, config['master_sync_config_file'],
                       log_file_prefix_abs_path)
@@ -141,6 +142,7 @@ def test_xbox_controller():
 
 
 def start_synchronizer(synchronizer_config, process_list, log_file_prefix_abs_path):
+    print('Start synchronizer.')
     my_env = os.environ.copy()
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
     launch_ros_master(my_env, synchronizer_config['port'], process_list,
@@ -163,6 +165,7 @@ def launch_beswarm(my_env, process_list, beswarm_config, log_file_prefix_abs_pat
     :param beswarm_config: the configuration of BeSwarm
     :type beswarm_config: dict
     """
+    print('Launch beswarm')
     # parse the beswarm config file and load it to the parameter server
     parsed_beswarm_config_file = parse_yaml_file(beswarm_config['beswarm_config_file'])
     load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file + ' >> ' + log_file_prefix_abs_path + '_rosparam_load.log'
@@ -180,11 +183,13 @@ def launch_beswarm(my_env, process_list, beswarm_config, log_file_prefix_abs_pat
 
 
 def launch_xbox_controller(my_env, process_list, log_file_abs_path):
+    print('Launch xbox controller.')
     launch_xbox_controller_cmd = 'roslaunch bebop_tools joy_teleop.launch joy_config:=xbox360 >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(launch_xbox_controller_cmd.split(), env=my_env))
 
 
 def record_rosbag(my_env, process_list, log_file_abs_path):
+    print('Record rosbag.')
     record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(record_rosbag_cmd.split(), env=my_env))
 
@@ -201,12 +206,14 @@ def set_ros_parameters(my_env, process_list, ros_params, log_file_abs_path):
     :type ros_params: dict
     :param log_file_abs_path: the absolute path of the log file
     """
+    print('Set ros parameters.')
     for key, value in ros_params.items():
         set_param_cmd = 'rosparam set ' + str(key) + ' ' + str(value) + ' >> ' + log_file_abs_path
         process_list.append(subprocess.Popen(set_param_cmd.split(), env=my_env))
 
 
 def launch_arlocros(my_env, process_list, arlocros_config_file_abs_path, log_file_prefix_abs_path):
+    print('Launch arlocros')
     # parse the configuration file and load it to the parameter server
     parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file_abs_path)
     load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file + ' >> ' + log_file_prefix_abs_path + '_rosparam_load.log'
@@ -219,6 +226,7 @@ def launch_arlocros(my_env, process_list, arlocros_config_file_abs_path, log_fil
 
 
 def launch_bebop_autonomy(bebop_ip, my_env, process_list, log_file_abs_path):
+    print('Launch bebop autonomy')
     bebop_launch_cmd = 'roslaunch bebop_driver bebop_node.launch ip:=' + bebop_ip + ' >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(bebop_launch_cmd.split(), env=my_env))
     time.sleep(2)
@@ -226,6 +234,7 @@ def launch_bebop_autonomy(bebop_ip, my_env, process_list, log_file_abs_path):
 
 def launch_ros_master(my_env, port, process_list, master_sync_config_file_abs_path,
                       log_file_prefix_abs_path):
+    print('Launch ros master')
     # start a ros master
     roscore_cmd = 'roscore -p ' + port + ' >> ' + log_file_prefix_abs_path + '_roscore.log'
     process_list.append(subprocess.Popen(roscore_cmd.split(), env=my_env))
@@ -257,6 +266,7 @@ def create_env(local_drone_ip, port):
 
 
 def point_camera_downward(my_env, process_list, log_file_abs_path):
+    print('Point camera downward.')
     point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist "[0.0,0.0,0.0]" "[0.0,-50.0,0.0]" >> ' + log_file_abs_path
     process_list.append(subprocess.Popen(point_camera_cmd.split(), env=my_env))
 
