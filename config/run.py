@@ -278,8 +278,8 @@ def remove_tmp_files():
 
 def execute_cmd(cmd, my_env, log_file_abs_path, tracker):
     print(cmd)
+    os.makedirs(os.path.dirname(log_file_abs_path), exist_ok=True)
     log_file = open(log_file_abs_path, 'a+')
-    os.makedirs(os.path.dirname(log_file), exist_ok=True)
     tracker['processes'].append(subprocess.Popen(cmd.split(), env=my_env, stdout=log_file))
     tracker['opened_files'].append(log_file)
 
