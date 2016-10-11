@@ -26,7 +26,7 @@ def start():
     configs = read_yaml_file(parsed_config_file)
 
     # the list of all active processes
-    tracker = {'processes': [], 'opened_file': []}
+    tracker = {'processes': [], 'opened_files': []}
     # clean up on exit
     atexit.register(clean_up, tracker)
 
