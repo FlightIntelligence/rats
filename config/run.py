@@ -260,7 +260,10 @@ def terminate_all_processes(processes):
     :type processes: list
     """
     for p in processes:
-        os.killpg(os.getpgid(p.pid), signal.SIGINT)
+        try:
+            os.killpg(os.getpgid(p.pid), signal.SIGINT)
+        except KeyboardInterrupt:
+            pass
     print('cleaned up')
 
 
