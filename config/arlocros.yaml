@@ -8,3 +8,4 @@ bad_pose_reject: true
 pose_topic_name: ${pose_topic}
 visualization: false
 use_threshold: false
+black_white_contrast_level: 75
