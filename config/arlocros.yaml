@@ -3,7 +3,7 @@ marker_frame_name: 'markers'
 camera_frame_name: 'camera_optical'
 camera_image_topic: '/bebop/image_raw'
 camera_info_topic: '/bebop/camera_info'
-marker_config_file: ${abs_path}/markerPingPongExtended.cfg
+marker_config_file: ${abs_path}/markerPingPongA3.cfg
 bad_pose_reject: true
 pose_topic_name: ${pose_topic}
 visualization: false
