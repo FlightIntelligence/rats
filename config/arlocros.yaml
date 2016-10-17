@@ -6,6 +6,6 @@ camera_info_topic: '/bebop/camera_info'
 marker_config_file: ${abs_path}/markerPingPongA3.cfg
 bad_pose_reject: true
 pose_topic_name: ${pose_topic}
-visualization: false
+visualization: true
 use_threshold: false
-black_white_contrast_level: 75
+black_white_contrast_level: 0.0

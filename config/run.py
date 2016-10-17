@@ -236,7 +236,7 @@ def create_env(local_drone_ip, port):
 
 
 def point_camera_downward(my_env, tracker, log_file_abs_path):
-    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist "[0.0,0.0,0.0]" "[0.0,-50.0,0.0]"'
+    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist [0.0,0.0,0.0] [0.0,-50.0,0.0]'
     execute_cmd(point_camera_cmd, my_env, log_file_abs_path, tracker)
 
 
