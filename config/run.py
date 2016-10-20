@@ -7,6 +7,8 @@ import os
 import atexit
 import signal
 import time
+
+import shutil
 import yaml
 import glob
 import sys
@@ -151,6 +153,9 @@ def start_synchronizer(synchronizer_config, tracker, log_file_prefix_abs_path):
 
 
 def launch_beswarm(my_env, tracker, beswarm_config, log_file_prefix_abs_path):
+    # delete build script folder
+    build_script_dir = execute_cmd_and_get_output('rospack find rats') + '/BeSwarm/build/scripts'
+    shutil.rmtree(build_script_dir)
     # parse the beswarm config file and load it to the parameter server
     parsed_beswarm_config_file = parse_yaml_file(beswarm_config['beswarm_config_file'])
     load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
@@ -184,6 +189,9 @@ def set_ros_parameters(my_env, tracker, ros_params, log_file_abs_path):
 
 
 def launch_arlocros(my_env, tracker, arlocros_config_file_abs_path, log_file_prefix_abs_path):
+    # delete build script folder
+    build_script_dir = execute_cmd_and_get_output('rospack find rats') + '/ARLocROS/build/scripts'
+    shutil.rmtree(build_script_dir)
     # parse the configuration file and load it to the parameter server
     parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file_abs_path)
     load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
@@ -289,6 +297,11 @@ def execute_cmd(cmd, my_env, log_file_abs_path, tracker):
         subprocess.Popen(
             cmd.split(), env=my_env, stdout=log_file, stderr=subprocess.STDOUT))
     tracker['opened_files'].append(log_file)
+
+
+def execute_cmd_and_get_output(cmd):
+    print(cmd)
+    return subprocess.check_output(cmd.split()).decode("utf-8").replace('\n', '')
 
 
 if __name__ == '__main__':
