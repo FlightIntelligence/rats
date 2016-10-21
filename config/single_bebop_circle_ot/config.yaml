@@ -1,0 +1,22 @@
+bebops:
+  bebop_two:
+    port: '11312'
+    bebop_ip: '192.168.42.1'
+    local_drone_ip: '192.168.42.87'
+    master_sync_config_file: ${abs_path}/master_sync.yaml
+    arlocros_config_file: ${abs_path}/arlocros.yaml
+    beswarm_config:
+      beswarm_config_file: ${abs_path}/beswarm.yaml
+      javanode: operationaltesting.ratsflight.SingleBebopCircle
+      rosparam:
+        drone_name: bebop
+        logger_name: drone_two
+        takeoff_time_in_secs: 10.0
+        start_flying_time_in_secs: 20.0
+
+synchronizer:
+  port: '11313'
+  master_sync_config_file: ${abs_path}/master_sync.yaml
+  python_node: Synchronizer.py
+  rosparam:
+    time_sync_topic: ${time_sync_topic}

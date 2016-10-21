@@ -1,0 +1,12 @@
+pattern_dir: ${abs_path}/marker_patterns/
+marker_frame_name: 'markers'
+camera_frame_name: 'camera_optical'
+camera_image_topic: '/bebop/image_raw'
+camera_info_topic: '/bebop/camera_info'
+marker_config_file: ${abs_path}/wallmarkers.cfg
+bad_pose_reject: true
+fused_pose_topic_name: ${fused_pose_topic}
+marker_pose_topic_name: ${marker_pose_topic}
+visualization: true
+use_threshold: false
+black_white_contrast_level: 125.0
