@@ -166,7 +166,8 @@ def launch_beswarm(my_env, tracker, beswarm_config, log_file_prefix_abs_path):
                        log_file_prefix_abs_path + '_set_rosparam.log')
     time.sleep(2)
     # launch the java node
-    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=BeSwarm'
+    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=' + \
+                         beswarm_config['nodename']
     execute_cmd(beswarm_launch_cmd, my_env, log_file_prefix_abs_path + '_launch_beswarm.log',
                 tracker)
     time.sleep(2)

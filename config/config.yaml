@@ -8,6 +8,7 @@ bebops:
     beswarm_config:
       beswarm_config_file: ${abs_path}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopOne
+      nodename: BeSwarmOne
       rosparam:
         drone_name: bebop
         logger_name: drone_one
@@ -23,6 +24,7 @@ bebops:
     beswarm_config:
       beswarm_config_file: ${abs_path}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopTwo
+      nodename: BeSwarmTwo
       rosparam:
         drone_name: bebop
         logger_name: drone_two
