@@ -125,7 +125,9 @@ def start_single_bebop(tracker, config, log_file_prefix_abs_path):
                       log_file_prefix_abs_path)
     launch_bebop_autonomy(config['bebop_ip'], my_env, tracker,
                           log_file_prefix_abs_path + '_launch_bebop_autonomy.log')
-    point_camera_downward(my_env, tracker, log_file_prefix_abs_path + '_point_camera_downward.log')
+    # We in this operational test we want the camera points to the wall, that's why the line below
+    # is commented
+    #point_camera_downward(my_env, tracker, log_file_prefix_abs_path + '_point_camera_downward.log')
     record_rosbag(my_env, tracker, log_file_prefix_abs_path + '_record_rosbag.log')
     launch_xbox_controller(my_env, tracker,
                            log_file_prefix_abs_path + '_launch_xbog_controller.log')
