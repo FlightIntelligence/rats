@@ -27,7 +27,7 @@ bebops:
         drone_name: bebop
         logger_name: drone_two
         takeoff_time_in_secs: 10.0
-        start_flying_time_in_secs: 20.0
+        start_flying_time_in_secs: 15.0
 
 synchronizer:
   port: '11313'

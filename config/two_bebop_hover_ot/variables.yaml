@@ -1,0 +1,3 @@
+fused_pose_topic: '/arlocros/fused_pose'
+marker_pose_topic: '/arlocros/marker_pose'
+time_sync_topic: '/start_time'
