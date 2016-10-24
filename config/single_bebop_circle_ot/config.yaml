@@ -9,8 +9,8 @@ bebops:
       beswarm_config_file: ${abs_path}/beswarm.yaml
       javanode: operationaltesting.ratsflight.SingleBebopCircle
       rosparam:
-        drone_name: bebop
-        logger_name: drone_two
+        ros_driver_drone_name: bebop
+        drone_name: drone_two
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 20.0
 

@@ -10,8 +10,8 @@ bebops:
       javanode: applications.parrot.bebop.rats.BebopOne
       nodename: BeSwarmOne
       rosparam:
-        drone_name: bebop
-        logger_name: drone_one
+        ros_driver_drone_name: bebop
+        drone_name: drone_one
         takeoff_time_in_secs: 5.0
         start_flying_time_in_secs: 10.0
 
@@ -26,8 +26,8 @@ bebops:
       javanode: applications.parrot.bebop.rats.BebopTwo
       nodename: BeSwarmTwo
       rosparam:
-        drone_name: bebop
-        logger_name: drone_two
+        ros_driver_drone_name: bebop
+        drone_name: drone_two
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 20.0
 
