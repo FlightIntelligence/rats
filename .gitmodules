@@ -1,17 +1,13 @@
 [submodule "bebop_ws/src/bebop_autonomy"]
 	path = bebop_ws/src/bebop_autonomy
 	url = https://github.com/hoangtungdinh/bebop_autonomy.git
-	branch = rats
 [submodule "rats_ws/src/rats/ARLocROS"]
 	path = rats_ws/src/rats/ARLocROS
 	url = https://github.com/hoangtungdinh/ARLocROS.git
-	branch = rats
 [submodule "rats_ws/src/rats/BeSwarm"]
 	path = rats_ws/src/rats/BeSwarm
 	url = https://github.com/hoangtungdinh/BeSwarm.git
-	branch = rats
 [submodule "bebop_linux_configuration"]
 	path = bebop_linux_configuration
-    url = https://github.com/mhct/bebop_linux_configuration.git
-    branch = master
+        url = https://github.com/mhct/bebop_linux_configuration.git
 
