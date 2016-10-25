@@ -143,6 +143,7 @@ def test_xbox_controller():
 
 def start_synchronizer(synchronizer_config, tracker, log_file_prefix_abs_path):
     my_env = os.environ.copy()
+    my_env['ROS_IP'] = '127.0.0.1'
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
     launch_ros_master(my_env, synchronizer_config['port'], tracker,
                       synchronizer_config['master_sync_config_file'], log_file_prefix_abs_path)
@@ -240,6 +241,7 @@ def create_env(local_drone_ip, port):
     :type port: str
     """
     my_env = os.environ.copy()
+    my_env['ROS_IP'] = '127.0.0.1'
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + port
     my_env['LOCAL_DRONE_IP'] = local_drone_ip
     return my_env
