@@ -30,7 +30,8 @@ def start():
     log_dir_abs_path = os.path.expanduser(
         '~') + '/run_script_log/' + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + '/'
 
-    start_bebops(configs['bebops'], tracker, log_dir_abs_path, config_dir)
+    start_bebops(configs['bebops'], configs['launch_components'], tracker, log_dir_abs_path,
+                 config_dir)
     test_xbox_controller()
     start_synchronizer(configs['synchronizer'], tracker, log_dir_abs_path + 'synchronizer',
                        config_dir)
@@ -70,11 +71,11 @@ def get_config_dir():
         exit()
 
 
-def start_bebops(bebop_configs, tracker, log_dir_abs_path, config_dir):
+def start_bebops(bebop_configs, launch_components, tracker, log_dir_abs_path, config_dir):
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
-        start_single_bebop(tracker=tracker, config=config,
+        start_single_bebop(tracker=tracker, config=config, launch_components=launch_components,
                            log_file_prefix_abs_path=log_dir_abs_path + bebop, config_dir=config_dir)
 
 
@@ -137,24 +138,32 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_bebop(tracker, config, log_file_prefix_abs_path, config_dir):
-    """
-    Starts a single bebop.
-    :param tracker: the list of active processes
-    :type tracker: list
-    :param config: the configuration of the bebop
-    :type config: dict
-    """
+def start_single_bebop(tracker, config, launch_components, log_file_prefix_abs_path, config_dir):
     my_env = create_env(config['local_drone_ip'], config['port'])
     launch_ros_master(my_env, config['port'], tracker, config_dir, log_file_prefix_abs_path)
-    launch_bebop_autonomy(config['bebop_ip'], my_env, tracker,
-                          log_file_prefix_abs_path + '_launch_bebop_autonomy.log')
-    point_camera_downward(my_env, tracker, log_file_prefix_abs_path + '_point_camera_downward.log')
-    record_rosbag(my_env, tracker, log_file_prefix_abs_path + '_record_rosbag.log')
-    launch_xbox_controller(my_env, tracker,
-                           log_file_prefix_abs_path + '_launch_xbog_controller.log')
-    launch_arlocros(my_env, tracker, config_dir, log_file_prefix_abs_path + '_launch_arlocros.log')
-    launch_beswarm(my_env, tracker, config['beswarm_config'], config_dir, log_file_prefix_abs_path)
+
+    if launch_components['bebop_autonomy']:
+        launch_bebop_autonomy(config['bebop_ip'], my_env, tracker,
+                              log_file_prefix_abs_path + '_launch_bebop_autonomy.log')
+
+    if launch_components['point_camera_downward']:
+        point_camera_downward(my_env, tracker,
+                              log_file_prefix_abs_path + '_point_camera_downward.log')
+
+    if launch_components['record_rosbag']:
+        record_rosbag(my_env, tracker, log_file_prefix_abs_path + '_record_rosbag.log')
+
+    if launch_components['launch_xbox_controller']:
+        launch_xbox_controller(my_env, tracker,
+                               log_file_prefix_abs_path + '_launch_xbog_controller.log')
+
+    if launch_components['launch_arlocros']:
+        launch_arlocros(my_env, tracker, config_dir,
+                        log_file_prefix_abs_path + '_launch_arlocros.log')
+
+    if launch_components['launch_beswarm']:
+        launch_beswarm(my_env, tracker, config['beswarm_config'], config_dir,
+                       log_file_prefix_abs_path)
 
 
 def test_xbox_controller():

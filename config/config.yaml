@@ -1,3 +1,11 @@
+launch_components:
+  bebop_autonomy: true
+  point_camera_downward: true
+  record_rosbag: true
+  launch_xbox_controller: true
+  launch_arlocros: true
+  launch_beswarm: true
+
 bebops:
   bebop_one:
     port: '11311'
