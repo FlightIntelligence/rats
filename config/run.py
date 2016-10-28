@@ -39,7 +39,7 @@ def start():
 
 
 def get_main_config(config_dir):
-    config_file = config_dir + 'config.yaml'
+    config_file = config_dir + '/config.yaml'
 
     if os.path.isfile(config_file):
         # parse the main config file
@@ -59,8 +59,8 @@ def get_config_dir():
         print('Please pass the absolute path of the configuration folder')
         exit()
 
-    if config_dir[-1] != '/':
-        config_dir += '/'
+    if config_dir[-1] == '/':
+        config_dir = config_dir[:-1]
 
     if os.path.isdir(config_dir):
         return config_dir
@@ -74,7 +74,7 @@ def start_bebops(bebop_configs, tracker, log_dir_abs_path):
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
         start_single_bebop(tracker=tracker, config=config,
-            log_file_prefix_abs_path=log_dir_abs_path + bebop)
+                           log_file_prefix_abs_path=log_dir_abs_path + bebop)
 
 
 def read_yaml_file(yaml_file):
