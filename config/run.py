@@ -30,9 +30,10 @@ def start():
     log_dir_abs_path = os.path.expanduser(
         '~') + '/run_script_log/' + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + '/'
 
-    start_bebops(configs['bebops'], tracker, log_dir_abs_path)
+    start_bebops(configs['bebops'], tracker, log_dir_abs_path, config_dir)
     test_xbox_controller()
-    start_synchronizer(configs['synchronizer'], tracker, log_dir_abs_path + 'synchronizer')
+    start_synchronizer(configs['synchronizer'], tracker, log_dir_abs_path + 'synchronizer',
+                       config_dir)
 
     # to keep the script alive
     input()
@@ -69,12 +70,12 @@ def get_config_dir():
         exit()
 
 
-def start_bebops(bebop_configs, tracker, log_dir_abs_path):
+def start_bebops(bebop_configs, tracker, log_dir_abs_path, config_dir):
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
         start_single_bebop(tracker=tracker, config=config,
-                           log_file_prefix_abs_path=log_dir_abs_path + bebop)
+                           log_file_prefix_abs_path=log_dir_abs_path + bebop, config_dir=config_dir)
 
 
 def read_yaml_file(yaml_file):
@@ -136,7 +137,7 @@ def parse_yaml_file(yaml_file):
     return parsed_file
 
 
-def start_single_bebop(tracker, config, log_file_prefix_abs_path):
+def start_single_bebop(tracker, config, log_file_prefix_abs_path, config_dir):
     """
     Starts a single bebop.
     :param tracker: the list of active processes
@@ -145,17 +146,15 @@ def start_single_bebop(tracker, config, log_file_prefix_abs_path):
     :type config: dict
     """
     my_env = create_env(config['local_drone_ip'], config['port'])
-    launch_ros_master(my_env, config['port'], tracker, config['master_sync_config_file'],
-                      log_file_prefix_abs_path)
+    launch_ros_master(my_env, config['port'], tracker, config_dir, log_file_prefix_abs_path)
     launch_bebop_autonomy(config['bebop_ip'], my_env, tracker,
                           log_file_prefix_abs_path + '_launch_bebop_autonomy.log')
     point_camera_downward(my_env, tracker, log_file_prefix_abs_path + '_point_camera_downward.log')
     record_rosbag(my_env, tracker, log_file_prefix_abs_path + '_record_rosbag.log')
     launch_xbox_controller(my_env, tracker,
                            log_file_prefix_abs_path + '_launch_xbog_controller.log')
-    launch_arlocros(my_env, tracker, config['arlocros_config_file'],
-                    log_file_prefix_abs_path + '_launch_arlocros.log')
-    launch_beswarm(my_env, tracker, config['beswarm_config'], log_file_prefix_abs_path)
+    launch_arlocros(my_env, tracker, config_dir, log_file_prefix_abs_path + '_launch_arlocros.log')
+    launch_beswarm(my_env, tracker, config['beswarm_config'], config_dir, log_file_prefix_abs_path)
 
 
 def test_xbox_controller():
@@ -163,39 +162,52 @@ def test_xbox_controller():
     input()
 
 
-def start_synchronizer(synchronizer_config, tracker, log_file_prefix_abs_path):
-    my_env = os.environ.copy()
-    my_env['ROS_IP'] = '127.0.0.1'
-    my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
-    launch_ros_master(my_env, synchronizer_config['port'], tracker,
-                      synchronizer_config['master_sync_config_file'], log_file_prefix_abs_path)
-    set_ros_parameters(my_env, tracker, synchronizer_config['rosparam'],
-                       log_file_prefix_abs_path + '_set_rosparam.log')
-    synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
-    execute_cmd(synchronizer_launch_cmd, my_env, log_file_prefix_abs_path + '_launch_synchronizer',
-                tracker)
-    time.sleep(2)
+def start_synchronizer(synchronizer_config, tracker, log_file_prefix_abs_path, config_dir):
+    master_sync_config_file = config_dir + '/master_sync.yaml'
+
+    if os.path.isfile(master_sync_config_file):
+        my_env = os.environ.copy()
+        my_env['ROS_IP'] = '127.0.0.1'
+        my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
+        launch_ros_master(my_env, synchronizer_config['port'], tracker, master_sync_config_file,
+                          log_file_prefix_abs_path)
+        set_ros_parameters(my_env, tracker, synchronizer_config['rosparam'],
+                           log_file_prefix_abs_path + '_set_rosparam.log')
+        synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
+        execute_cmd(synchronizer_launch_cmd, my_env,
+                    log_file_prefix_abs_path + '_launch_synchronizer', tracker)
+        time.sleep(2)
+    else:
+        print('FILE NOT FOUND: ', master_sync_config_file)
 
 
-def launch_beswarm(my_env, tracker, beswarm_config, log_file_prefix_abs_path):
-    # delete build script folder
-    build_script_dir = execute_cmd_and_get_output('rospack find rats') + '/BeSwarm/build/scripts'
-    shutil.rmtree(build_script_dir, ignore_errors=True)
-    # parse the beswarm config file and load it to the parameter server
-    parsed_beswarm_config_file = parse_yaml_file(beswarm_config['beswarm_config_file'])
-    load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
-    execute_cmd(load_param_cmd, my_env, log_file_prefix_abs_path + '_rosparam_load.log', tracker)
-    time.sleep(2)
-    # set some remaining parameters to the parameter server
-    set_ros_parameters(my_env, tracker, beswarm_config['rosparam'],
-                       log_file_prefix_abs_path + '_set_rosparam.log')
-    time.sleep(2)
-    # launch the java node
-    beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=' + \
-                         beswarm_config['nodename']
-    execute_cmd(beswarm_launch_cmd, my_env, log_file_prefix_abs_path + '_launch_beswarm.log',
-                tracker)
-    time.sleep(2)
+def launch_beswarm(my_env, tracker, beswarm_config, config_dir, log_file_prefix_abs_path):
+    beswarm_config_file = config_dir + '/beswarm.yaml'
+
+    if os.path.isfile(beswarm_config_file):
+        # delete build script folder
+        build_script_dir = execute_cmd_and_get_output(
+            'rospack find rats') + '/BeSwarm/build/scripts'
+        shutil.rmtree(build_script_dir, ignore_errors=True)
+        # parse the beswarm config file and load it to the parameter server
+        parsed_beswarm_config_file = parse_yaml_file(beswarm_config_file)
+        load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
+        execute_cmd(load_param_cmd, my_env, log_file_prefix_abs_path + '_rosparam_load.log',
+                    tracker)
+        time.sleep(2)
+        # set some remaining parameters to the parameter server
+        set_ros_parameters(my_env, tracker, beswarm_config['rosparam'],
+                           log_file_prefix_abs_path + '_set_rosparam.log')
+        time.sleep(2)
+        # launch the java node
+        beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=' + \
+                             beswarm_config['nodename']
+        execute_cmd(beswarm_launch_cmd, my_env, log_file_prefix_abs_path + '_launch_beswarm.log',
+                    tracker)
+        time.sleep(2)
+    else:
+        print('FILE NOT FOUND: ', beswarm_config_file)
+        exit()
 
 
 def launch_xbox_controller(my_env, tracker, log_file_abs_path):
@@ -215,20 +227,27 @@ def set_ros_parameters(my_env, tracker, ros_params, log_file_abs_path):
         execute_cmd(set_param_cmd, my_env, log_file_abs_path, tracker)
 
 
-def launch_arlocros(my_env, tracker, arlocros_config_file_abs_path, log_file_prefix_abs_path):
-    # delete build script folder
-    build_script_dir = execute_cmd_and_get_output('rospack find rats') + '/ARLocROS/build/scripts'
-    shutil.rmtree(build_script_dir, ignore_errors=True)
-    # parse the configuration file and load it to the parameter server
-    parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file_abs_path)
-    load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
-    execute_cmd(load_param_cmd, my_env, log_file_prefix_abs_path + '_rosparam_load.log', tracker)
-    time.sleep(2)
-    # launch the java node
-    arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
-    execute_cmd(arlocros_launch_cmd, my_env, log_file_prefix_abs_path + '_arlocros_launch.log',
-                tracker)
-    time.sleep(2)
+def launch_arlocros(my_env, tracker, config_dir, log_file_prefix_abs_path):
+    arlocros_config_file = config_dir + '/arlocros.yaml'
+
+    if os.path.isfile(arlocros_config_file):
+        # delete build script folder
+        build_script_dir = execute_cmd_and_get_output(
+            'rospack find rats') + '/ARLocROS/build/scripts'
+        shutil.rmtree(build_script_dir, ignore_errors=True)
+        # parse the configuration file and load it to the parameter server
+        parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file)
+        load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
+        execute_cmd(load_param_cmd, my_env, log_file_prefix_abs_path + '_rosparam_load.log',
+                    tracker)
+        time.sleep(2)
+        # launch the java node
+        arlocros_launch_cmd = 'rosrun rats ARLocROS arlocros.ARLoc __name:=ARLocROS'
+        execute_cmd(arlocros_launch_cmd, my_env, log_file_prefix_abs_path + '_arlocros_launch.log',
+                    tracker)
+        time.sleep(2)
+    else:
+        print('FILE NOT FOUND: ', arlocros_config_file)
 
 
 def launch_bebop_autonomy(bebop_ip, my_env, tracker, log_file_abs_path):
@@ -237,23 +256,28 @@ def launch_bebop_autonomy(bebop_ip, my_env, tracker, log_file_abs_path):
     time.sleep(2)
 
 
-def launch_ros_master(my_env, port, tracker, master_sync_config_file_abs_path,
-                      log_file_prefix_abs_path):
-    # start a ros master
-    roscore_cmd = 'roscore -p ' + port
-    execute_cmd(roscore_cmd, my_env, log_file_prefix_abs_path + '_roscore.log', tracker)
-    time.sleep(2)
-    # start master_discovery_fkie (to discover other ros masters)
-    master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery _mcast_group:=224.0.0.1'
-    execute_cmd(master_discovery_cmd, my_env, log_file_prefix_abs_path + '_master_discovery.log',
-                tracker)
-    time.sleep(2)
-    # start master_sync_fkie (to sync with other ros masters
-    parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file_abs_path)
-    sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + \
-               parsed_master_sync_config_file
-    execute_cmd(sync_cmd, my_env, log_file_prefix_abs_path + '_sync_cmd.log', tracker)
-    time.sleep(2)
+def launch_ros_master(my_env, port, tracker, config_dir, log_file_prefix_abs_path):
+    master_sync_config_file = config_dir + '/master_sync.yaml'
+    if os.path.isfile(master_sync_config_file):
+        # start a ros master
+        roscore_cmd = 'roscore -p ' + port
+        execute_cmd(roscore_cmd, my_env, log_file_prefix_abs_path + '_roscore.log', tracker)
+        time.sleep(2)
+        # start master_discovery_fkie (to discover other ros masters)
+        master_discovery_cmd = 'rosrun master_discovery_fkie master_discovery ' \
+                               '_mcast_group:=224.0.0.1'
+        execute_cmd(master_discovery_cmd, my_env,
+                    log_file_prefix_abs_path + '_master_discovery.log', tracker)
+        time.sleep(2)
+        # start master_sync_fkie (to sync with other ros masters
+        parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file)
+        sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + \
+                   parsed_master_sync_config_file
+        execute_cmd(sync_cmd, my_env, log_file_prefix_abs_path + '_sync_cmd.log', tracker)
+        time.sleep(2)
+    else:
+        print('FILE NOT FOUND: ', master_sync_config_file)
+        exit()
 
 
 def create_env(local_drone_ip, port):
