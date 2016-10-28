@@ -163,22 +163,17 @@ def test_xbox_controller():
 
 
 def start_synchronizer(synchronizer_config, tracker, log_file_prefix_abs_path, config_dir):
-    master_sync_config_file = config_dir + '/master_sync.yaml'
-
-    if os.path.isfile(master_sync_config_file):
-        my_env = os.environ.copy()
-        my_env['ROS_IP'] = '127.0.0.1'
-        my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
-        launch_ros_master(my_env, synchronizer_config['port'], tracker, master_sync_config_file,
-                          log_file_prefix_abs_path)
-        set_ros_parameters(my_env, tracker, synchronizer_config['rosparam'],
-                           log_file_prefix_abs_path + '_set_rosparam.log')
-        synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
-        execute_cmd(synchronizer_launch_cmd, my_env,
-                    log_file_prefix_abs_path + '_launch_synchronizer', tracker)
-        time.sleep(2)
-    else:
-        print('FILE NOT FOUND: ', master_sync_config_file)
+    my_env = os.environ.copy()
+    my_env['ROS_IP'] = '127.0.0.1'
+    my_env['ROS_MASTER_URI'] = 'http://localhost:' + synchronizer_config['port']
+    launch_ros_master(my_env, synchronizer_config['port'], tracker, config_dir,
+                      log_file_prefix_abs_path)
+    set_ros_parameters(my_env, tracker, synchronizer_config['rosparam'],
+                       log_file_prefix_abs_path + '_set_rosparam.log')
+    synchronizer_launch_cmd = 'rosrun rats ' + synchronizer_config['python_node']
+    execute_cmd(synchronizer_launch_cmd, my_env, log_file_prefix_abs_path + '_launch_synchronizer',
+                tracker)
+    time.sleep(2)
 
 
 def launch_beswarm(my_env, tracker, beswarm_config, config_dir, log_file_prefix_abs_path):
