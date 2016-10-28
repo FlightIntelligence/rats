@@ -17,13 +17,7 @@ import datetime
 
 def start():
     config_dir = get_config_dir()
-
-    print(config_dir)
-
-    # parse the main config file
-    parsed_config_file = parse_yaml_file(config_dir + 'config.yaml')
-    # convert the parsed config file to python dictionary
-    configs = read_yaml_file(parsed_config_file)
+    configs = get_main_config(config_dir)
 
     # the list of all active processes
     tracker = {'processes': [], 'opened_files': []}
@@ -42,6 +36,20 @@ def start():
 
     # to keep the script alive
     input()
+
+
+def get_main_config(config_dir):
+    config_file = config_dir + 'config.yaml'
+
+    if os.path.isdir(config_file):
+        # parse the main config file
+        parsed_config_file = parse_yaml_file(config_file)
+        # convert the parsed config file to python dictionary
+        configs = read_yaml_file(parsed_config_file)
+        return configs
+    else:
+        print('FILE NOT FOUND: ', config_file)
+        exit()
 
 
 def get_config_dir():
