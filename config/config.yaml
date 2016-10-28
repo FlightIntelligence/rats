@@ -3,10 +3,10 @@ bebops:
     port: '11311'
     bebop_ip: '192.168.32.1'
     local_drone_ip: '192.168.32.23'
-    master_sync_config_file: ${abs_path}/master_sync.yaml
-    arlocros_config_file: ${abs_path}/arlocros.yaml
+    master_sync_config_file: ${config_dir}/master_sync.yaml
+    arlocros_config_file: ${config_dir}/arlocros.yaml
     beswarm_config:
-      beswarm_config_file: ${abs_path}/beswarm.yaml
+      beswarm_config_file: ${config_dir}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopOne
       nodename: BeSwarmOne
       rosparam:
@@ -19,10 +19,10 @@ bebops:
     port: '11312'
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
-    master_sync_config_file: ${abs_path}/master_sync.yaml
-    arlocros_config_file: ${abs_path}/arlocros.yaml
+    master_sync_config_file: ${config_dir}/master_sync.yaml
+    arlocros_config_file: ${config_dir}/arlocros.yaml
     beswarm_config:
-      beswarm_config_file: ${abs_path}/beswarm.yaml
+      beswarm_config_file: ${config_dir}/beswarm.yaml
       javanode: applications.parrot.bebop.rats.BebopTwo
       nodename: BeSwarmTwo
       rosparam:
@@ -33,7 +33,7 @@ bebops:
 
 synchronizer:
   port: '11313'
-  master_sync_config_file: ${abs_path}/master_sync.yaml
+  master_sync_config_file: ${config_dir}/master_sync.yaml
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}

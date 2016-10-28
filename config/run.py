@@ -99,7 +99,7 @@ def parse_yaml_file(yaml_file):
 
     config_dir = os.path.dirname(yaml_file)
     # replace the absolute path variables
-    content = content.replace('${abs_path}', config_dir)
+    content = content.replace('${config_dir}', config_dir)
 
     # read all other variables
     variables = read_yaml_file(config_dir + '/variables.yaml')
