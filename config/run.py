@@ -16,14 +16,12 @@ import datetime
 
 
 def start():
-    """
-    Main entrance of the scripts.
-    """
-    main_config_file_name = sys.argv[1]
-    # get the current path of the script
-    current_path = os.path.dirname(os.path.realpath(__file__))
+    config_dir = get_config_dir()
+
+    print(config_dir)
+
     # parse the main config file
-    parsed_config_file = parse_yaml_file(current_path + '/' + main_config_file_name)
+    parsed_config_file = parse_yaml_file(config_dir + 'config.yaml')
     # convert the parsed config file to python dictionary
     configs = read_yaml_file(parsed_config_file)
 
@@ -35,8 +33,8 @@ def start():
     # here we go
     print('Start the program...')
 
-    log_dir_abs_path = os.path.expanduser('~') + '/run_script_log/' + datetime.datetime.now(
-    ).strftime("%Y-%m-%d-%H-%M-%S") + '/'
+    log_dir_abs_path = os.path.expanduser(
+        '~') + '/run_script_log/' + datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S") + '/'
 
     start_bebops(configs['bebops'], tracker, log_dir_abs_path)
     test_xbox_controller()
@@ -46,12 +44,29 @@ def start():
     input()
 
 
+def get_config_dir():
+    try:
+        config_dir = sys.argv[1]
+    except IndexError:
+        print('Please pass the absolute path of the configuration folder')
+        exit()
+
+    if config_dir[-1] != '/':
+        config_dir += '/'
+
+    if os.path.isdir(config_dir):
+        return config_dir
+    else:
+        print(config_dir, ' is not a valid directory')
+        exit()
+
+
 def start_bebops(bebop_configs, tracker, log_dir_abs_path):
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
-        start_single_bebop(
-            tracker=tracker, config=config, log_file_prefix_abs_path=log_dir_abs_path + bebop)
+        start_single_bebop(tracker=tracker, config=config,
+            log_file_prefix_abs_path=log_dir_abs_path + bebop)
 
 
 def read_yaml_file(yaml_file):
@@ -82,11 +97,12 @@ def parse_yaml_file(yaml_file):
     content = file.read()
     file.close()
 
+    config_dir = os.path.dirname(yaml_file)
     # replace the absolute path variables
-    content = content.replace('${abs_path}', os.path.dirname(os.path.realpath(__file__)))
+    content = content.replace('${abs_path}', config_dir)
 
     # read all other variables
-    variables = read_yaml_file(os.path.dirname(os.path.realpath(__file__)) + '/variables.yaml')
+    variables = read_yaml_file(config_dir + '/variables.yaml')
 
     # replace all substitution arguments/variables by their values defined in variables.yaml
     for key, value in variables.items():
@@ -95,8 +111,8 @@ def parse_yaml_file(yaml_file):
     # check if there is any substitution argument not being defined in variables.yaml
     index = content.find('${')
     if index != -1:
-        print('Cannot parse ' + yaml_file + '. Variable ' + content[index:content.find('}') + 1] +
-              ' is not defined in variables.yaml.')
+        print('Cannot parse ' + yaml_file + '. Variable ' + content[index:content.find(
+            '}') + 1] + ' is not defined in variables.yaml.')
         # if such variable exists, exit immediately
         exit()
 
@@ -180,7 +196,8 @@ def launch_xbox_controller(my_env, tracker, log_file_abs_path):
 
 
 def record_rosbag(my_env, tracker, log_file_abs_path):
-    record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf /bebop/camera_info /arlocros/pose'
+    record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf ' \
+                        '/bebop/camera_info /arlocros/pose'
     execute_cmd(record_rosbag_cmd, my_env, log_file_abs_path, tracker)
 
 
@@ -247,7 +264,8 @@ def create_env(local_drone_ip, port):
 
 
 def point_camera_downward(my_env, tracker, log_file_abs_path):
-    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist [0.0,0.0,0.0] [0.0,-50.0,0.0]'
+    point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist [0.0,0.0,' \
+                       '0.0] [0.0,-50.0,0.0]'
     execute_cmd(point_camera_cmd, my_env, log_file_abs_path, tracker)
 
 
@@ -297,8 +315,7 @@ def execute_cmd(cmd, my_env, log_file_abs_path, tracker):
     os.makedirs(os.path.dirname(log_file_abs_path), exist_ok=True)
     log_file = open(log_file_abs_path, 'a+')
     tracker['processes'].append(
-        subprocess.Popen(
-            cmd.split(), env=my_env, stdout=log_file, stderr=subprocess.STDOUT))
+        subprocess.Popen(cmd.split(), env=my_env, stdout=log_file, stderr=subprocess.STDOUT))
     tracker['opened_files'].append(log_file)
 
 
