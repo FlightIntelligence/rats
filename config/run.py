@@ -41,7 +41,7 @@ def start():
 def get_main_config(config_dir):
     config_file = config_dir + 'config.yaml'
 
-    if os.path.isdir(config_file):
+    if os.path.isfile(config_file):
         # parse the main config file
         parsed_config_file = parse_yaml_file(config_file)
         # convert the parsed config file to python dictionary
