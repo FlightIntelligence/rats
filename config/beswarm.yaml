@@ -3,6 +3,8 @@ fused_pose_topic: ${fused_pose_topic}
 marker_pose_topic: ${marker_pose_topic}
 virtual_environment_topic: ${virtual_environment_topic}
 
+ros_driver_drone_name: bebop
+
 control_frequency_in_hz: 40.0
 pid_lag_time_in_seconds: 1.0
 

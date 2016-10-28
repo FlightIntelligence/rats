@@ -14,7 +14,6 @@ bebops:
     beswarm_config:
       javanode: operationaltesting.ratsflight.SingleBebopCircle
       rosparam:
-        ros_driver_drone_name: bebop
         drone_name: drone_two
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 20.0

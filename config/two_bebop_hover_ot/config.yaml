@@ -15,7 +15,6 @@ bebops:
       javanode: operationaltesting.ratsflight.BebopOneHover
       nodename: BeSwarmOne
       rosparam:
-        ros_driver_drone_name: bebop
         drone_name: drone_one
         takeoff_time_in_secs: 5.0
         start_flying_time_in_secs: 10.0
@@ -28,7 +27,6 @@ bebops:
       javanode: operationaltesting.ratsflight.BebopTwoHover
       nodename: BeSwarmTwo
       rosparam:
-        ros_driver_drone_name: bebop
         drone_name: drone_two
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 15.0
