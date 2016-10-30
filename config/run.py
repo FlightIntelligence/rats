@@ -22,7 +22,7 @@ def start():
     # the list of all active processes
     tracker = {'processes': [], 'opened_files': []}
     # clean up on exit
-    atexit.register(clean_up, tracker)
+    atexit.register(clean_up, tracker, config_dir)
 
     # here we go
     print('Start the program...')
@@ -292,14 +292,14 @@ def point_camera_downward(my_env, tracker, log_dir):
     execute_cmd(point_camera_cmd, my_env, log_dir + '/point_cam_downward.log', tracker)
 
 
-def clean_up(tracker):
+def clean_up(tracker, config_dir):
     """
     Cleans up on exit.
     :param tracker: the list of active processes
     :type tracker: dict
     """
     # remove all generated tmp files
-    remove_tmp_files()
+    remove_tmp_files(config_dir)
     # terminate all processes
     terminate_all_processes(tracker['processes'])
     close_all_opened_files(tracker['opened_files'])
@@ -325,11 +325,11 @@ def close_all_opened_files(opened_files):
         f.close()
 
 
-def remove_tmp_files():
+def remove_tmp_files(config_dir):
     """
     Removes all generated tmp files.
     """
-    for file_name in glob.glob('./*_tmp.yaml'):
+    for file_name in glob.glob(config_dir + '/*_tmp.yaml'):
         os.remove(file_name)
 
 
