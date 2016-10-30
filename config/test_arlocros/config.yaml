@@ -8,7 +8,7 @@ launch_components:
 
 bebops:
   bebop_two:
-    port: '11312'
+    port: '11311'
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
     beswarm_config:
