@@ -1,0 +1,25 @@
+time_sync_topic: ${time_sync_topic}
+fused_pose_topic: ${fused_pose_topic}
+marker_pose_topic: ${marker_pose_topic}
+virtual_environment_topic: ${virtual_environment_topic}
+
+ros_driver_drone_name: bebop
+
+control_frequency_in_hz: 40.0
+pid_lag_time_in_seconds: 1.0
+
+pid_linear_x_kp: 0.3
+pid_linear_x_kd: 1.0
+pid_linear_x_ki: 0.0
+
+pid_linear_y_kp: 0.3
+pid_linear_y_kd: 1.0
+pid_linear_y_ki: 0.0
+
+pid_linear_z_kp: 0.8
+pid_linear_z_kd: 0.2
+pid_linear_z_ki: 0.0
+
+pid_angular_z_kp: 0.3
+pid_angular_z_kd: 0.4
+pid_angular_z_ki: 0.0
