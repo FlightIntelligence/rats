@@ -210,7 +210,7 @@ def launch_xbox_controller(my_env, tracker, log_dir):
 
 def record_rosbag(my_env, tracker, log_dir):
     record_rosbag_cmd = 'rosbag record /bebop/image_raw /bebop/cmd_vel /bebop/odom /tf ' \
-                        '/bebop/camera_info /arlocros/pose'
+                        '/bebop/camera_info /arlocros/marker_pose /arlocros/fused_pose'
     execute_cmd(record_rosbag_cmd, my_env, log_dir + '/record_rosbag.log', tracker)
 
 
