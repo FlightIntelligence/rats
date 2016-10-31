@@ -190,8 +190,7 @@ def launch_beswarm(my_env, tracker, beswarm_config, config_dir, log_dir):
         execute_cmd(load_param_cmd, my_env, log_dir + '/rosparam_load.log', tracker)
         time.sleep(2)
         # set some remaining parameters to the parameter server
-        set_ros_parameters(my_env, tracker, beswarm_config['rosparam'],
-                           log_dir + '/set_rosparam.log')
+        set_ros_parameters(my_env, tracker, beswarm_config['rosparam'], log_dir)
         time.sleep(2)
         # launch the java node
         beswarm_launch_cmd = 'rosrun rats BeSwarm ' + beswarm_config['javanode'] + ' __name:=' + \
