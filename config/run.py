@@ -32,7 +32,7 @@ def start():
 
     start_bebops(configs['bebops'], configs['launch_components'], tracker, log_dir, config_dir)
     test_xbox_controller()
-    start_synchronizer(configs['synchronizer'], tracker, log_dir + 'synchronizer', config_dir)
+    start_synchronizer(configs['synchronizer'], tracker, log_dir + '/synchronizer', config_dir)
 
     # to keep the script alive
     input()
