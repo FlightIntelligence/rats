@@ -15,7 +15,7 @@ bebops:
       javanode: operationaltest.ratsflight.pingpong.circle.BebopOneCircle
       nodename: BeSwarm
       rosparam:
-        drone_name: drone_two
+        unique_integer_id: 2
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 20.0
 

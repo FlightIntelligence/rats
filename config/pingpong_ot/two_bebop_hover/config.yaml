@@ -15,7 +15,7 @@ bebops:
       javanode: operationaltest.ratsflight.pingpong.hover.BebopOneHover
       nodename: BeSwarmOne
       rosparam:
-        drone_name: drone_one
+        unique_integer_id: 1
         takeoff_time_in_secs: 5.0
         start_flying_time_in_secs: 10.0
 
@@ -27,7 +27,7 @@ bebops:
       javanode: operationaltest.ratsflight.pingpong.hover.BebopTwoHover
       nodename: BeSwarmTwo
       rosparam:
-        drone_name: drone_two
+        unique_integer_id: 2
         takeoff_time_in_secs: 10.0
         start_flying_time_in_secs: 15.0
 
