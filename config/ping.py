@@ -10,9 +10,13 @@ def ping(host):
 
 def ping_all_bebops(bebop_configs):
     for bebop, config in bebop_configs.items():
+        print('Ping ' + bebop)
         response = ping(config['bebop_ip'])
-        print(bebop)
-        print(response)
+        if response == 0:
+            print(bebop + ' is down!!!')
+        else:
+            print(bebop + ' is ok.')
+        print('\n\n\n')
 
 
 if __name__ == '__main__':
