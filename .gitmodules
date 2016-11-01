@@ -11,3 +11,6 @@
 	path = bebop_linux_configuration
         url = https://github.com/mhct/bebop_linux_configuration.git
 
+[submodule "config/SwarmBootstrapUtils"]
+	path = config/SwarmBootstrapUtils
+	url = https://github.com/hoangtungdinh/SwarmBootstrapUtils.git
