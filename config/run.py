@@ -5,24 +5,24 @@ Scripts to bootstrap a rats show.
 import subprocess
 import os
 import atexit
-import signal
 import time
 
 import shutil
-import yaml
-import glob
-import sys
 import datetime
+
+import clean_up
+import yaml_parser
+import configs
 
 
 def start():
-    config_dir = get_config_dir()
-    configs = get_main_config(config_dir)
+    config_dir = configs.get_config_dir()
+    main_configs = configs.get_main_config(config_dir)
 
     # the list of all active processes
     tracker = {'processes': [], 'opened_files': []}
     # clean up on exit
-    atexit.register(clean_up, tracker, config_dir)
+    atexit.register(clean_up.clean_up, tracker['processes'], tracker['opened_files'], config_dir)
 
     # here we go
     print('Start the program...')
@@ -30,43 +30,13 @@ def start():
     log_dir = os.path.expanduser('~') + '/log_rats/' + datetime.datetime.now().strftime(
         "%Y-%m-%d-%H-%M-%S")
 
-    start_bebops(configs['bebops'], configs['launch_components'], tracker, log_dir, config_dir)
+    start_bebops(main_configs['bebops'], main_configs['launch_components'], tracker, log_dir,
+                 config_dir)
     test_xbox_controller()
-    start_synchronizer(configs['synchronizer'], tracker, log_dir + '/synchronizer', config_dir)
+    start_synchronizer(main_configs['synchronizer'], tracker, log_dir + '/synchronizer', config_dir)
 
     # to keep the script alive
     input()
-
-
-def get_main_config(config_dir):
-    config_file = config_dir + '/config.yaml'
-
-    if os.path.isfile(config_file):
-        # parse the main config file
-        parsed_config_file = parse_yaml_file(config_file)
-        # convert the parsed config file to python dictionary
-        configs = read_yaml_file(parsed_config_file)
-        return configs
-    else:
-        print('FILE NOT FOUND: ', config_file)
-        exit()
-
-
-def get_config_dir():
-    try:
-        config_dir = sys.argv[1]
-    except IndexError:
-        print('Please pass the absolute path of the configuration folder')
-        exit()
-
-    if config_dir[-1] == '/':
-        config_dir = config_dir[:-1]
-
-    if os.path.isdir(config_dir):
-        return config_dir
-    else:
-        print(config_dir, ' is not a valid directory')
-        exit()
 
 
 def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir):
@@ -75,65 +45,6 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
         # start a bebop using her own config
         start_single_bebop(tracker=tracker, config=config, launch_components=launch_components,
                            log_dir=log_dir + '/' + bebop, config_dir=config_dir)
-
-
-def read_yaml_file(yaml_file):
-    """
-    Reads a yaml file and translate it to a python dictionary.
-    :param yaml_file: the absolute directory of the yaml file to be read
-    :type yaml_file: str
-    :return: the python dictionary representing the content of the yaml file
-    :rtype: dict
-    """
-    with open(yaml_file, 'r') as stream:
-        try:
-            return yaml.load(stream)
-        except yaml.YAMLError as exc:
-            print(exc)
-
-
-def parse_yaml_file(yaml_file):
-    """
-    Parses a yaml file. A new temporary yaml file will be generated based on the input file with
-    all the substitution arguments replaced by their values.
-    :param yaml_file: the absolute directory of the yaml file to be parsed
-    :type yaml_file: str
-    :return: the absolute directory of the new temporary yaml file
-    :rtype: str
-    """
-    file = open(yaml_file, 'r')
-    content = file.read()
-    file.close()
-
-    config_dir = os.path.dirname(yaml_file)
-    # replace the absolute path variables
-    content = content.replace('${config_dir}', config_dir)
-
-    # read all other variables
-    variables = read_yaml_file(config_dir + '/variables.yaml')
-
-    # replace all substitution arguments/variables by their values defined in variables.yaml
-    for key, value in variables.items():
-        content = content.replace('${' + key + '}', value)
-
-    # check if there is any substitution argument not being defined in variables.yaml
-    index = content.find('${')
-    if index != -1:
-        print('Cannot parse ' + yaml_file + '. Variable ' + content[index:content.find(
-            '}') + 1] + ' is not defined in variables.yaml.')
-        # if such variable exists, exit immediately
-        exit()
-
-    # the absolute directory of the temporary file
-    parsed_file = yaml_file.replace('.yaml', '_tmp.yaml')
-
-    # write the temporary file to disk
-    tmp_file = open(parsed_file, 'w')
-    tmp_file.write(content)
-    tmp_file.close()
-
-    # return the absolute directory of the temporary file
-    return parsed_file
 
 
 def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
@@ -185,8 +96,8 @@ def launch_beswarm(my_env, tracker, beswarm_config, config_dir, log_dir):
             'rospack find rats') + '/BeSwarm/build/scripts'
         shutil.rmtree(build_script_dir, ignore_errors=True)
         # parse the beswarm config file and load it to the parameter server
-        parsed_beswarm_config_file = parse_yaml_file(beswarm_config_file)
-        load_param_cmd = 'rosparam load ' + parsed_beswarm_config_file
+        substituted_beswarm_config_file = yaml_parser.substitute(beswarm_config_file)
+        load_param_cmd = 'rosparam load ' + substituted_beswarm_config_file
         execute_cmd(load_param_cmd, my_env, log_dir + '/rosparam_load.log', tracker)
         time.sleep(2)
         # set some remaining parameters to the parameter server
@@ -229,8 +140,8 @@ def launch_arlocros(my_env, tracker, config_dir, log_dir):
             'rospack find rats') + '/ARLocROS/build/scripts'
         shutil.rmtree(build_script_dir, ignore_errors=True)
         # parse the configuration file and load it to the parameter server
-        parsed_arlocros_config_file = parse_yaml_file(arlocros_config_file)
-        load_param_cmd = 'rosparam load ' + parsed_arlocros_config_file
+        substituted_arlocros_config_file = yaml_parser.substitute(arlocros_config_file)
+        load_param_cmd = 'rosparam load ' + substituted_arlocros_config_file
         execute_cmd(load_param_cmd, my_env, log_dir + '/rosparam_load.log', tracker)
         time.sleep(2)
         # launch the java node
@@ -260,9 +171,9 @@ def launch_ros_master(my_env, port, tracker, config_dir, log_dir):
         execute_cmd(master_discovery_cmd, my_env, log_dir + '/master_discovery.log', tracker)
         time.sleep(2)
         # start master_sync_fkie (to sync with other ros masters
-        parsed_master_sync_config_file = parse_yaml_file(master_sync_config_file)
+        substituted_master_sync_config_file = yaml_parser.substitute(master_sync_config_file)
         sync_cmd = 'rosrun master_sync_fkie master_sync _interface_url:=' + \
-                   parsed_master_sync_config_file
+                   substituted_master_sync_config_file
         execute_cmd(sync_cmd, my_env, log_dir + '/sync_cmd.log', tracker)
         time.sleep(2)
     else:
@@ -289,47 +200,6 @@ def point_camera_downward(my_env, tracker, log_dir):
     point_camera_cmd = 'rostopic pub /bebop/camera_control geometry_msgs/Twist [0.0,0.0,' \
                        '0.0] [0.0,-50.0,0.0]'
     execute_cmd(point_camera_cmd, my_env, log_dir + '/point_cam_downward.log', tracker)
-
-
-def clean_up(tracker, config_dir):
-    """
-    Cleans up on exit.
-    :param tracker: the list of active processes
-    :type tracker: dict
-    """
-    # remove all generated tmp files
-    remove_tmp_files(config_dir)
-    # terminate all processes
-    terminate_all_processes(tracker['processes'])
-    close_all_opened_files(tracker['opened_files'])
-
-
-def terminate_all_processes(processes):
-    """
-    Terminates all processes.
-    :param processes: the list of active processes
-    :type processes: list
-    """
-    for p in processes:
-        try:
-            os.killpg(os.getpgid(p.pid), signal.SIGINT)
-        except KeyboardInterrupt:
-            pass
-    print('cleaned up')
-
-
-def close_all_opened_files(opened_files):
-    for f in opened_files:
-        f.flush()
-        f.close()
-
-
-def remove_tmp_files(config_dir):
-    """
-    Removes all generated tmp files.
-    """
-    for file_name in glob.glob(config_dir + '/*_tmp.yaml'):
-        os.remove(file_name)
 
 
 def execute_cmd(cmd, my_env, log_file_abs_path, tracker):
