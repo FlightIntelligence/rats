@@ -7,13 +7,13 @@ launch_components:
   launch_beswarm: false
 
 bebops:
-  bebop_two:
+  fake_bebop:
     ros_master_port: '11311'
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
     beswarm_config:
       javanode: operationaltest.ratsflight.pingpong.twobebophover.BebopOneHover
-      nodename: BeSwarm
+      nodename: BeSwarmFake
       rosparam:
         unique_integer_id: 2
         takeoff_time_in_secs: 10.0

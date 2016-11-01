@@ -7,17 +7,17 @@ launch_components:
   launch_beswarm: true
 
 bebops:
-  bebop_two:
+  Nerve:
     ros_master_port: '11312'
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
     beswarm_config:
       javanode: operationaltest.ratsflight.pingpong.circle.BebopOneCircle
-      nodename: BeSwarm
+      nodename: BeSwarmNerve
       rosparam:
         unique_integer_id: 2
-        takeoff_time_in_secs: 10.0
-        start_flying_time_in_secs: 20.0
+        takeoff_time_in_secs: 5.0
+        start_flying_time_in_secs: 10.0
 
 synchronizer:
   ros_master_port: '11313'
