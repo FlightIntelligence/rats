@@ -1,6 +1,6 @@
 import os
 
-from src import configs
+from SwarmBootstrapUtils import configs
 
 
 def ping(host):
