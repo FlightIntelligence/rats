@@ -1,6 +1,7 @@
 import os
-import yaml_parser
 import sys
+
+from src import yaml_parser
 
 
 def get_main_config(config_dir):

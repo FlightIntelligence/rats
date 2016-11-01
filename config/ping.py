@@ -1,6 +1,6 @@
 import os
 
-import configs
+from src import configs
 
 
 def ping(host):

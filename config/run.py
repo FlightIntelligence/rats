@@ -2,17 +2,17 @@
 Scripts to bootstrap a rats show.
 """
 
-import subprocess
-import os
 import atexit
+import datetime
+import os
+import shutil
+import subprocess
 import time
 
-import shutil
-import datetime
+from src import configs
+from src import yaml_parser
 
-import clean_up
-import yaml_parser
-import configs
+from src import clean_up
 
 
 def start():
