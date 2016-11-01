@@ -8,7 +8,7 @@ launch_components:
 
 bebops:
   bebop_two:
-    port: '11311'
+    ros_master_port: '11311'
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
     beswarm_config:
@@ -20,7 +20,7 @@ bebops:
         start_flying_time_in_secs: 20.0
 
 synchronizer:
-  port: '11313'
+  ros_master_port: '11313'
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}
