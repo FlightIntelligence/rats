@@ -49,8 +49,8 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
 
 
 def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
-    my_env = create_env(config['local_drone_ip'], config['port'])
-    executor.launch_ros_master(my_env, config['port'], tracker, config_dir, log_dir)
+    my_env = create_env(config['local_drone_ip'], config['ros_master_port'])
+    executor.launch_ros_master(my_env, config['ros_master_port'], tracker, config_dir, log_dir)
 
     if launch_components['bebop_autonomy']:
         executor.launch_bebop_autonomy(config['bebop_ip'], my_env, tracker, log_dir)
