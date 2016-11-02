@@ -16,7 +16,7 @@ def start():
         "%Y-%m-%d-%H-%M-%S")
 
     config_dir = configs.get_config_dir()
-    config_dir = executor.copy_config_to_log_dir(config_dir, log_dir)
+    config_dir = configs.copy_config_to_log_dir(config_dir, log_dir)
     main_configs = configs.get_main_config(config_dir)
 
     # the list of all active processes
@@ -38,7 +38,7 @@ def start():
 
 
 def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir):
-    executor.check_unique_integer_id(bebop_configs)
+    configs.check_unique_integer_id(bebop_configs)
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
