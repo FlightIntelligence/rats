@@ -12,19 +12,20 @@ from SwarmBootstrapUtils import executor
 
 
 def start():
+    log_dir = os.path.expanduser('~') + '/log_rats/' + datetime.datetime.now().strftime(
+        "%Y-%m-%d-%H-%M-%S")
+
     config_dir = configs.get_config_dir()
+    config_dir = executor.copy_config_to_log_dir(config_dir, log_dir)
     main_configs = configs.get_main_config(config_dir)
 
     # the list of all active processes
     tracker = {'processes': [], 'opened_files': []}
     # clean up on exit
-    atexit.register(clean_up.clean_up, tracker['processes'], tracker['opened_files'], config_dir)
+    atexit.register(clean_up.clean_up, tracker['processes'], tracker['opened_files'])
 
     # here we go
     print('Start the program...')
-
-    log_dir = os.path.expanduser('~') + '/log_rats/' + datetime.datetime.now().strftime(
-        "%Y-%m-%d-%H-%M-%S")
 
     start_bebops(main_configs['bebops'], main_configs['launch_components'], tracker, log_dir,
                  config_dir)
