@@ -14,6 +14,8 @@ from SwarmBootstrapUtils import executor
 def start():
     log_dir = os.path.expanduser('~') + '/log_rats/' + datetime.datetime.now().strftime(
         "%Y-%m-%d-%H-%M-%S")
+    
+    configs.log_commit_numbers(log_dir)
 
     config_dir = configs.get_config_dir()
     config_dir = configs.copy_config_to_log_dir(config_dir, log_dir)
