@@ -9,8 +9,8 @@ launch_components:
 bebops:
   Nerve:
     ros_master_port: '11312'
-    bebop_ip: '192.168.42.1'
-    local_drone_ip: '192.168.42.87'
+    bebop_ip: '192.168.32.1'
+    local_drone_ip: '192.168.32.23'
     beswarm_config:
       javanode: operationaltest.ratsflight.pingpong.circle.BebopOneCircle
       nodename: BeSwarmNerve
