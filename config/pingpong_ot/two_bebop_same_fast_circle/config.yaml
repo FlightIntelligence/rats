@@ -8,12 +8,24 @@ launch_components:
 
 bebops:
   Nerve:
-    ros_master_port: '11312'
+    ros_master_port: '11311'
     bebop_ip: '192.168.32.1'
     local_drone_ip: '192.168.32.23'
     beswarm_config:
       javanode: operationaltest.ratsflight.pingpong.samecircle.BebopOneSameFastCircle
       nodename: BeSwarmNerve
+      rosparam:
+        unique_integer_id: 1
+        takeoff_time_in_secs: 5.0
+        start_flying_time_in_secs: 10.0
+
+  Romeo:
+    ros_master_port: '11312'
+    bebop_ip: '192.168.42.1'
+    local_drone_ip: '192.168.42.87'
+    beswarm_config:
+      javanode: operationaltest.ratsflight.pingpong.samecircle.BebopTwoSameFastCircle
+      nodename: BeSwarmRomeo
       rosparam:
         unique_integer_id: 2
         takeoff_time_in_secs: 5.0
