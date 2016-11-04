@@ -1,6 +1,6 @@
 launch_components:
   bebop_autonomy: true
-  point_camera_downward: false
+  point_camera_downward: true
   record_rosbag: true
   launch_xbox_controller: true
   launch_arlocros: true
