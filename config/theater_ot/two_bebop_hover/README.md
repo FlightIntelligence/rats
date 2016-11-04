@@ -1,1 +1,1 @@
-Two bebops hover in the pingpong room with different start times
+Place Nerve at (3, 1) and Romeo at (3, 3)
