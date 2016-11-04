@@ -5,19 +5,19 @@ virtual_environment_topic: ${virtual_environment_topic}
 
 ros_driver_drone_name: bebop
 
-control_frequency_in_hz: 20.0
-pid_lag_time_in_seconds: 1.0
+control_frequency_in_hz: 40.0
+pid_lag_time_in_seconds: 0.0
 
-pid_velocity_x_kp: 0.05
-pid_velocity_x_kd: 0.2
+pid_velocity_x_kp: 1.0
+pid_velocity_x_kd: 0.34
 
-pid_velocity_y_kp: 0.05
-pid_velocity_y_kd: 0.2
+pid_velocity_y_kp: 1.0
+pid_velocity_y_kd: 1.5
 
-pid_velocity_z_kp: 0.6
-pid_velocity_z_kd: 0.0
+pid_velocity_z_kp: 0.8
+pid_velocity_z_kd: 0.2
 
 pid_velocity_yaw_kp: 0.9
 
-pid_acceleration_x_kp: 0.02
-pid_acceleration_y_kp: 0.02
+pid_acceleration_x_kp: 1.0
+pid_acceleration_y_kp: 1.0
