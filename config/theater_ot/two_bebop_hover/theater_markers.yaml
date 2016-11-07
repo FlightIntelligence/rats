@@ -1,5 +1,5 @@
 #markerpattern 4x6
-markersize: 0.2885
+marker_size: 0.2885
 
 relative_corner_position:
   upper_left: [0.0, 0.0, 0.0]
