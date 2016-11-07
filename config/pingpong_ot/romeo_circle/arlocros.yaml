@@ -10,3 +10,4 @@ marker_pose_topic_name: ${marker_pose_topic}
 visualization: true
 use_threshold: false
 black_white_contrast_level: 125.0
+invert_black_white_color: false
