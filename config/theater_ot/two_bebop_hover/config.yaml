@@ -12,7 +12,7 @@ bebops:
     bebop_ip: '192.168.32.1'
     local_drone_ip: '192.168.32.23'
     beswarm_config:
-      javanode: operationaltest.ratsflight.theater.hover.BebopOneHover
+      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.hover.BebopOneHover
       nodename: BeSwarmNerve
       rosparam:
         unique_integer_id: 1
@@ -24,7 +24,7 @@ bebops:
     bebop_ip: '192.168.42.1'
     local_drone_ip: '192.168.42.87'
     beswarm_config:
-      javanode: operationaltest.ratsflight.theater.hover.BebopTwoHover
+      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.hover.BebopTwoHover
       nodename: BeSwarmRomeo
       rosparam:
         unique_integer_id: 2
