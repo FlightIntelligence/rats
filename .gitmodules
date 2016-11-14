@@ -14,3 +14,6 @@
 [submodule "config/SwarmBootstrapUtils"]
 	path = config/SwarmBootstrapUtils
 	url = https://github.com/hoangtungdinh/SwarmBootstrapUtils.git
+[submodule "arsdk_multiple_bebops"]
+	path = arsdk_multiple_bebops
+	url = https://github.com/mhct/arsdk_multiple_bebops.git
