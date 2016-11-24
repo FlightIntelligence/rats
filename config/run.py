@@ -32,8 +32,9 @@ def start():
     start_bebops(main_configs['bebops'], main_configs['launch_components'], tracker, log_dir,
                  config_dir)
     test_xbox_controller()
-    executor.start_synchronizer(main_configs['synchronizer'], tracker, log_dir + '/synchronizer',
-                                config_dir)
+    if 'synchronizer' in main_configs:
+        executor.start_synchronizer(main_configs['synchronizer'], tracker,
+                                    log_dir + '/synchronizer', config_dir)
 
     # to keep the script alive
     input()
