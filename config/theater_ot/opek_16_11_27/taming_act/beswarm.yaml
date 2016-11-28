@@ -9,6 +9,7 @@ bebop/bebop_driver/SpeedSettingsHullProtectionPresent: 1
 bebop/bebop_driver/SpeedSettingsOutdoorOutdoor: 0
 bebop/bebop_driver/NetworkSettingsWifiSelectionBand: 1
 bebop/bebop_driver/PictureSettingsVideoFramerateFramerate: 2
+bebop/bebop_driver/PilotingSettingsBankedTurnValue: 1
 
 ros_driver_drone_name: bebop
 
