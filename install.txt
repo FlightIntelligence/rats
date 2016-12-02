@@ -80,6 +80,8 @@ catkin init
 rosdep update
 rosdep install --from-paths src -i
 catkin build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+rm -r devel/.private/bebop_driver/arsdk/out/arsdk-native/staging/usr/lib
+cp -r ../arsdk_multiple_bebops/lib devel/.private/bebop_driver/arsdk/out/arsdk-native/staging/usr/
 echo "source ~/rats/bebop_ws/devel/setup.zsh" >> ~/.zshrc
 source ~/.zshrc
 
