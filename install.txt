@@ -84,6 +84,8 @@ rm -r devel/.private/bebop_driver/arsdk/out/arsdk-native/staging/usr/lib
 cp -r ../arsdk_multiple_bebops/lib devel/.private/bebop_driver/arsdk/out/arsdk-native/staging/usr/
 echo "source ~/rats/bebop_ws/devel/setup.zsh" >> ~/.zshrc
 source ~/.zshrc
+# remove jar file in local maven repo to avoid conflict with BeSwarm
+rm -rf ~/rats/bebop_ws/devel/share/maven/*
 
 # install opencv 2.4.8
 sudo add-apt-repository ppa:xqms/opencv-nonfree
