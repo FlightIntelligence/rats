@@ -4,7 +4,8 @@ marker_pose_topic: ${marker_pose_topic}
 virtual_environment_topic: ${virtual_environment_topic}
 
 bebop/bebop_driver/SpeedSettingsMaxVerticalSpeedCurrent: 2.5
-bebop/bebop_driver/PilotingSettingsMaxTiltCurrent: 30
+bebop/bebop_driver/PilotingSettingsMaxTiltCurrent: 30.0
+bebop/bebop_driver/SpeedSettingsMaxRotationSpeedCurrent: 200.0
 bebop/bebop_driver/SpeedSettingsHullProtectionPresent: 1
 bebop/bebop_driver/SpeedSettingsOutdoorOutdoor: 0
 bebop/bebop_driver/NetworkSettingsWifiSelectionBand: 1
