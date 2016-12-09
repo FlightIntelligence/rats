@@ -71,10 +71,10 @@ def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
         executor.launch_xbox_controller(my_env, tracker, log_dir)
 
     if launch_components['launch_arlocros']:
-        executor.launch_arlocros(my_env, tracker, config_dir, log_dir)
+        executor.launch_arlocros(my_env, tracker, log_dir)
 
     if launch_components['launch_beswarm']:
-        executor.launch_beswarm(my_env, tracker, config['beswarm_config'], config_dir, log_dir)
+        executor.launch_beswarm(my_env, tracker, config['beswarm_config'], log_dir)
 
 
 def test_xbox_controller():
