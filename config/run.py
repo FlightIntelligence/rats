@@ -54,6 +54,9 @@ def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
     my_env = create_env(config['local_drone_ip'], config['ros_master_port'])
     executor.launch_ros_master(my_env, config['ros_master_port'], tracker, config_dir, log_dir)
 
+    executor.load_ros_parameters_from_file(config_dir + '/beswarm.yaml', my_env, log_dir)
+    executor.load_ros_parameters_from_file(config_dir + '/arlocros.yaml', my_env, log_dir)
+
     if launch_components['bebop_autonomy']:
         executor.launch_bebop_autonomy(config['bebop_ip'], my_env, tracker, log_dir)
 
