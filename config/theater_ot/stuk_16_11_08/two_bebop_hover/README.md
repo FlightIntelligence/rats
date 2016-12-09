@@ -1,1 +1,0 @@
-Place Nerve at (3, 1) and Romeo at (3, 3)
