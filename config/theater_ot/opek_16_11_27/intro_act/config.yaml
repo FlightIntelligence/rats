@@ -20,6 +20,7 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
 
   Romeo:
     ros_master_port: '11312'
@@ -34,6 +35,7 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
 
   Juliet:
     ros_master_port: '11313'
@@ -48,6 +50,7 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
 
   Fievel:
     ros_master_port: '11314'
@@ -62,6 +65,7 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
 
   Dumbo:
     ros_master_port: '11315'
@@ -76,6 +80,7 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
 
 synchronizer:
   ros_master_port: '11316'

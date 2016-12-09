@@ -18,6 +18,7 @@ bebops:
       unique_integer_id: 2
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
 
 synchronizer:
   ros_master_port: '11313'
