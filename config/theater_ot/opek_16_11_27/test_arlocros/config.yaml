@@ -14,10 +14,10 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.pingpong.samecircle.BebopOneSameFastCircle
       nodename: BeSwarmFake
-      rosparam:
-        unique_integer_id: 2
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
+    rosparam:
+      unique_integer_id: 2
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
 
 synchronizer:
   ros_master_port: '11313'

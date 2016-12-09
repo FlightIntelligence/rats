@@ -14,12 +14,12 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmNerve
-      rosparam:
-        drone_name: Nerve
-        unique_integer_id: 1
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
-        shifted_duration: 0.0
+    rosparam:
+      drone_name: Nerve
+      unique_integer_id: 1
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      shifted_duration: 0.0
 
   Romeo:
     ros_master_port: '11312'
@@ -28,12 +28,12 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmRomeo
-      rosparam:
-        drone_name: Romeo
-        unique_integer_id: 2
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
-        shifted_duration: 0.0
+    rosparam:
+      drone_name: Romeo
+      unique_integer_id: 2
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      shifted_duration: 0.0
 
   Juliet:
     ros_master_port: '11313'
@@ -42,12 +42,12 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmJuliet
-      rosparam:
-        drone_name: Juliet
-        unique_integer_id: 3
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
-        shifted_duration: 0.0
+    rosparam:
+      drone_name: Juliet
+      unique_integer_id: 3
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      shifted_duration: 0.0
 
   Fievel:
     ros_master_port: '11314'
@@ -56,12 +56,12 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmFievel
-      rosparam:
-        drone_name: Fievel
-        unique_integer_id: 4
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
-        shifted_duration: 0.0
+    rosparam:
+      drone_name: Fievel
+      unique_integer_id: 4
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      shifted_duration: 0.0
 
   Dumbo:
     ros_master_port: '11315'
@@ -70,12 +70,12 @@ bebops:
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmDumbo
-      rosparam:
-        drone_name: Dumbo
-        unique_integer_id: 5
-        takeoff_time_in_secs: 5.0
-        start_flying_time_in_secs: 10.0
-        shifted_duration: 0.0
+    rosparam:
+      drone_name: Dumbo
+      unique_integer_id: 5
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      shifted_duration: 0.0
 
 synchronizer:
   ros_master_port: '11316'
