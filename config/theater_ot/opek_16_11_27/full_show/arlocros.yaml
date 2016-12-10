@@ -1,0 +1,13 @@
+pattern_dir: ${config_dir}/marker_patterns/
+marker_frame_name: 'markers'
+camera_frame_name: 'camera_optical'
+camera_image_topic: '/bebop/image_raw'
+camera_info_topic: '/bebop/camera_info'
+marker_config_file: ${config_dir}/theater_markers.yaml
+bad_pose_reject: true
+fused_pose_topic_name: ${fused_pose_topic}
+marker_pose_topic_name: ${marker_pose_topic}
+visualization: false
+use_threshold: false
+black_white_contrast_level: 450.0
+invert_black_white_color: true
