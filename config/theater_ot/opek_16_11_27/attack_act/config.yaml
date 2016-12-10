@@ -38,7 +38,7 @@ bebops:
   Juliet:
     ros_master_port: '11313'
     bebop_ip: '192.168.52.1'
-    local_drone_ip: '192.168.52.23'
+    local_drone_ip: '192.168.52.93'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.AttackActOT
       nodename: BeSwarmJuliet
@@ -52,7 +52,7 @@ bebops:
   Fievel:
     ros_master_port: '11314'
     bebop_ip: '192.168.62.1'
-    local_drone_ip: '192.168.62.23'
+    local_drone_ip: '192.168.62.11'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.AttackActOT
       nodename: BeSwarmFievel
