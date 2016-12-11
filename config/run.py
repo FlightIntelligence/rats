@@ -37,7 +37,7 @@ def start():
                                     log_dir + '/synchronizer', config_dir)
 
     # to keep the script alive
-    print('Start flying!! Press ENTER to terminal the program.')
+    print('Start flying!! Press ENTER to terminate the program.')
     input()
 
 
