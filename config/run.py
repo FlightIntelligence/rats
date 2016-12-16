@@ -51,7 +51,7 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
 
 
 def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
-    my_env = create_env(config['local_drone_ip'], config['ros_master_port'])
+    my_env = create_env(config['ros_master_port'])
     executor.launch_ros_master(my_env, config['ros_master_port'], tracker, config_dir, log_dir)
 
     executor.load_ros_parameters_from_file(config_dir + '/beswarm.yaml', my_env, log_dir)
@@ -82,7 +82,7 @@ def test_xbox_controller():
     input()
 
 
-def create_env(local_drone_ip, port):
+def create_env(port):
     """
     Creates a local environment.
     :param local_drone_ip: the ip of the network adapter connected to the drone
@@ -93,7 +93,6 @@ def create_env(local_drone_ip, port):
     my_env = os.environ.copy()
     my_env['ROS_IP'] = '127.0.0.1'
     my_env['ROS_MASTER_URI'] = 'http://localhost:' + port
-    my_env['LOCAL_DRONE_IP'] = local_drone_ip
     return my_env
 
 
