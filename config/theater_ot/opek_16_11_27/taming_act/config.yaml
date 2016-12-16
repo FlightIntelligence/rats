@@ -10,7 +10,6 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     bebop_ip: '192.168.32.1'
-    local_drone_ip: '192.168.32.23'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.TamingActOT
       nodename: BeSwarmNerve
@@ -24,7 +23,6 @@ bebops:
   Romeo:
     ros_master_port: '11312'
     bebop_ip: '192.168.42.1'
-    local_drone_ip: '192.168.42.87'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.TamingActOT
       nodename: BeSwarmRomeo
@@ -38,7 +36,6 @@ bebops:
   Juliet:
     ros_master_port: '11313'
     bebop_ip: '192.168.52.1'
-    local_drone_ip: '192.168.52.93'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.TamingActOT
       nodename: BeSwarmJuliet
@@ -52,7 +49,6 @@ bebops:
   Fievel:
     ros_master_port: '11314'
     bebop_ip: '192.168.62.1'
-    local_drone_ip: '192.168.62.11'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.TamingActOT
       nodename: BeSwarmFievel
@@ -66,7 +62,6 @@ bebops:
   Dumbo:
     ros_master_port: '11315'
     bebop_ip: '192.168.72.1'
-    local_drone_ip: '192.168.72.23'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.TamingActOT
       nodename: BeSwarmDumbo
