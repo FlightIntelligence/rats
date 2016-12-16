@@ -9,7 +9,7 @@ launch_components:
 bebops:
   Nerve:
     ros_master_port: '11311'
-    bebop_ip: '192.168.32.1'
+    bebop_ip: '192.168.13.102'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.pingpong.samecircle.BebopOneSameFastCircle
       nodename: BeSwarmFake
