@@ -21,6 +21,7 @@ bebops:
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
+    topic_relay: ['/arlocros/fused_pose']
 
   Romeo:
     ros_master_port: '11312'
@@ -36,6 +37,7 @@ bebops:
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
+    topic_relay: ['/arlocros/fused_pose']
 
   Juliet:
     ros_master_port: '11313'
@@ -51,6 +53,7 @@ bebops:
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
+    topic_relay: ['/arlocros/fused_pose']
 
   Fievel:
     ros_master_port: '11314'
@@ -66,6 +69,7 @@ bebops:
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
+    topic_relay: ['/arlocros/fused_pose']
 
   Dumbo:
     ros_master_port: '11315'
@@ -81,6 +85,7 @@ bebops:
       start_flying_time_in_secs: 10.0
       shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
+    topic_relay: ['/arlocros/fused_pose']
 
 synchronizer:
   ros_master_port: '11316'
@@ -88,3 +93,7 @@ synchronizer:
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}
+
+pose_aggregation:
+  ros_master_port: '11317'
+  sync_config: pose_sync.yaml
