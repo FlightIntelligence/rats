@@ -31,6 +31,10 @@ def start():
 
     start_bebops(main_configs['bebops'], main_configs['launch_components'], tracker, log_dir,
                  config_dir)
+    if 'pose_aggregation' in main_configs:
+        executor.start_pose_aggregation(main_configs['pose_aggregation'], tracker,
+                                        log_dir + '/pose_aggregation', config_dir)
+
     test_xbox_controller()
     if 'synchronizer' in main_configs:
         executor.start_synchronizer(main_configs['synchronizer'], tracker,
