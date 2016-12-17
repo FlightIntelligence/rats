@@ -9,6 +9,7 @@ launch_components:
 bebops:
   Nerve:
     ros_master_port: '11311'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.102'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.pingpong.samecircle.BebopOneSameFastCircle
@@ -21,6 +22,7 @@ bebops:
 
 synchronizer:
   ros_master_port: '11313'
+  sync_config: master_sync.yaml
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}

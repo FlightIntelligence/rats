@@ -9,6 +9,7 @@ launch_components:
 bebops:
   Nerve:
     ros_master_port: '11311'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.102'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
@@ -22,6 +23,7 @@ bebops:
 
   Romeo:
     ros_master_port: '11312'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.130'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
@@ -35,6 +37,7 @@ bebops:
 
   Juliet:
     ros_master_port: '11313'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.120'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
@@ -48,6 +51,7 @@ bebops:
 
   Fievel:
     ros_master_port: '11314'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.140'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
@@ -61,6 +65,7 @@ bebops:
 
   Dumbo:
     ros_master_port: '11315'
+    sync_config: master_sync.yaml
     bebop_ip: '192.168.13.110'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
@@ -74,6 +79,7 @@ bebops:
 
 synchronizer:
   ros_master_port: '11316'
+  sync_config: master_sync.yaml
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}
