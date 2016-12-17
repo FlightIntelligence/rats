@@ -46,11 +46,12 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
         # start a bebop using her own config
-        start_single_bebop(tracker=tracker, config=config, launch_components=launch_components,
-                           log_dir=log_dir + '/' + bebop, config_dir=config_dir)
+        start_single_bebop(tracker=tracker, bebop_name=bebop, config=config,
+                           launch_components=launch_components, log_dir=log_dir + '/' + bebop,
+                           config_dir=config_dir)
 
 
-def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
+def start_single_bebop(tracker, bebop_name, config, launch_components, log_dir, config_dir):
     my_env = create_env(config['ros_master_port'])
     executor.launch_ros_master(my_env, config['ros_master_port'], config['sync_config'], tracker,
                                config_dir, log_dir)
@@ -76,6 +77,9 @@ def start_single_bebop(tracker, config, launch_components, log_dir, config_dir):
 
     if launch_components['launch_beswarm']:
         executor.launch_beswarm(my_env, tracker, config['beswarm_config'], log_dir)
+
+    if 'topic_relay' in config:
+        executor.relay_topics(my_env, config['topic_relay'], bebop_name, tracker, log_dir)
 
 
 def test_xbox_controller():
