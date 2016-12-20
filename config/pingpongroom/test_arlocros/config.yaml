@@ -1,33 +1,33 @@
 launch_components:
   bebop_autonomy: true
   point_camera_downward: false
-  record_rosbag: true
+  record_rosbag: false
   launch_xbox_controller: true
   launch_arlocros: true
-  launch_beswarm: true
+  launch_beswarm: false
 
 bebops:
-#  Nerve:
-    #ros_master_port: '11311'
-    #sync_config: master_sync.yaml
-    #bebop_ip: '192.168.13.102'
-    #beswarm_config:
-      #javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.HoverOT
-      #nodename: BeSwarmNerve
-    #rosparam:
-      #drone_name: Nerve
-      #unique_integer_id: 1
-      #takeoff_time_in_secs: 5.0
-      #start_flying_time_in_secs: 10.0
-      #bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
-      #pos_x: 2.5
-      #pos_y: 1.0
-      #pos_z: 1.0
-      #pos_yaw: -3.14
-      #duration: 60.0
-#    topic_relay: ['/arlocros/fused_pose']
+  Nerve:
+    ros_master_port: '11311'
+    sync_config: master_sync.yaml
+    bebop_ip: '192.168.13.102'
+    beswarm_config:
+      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.HoverOT
+      nodename: BeSwarmNerve
+    rosparam:
+      drone_name: Nerve
+      unique_integer_id: 1
+      takeoff_time_in_secs: 5.0
+      start_flying_time_in_secs: 10.0
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
+      pos_x: 1.5
+      pos_y: 0.5
+      pos_z: 1.5
+      pos_yaw: -3.14
+      duration: 60.0
+    topic_relay: ['/arlocros/fused_pose']
 
-#  Romeo:
+ # Romeo:
     #ros_master_port: '11312'
     #sync_config: master_sync.yaml
     #bebop_ip: '192.168.13.130'
@@ -40,32 +40,32 @@ bebops:
       #takeoff_time_in_secs: 5.0
       #start_flying_time_in_secs: 10.0
       #bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
-      #pos_x: 2.5
-      #pos_y: -1.0
+      #pos_x: 1.5
+      #pos_y: -1.5
       #pos_z: 1.5
       #pos_yaw: -3.14
       #duration: 60.0
-#    topic_relay: ['/arlocros/fused_pose']
+    #topic_relay: ['/arlocros/fused_pose']
 
-  Juliet:
-    ros_master_port: '11313'
-    sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.120'
-    beswarm_config:
-      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.HoverOT
-      nodename: BeSwarmJuliet
-    rosparam:
-      drone_name: Juliet
-      unique_integer_id: 3
-      takeoff_time_in_secs: 5.0
-      start_flying_time_in_secs: 10.0
-      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
-      pos_x: 4.0
-      pos_y: 1.0
-      pos_z: 1.7
-      pos_yaw: -3.14
-      duration: 60.0
-    topic_relay: ['/arlocros/fused_pose']
+  #Juliet:
+    #ros_master_port: '11313'
+    #sync_config: master_sync.yaml
+    #bebop_ip: '192.168.13.120'
+    #beswarm_config:
+      #javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.HoverOT
+      #nodename: BeSwarmJuliet
+    #rosparam:
+      #drone_name: Juliet
+      #unique_integer_id: 3
+      #takeoff_time_in_secs: 5.0
+      #start_flying_time_in_secs: 10.0
+      #bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
+      #pos_x: 3.5
+      #pos_y: 0.5
+      #pos_z: 1.5
+      #pos_yaw: -3.14
+      #duration: 60.0
+    #topic_relay: ['/arlocros/fused_pose']
 
   #Fievel:
     #ros_master_port: '11314'
@@ -100,12 +100,12 @@ bebops:
       #takeoff_time_in_secs: 5.0
       #start_flying_time_in_secs: 10.0
       #bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
-      #pos_x: 4.0
-      #pos_y: -1.0
-      #pos_z: 1.7
-      #pos_yaw: -3.14
+      #pos_x:
+      #pos_y:
+      #pos_z:
+      #pos_yaw:
       #duration: 60.0
- #   topic_relay: ['/arlocros/fused_pose']
+  #  topic_relay: ['/arlocros/fused_pose']
 
 synchronizer:
   ros_master_port: '11316'
