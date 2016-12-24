@@ -10,7 +10,7 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.32.1'
+    bebop_ip: '192.168.13.140'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmNerve
@@ -19,14 +19,13 @@ bebops:
       unique_integer_id: 1
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
-      shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
     topic_relay: ['/arlocros/fused_pose']
 
   Romeo:
     ros_master_port: '11312'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.42.1'
+    bebop_ip: '192.168.13.130'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmRomeo
@@ -35,14 +34,13 @@ bebops:
       unique_integer_id: 2
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
-      shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
     topic_relay: ['/arlocros/fused_pose']
 
   Juliet:
     ros_master_port: '11313'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.52.1'
+    bebop_ip: '192.168.13.120'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmJuliet
@@ -51,14 +49,13 @@ bebops:
       unique_integer_id: 3
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
-      shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
     topic_relay: ['/arlocros/fused_pose']
 
   Fievel:
     ros_master_port: '11314'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.62.1'
+    bebop_ip: '192.168.13.140'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmFievel
@@ -67,14 +64,13 @@ bebops:
       unique_integer_id: 4
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
-      shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
     topic_relay: ['/arlocros/fused_pose']
 
   Dumbo:
     ros_master_port: '11315'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.72.1'
+    bebop_ip: '192.168.13.110'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.IntroActOT
       nodename: BeSwarmDumbo
@@ -83,7 +79,6 @@ bebops:
       unique_integer_id: 5
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
-      shifted_duration: 0.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
     topic_relay: ['/arlocros/fused_pose']
 
