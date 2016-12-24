@@ -49,6 +49,7 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
     configs.check_unique_integer_id(bebop_configs)
     # iterate over all bebops
     for bebop, config in bebop_configs.items():
+        print('------------------------' + bebop + '-------------------------')
         # start a bebop using her own config
         start_single_bebop(tracker=tracker, bebop_name=bebop, config=config,
                            launch_components=launch_components, log_dir=log_dir + '/' + bebop,
