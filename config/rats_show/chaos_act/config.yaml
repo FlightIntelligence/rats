@@ -10,7 +10,7 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.102'
+    bebop_ip: '192.168.13.140'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.acts.ChaosActOT
       nodename: BeSwarmNerve
