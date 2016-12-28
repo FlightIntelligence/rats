@@ -1,0 +1,9 @@
+sync_topics:
+  - "/dump_topic"
+  - "/Nerve/arlocros/marker_pose"
+  - "/Romeo/arlocros/marker_pose"
+  - "/Juliet/arlocros/marker_pose"
+  - "/Fievel/arlocros/marker_pose"
+  - "/Dumbo/arlocros/marker_pose"
+
+sync_services: ["/dump_service"]
