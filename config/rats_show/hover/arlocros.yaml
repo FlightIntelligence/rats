@@ -8,6 +8,6 @@ bad_pose_reject: true
 fused_pose_topic_name: ${fused_pose_topic}
 marker_pose_topic_name: ${marker_pose_topic}
 visualization: false
-use_threshold: false
-black_white_contrast_level: 450.0
-invert_black_white_color: true
+filter_block_size: 161
+subtracted_constant: 30.0
+invert_black_white_color: false
