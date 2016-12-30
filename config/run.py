@@ -5,6 +5,7 @@ Scripts to bootstrap a rats show.
 import atexit
 import datetime
 import os
+import multiprocessing
 
 from SwarmBootstrapUtils import configs
 from SwarmBootstrapUtils import clean_up
@@ -48,15 +49,20 @@ def start():
 def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir):
     configs.check_unique_integer_id(bebop_configs)
     # iterate over all bebops
+    processes = []
     for bebop, config in bebop_configs.items():
-        print('------------------------' + bebop + '-------------------------')
-        # start a bebop using her own config
-        start_single_bebop(tracker=tracker, bebop_name=bebop, config=config,
-                           launch_components=launch_components, log_dir=log_dir + '/' + bebop,
-                           config_dir=config_dir)
+        p = multiprocessing.Process(target=start_single_bebop, args=(
+            tracker, bebop, config, launch_components, log_dir + '/' + bebop, config_dir))
+        processes.append(p)
+        p.start()
+
+    for p in processes:
+        p.join()
 
 
 def start_single_bebop(tracker, bebop_name, config, launch_components, log_dir, config_dir):
+    print('------------------------' + bebop_name + '-------------------------')
+
     my_env = create_env(config['ros_master_port'])
     executor.launch_ros_master(my_env, config['ros_master_port'], config['sync_config'], tracker,
                                config_dir, log_dir)
