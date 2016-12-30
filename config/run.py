@@ -64,8 +64,8 @@ def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir)
 def start_single_bebop(tracker, bebop_name, config, launch_components, log_dir, config_dir):
     print('Launching ' + bebop_name + '. Please wait...')
 
-    sys.stdout = open(str(log_dir + '/bootstrap.out'), "w")
-    
+    sys.stdout = executor.open_file(log_dir + '/bootstrap.out')
+
     my_env = create_env(config['ros_master_port'])
     executor.launch_ros_master(my_env, config['ros_master_port'], config['sync_config'], tracker,
                                config_dir, log_dir)
