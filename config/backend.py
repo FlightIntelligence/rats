@@ -1,6 +1,7 @@
 from distutils import dir_util
 import uuid
 import os
+import time
 
 import signal
 import yaml
@@ -44,5 +45,12 @@ class Launcher:
 
     def stop(self):
         if self._run_process is not None:
-            os.killpg(os.getpgid(self._run_process.pid), signal.SIGINT)
-            os.waitpid(os.getpgid(self._run_process.pid), 0)
+            pgid = os.getpgid(self._run_process.pid)
+            os.killpg(pgid, signal.SIGINT)
+            os.waitpid(-pgid, 0)
+            alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
+                "utf-8").rstrip().replace(' ', '').split('\n')
+            while str(pgid) in alive_pgids:
+                time.sleep(1)
+                alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
+                    "utf-8").rstrip().replace(' ', '').split('\n')
