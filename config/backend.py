@@ -40,9 +40,9 @@ class Launcher:
             cloned_config_dir = self._clone_config_folder(self._config_dir)
             self._replace_drone_ip(cloned_config_dir, self._drone_ips)
             run_cmd = 'python3 run.py ' + cloned_config_dir
-            self._run_process = subprocess.Popen(run_cmd.split())
+            self._run_process = subprocess.Popen(run_cmd.split(), start_new_session=True)
 
     def stop(self):
         if self._run_process is not None:
             os.killpg(os.getpgid(self._run_process.pid), signal.SIGINT)
-            self._run_process.wait()
+            os.waitpid(os.getpgid(self._run_process.pid), 0)
