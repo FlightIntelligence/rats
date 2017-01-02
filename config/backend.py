@@ -1,6 +1,8 @@
 from distutils import dir_util
 import uuid
 import os
+
+import signal
 import yaml
 from SwarmBootstrapUtils import yaml_parser
 import subprocess
@@ -10,6 +12,7 @@ class Launcher:
     def __init__(self, config_dir, drone_ips):
         self._config_dir = config_dir
         self._drone_ips = drone_ips
+        self._run_process = None
 
     @staticmethod
     def _clone_config_folder(original_folder_dir):
@@ -32,9 +35,14 @@ class Launcher:
         config_file = open(config_file_dir, 'w')
         yaml.dump(config, config_file, default_flow_style=False)
 
-    def launch_rats_script(self):
-        cloned_config_dir = self._clone_config_folder(self._config_dir)
-        self._replace_drone_ip(cloned_config_dir, self._drone_ips)
-        run_cmd = 'python3 run.py ' + cloned_config_dir
-        run_process = subprocess.Popen(run_cmd.split())
-        run_process.wait()
+    def start(self):
+        if self._run_process is None:
+            cloned_config_dir = self._clone_config_folder(self._config_dir)
+            self._replace_drone_ip(cloned_config_dir, self._drone_ips)
+            run_cmd = 'python3 run.py ' + cloned_config_dir
+            self._run_process = subprocess.Popen(run_cmd.split())
+
+    def stop(self):
+        if self._run_process is not None:
+            os.killpg(os.getpgid(self._run_process.pid), signal.SIGINT)
+            self._run_process.wait()
