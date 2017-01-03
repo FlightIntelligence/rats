@@ -8,13 +8,13 @@ import yaml
 from SwarmBootstrapUtils import yaml_parser
 import subprocess
 import enum
+import multiprocessing
 
 
 class Launcher:
-    def __init__(self, config_dir, drone_ips):
-        self._config_dir = config_dir
-        self._drone_ips = drone_ips
+    def __init__(self):
         self._run_process = None
+        self._status = Launcher.Status.IDLE
 
     @staticmethod
     def _clone_config_folder(original_folder_dir):
@@ -37,34 +37,67 @@ class Launcher:
         config_file = open(config_file_dir, 'w')
         yaml.dump(config, config_file, default_flow_style=False)
 
-    def start(self):
-        if self._run_process is None:
-            cloned_config_dir = self._clone_config_folder(self._config_dir)
-            self._replace_drone_ip(cloned_config_dir, self._drone_ips)
-            run_cmd = 'python3 run.py ' + cloned_config_dir
-            self._run_process = subprocess.Popen(run_cmd.split(), start_new_session=True)
+    def _start_script(self, config_dir, drone_ips):
+        cloned_config_dir = self._clone_config_folder(config_dir)
+        self._replace_drone_ip(cloned_config_dir, drone_ips)
+        run_cmd = 'python3 run.py ' + cloned_config_dir
+        self._run_process = subprocess.Popen(run_cmd.split(), start_new_session=True,
+                                             stdin=subprocess.PIPE)
 
-    def stop(self):
-        if self._run_process is not None:
-            pgid = os.getpgid(self._run_process.pid)
-            os.killpg(pgid, signal.SIGINT)
-            os.waitpid(-pgid, 0)
+    def _stop_script(self):
+        pgid = os.getpgid(self._run_process.pid)
+        os.killpg(pgid, signal.SIGINT)
+        os.waitpid(-pgid, 0)
+        alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
+            "utf-8").rstrip().replace(' ', '').split('\n')
+        while str(pgid) in alive_pgids:
+            time.sleep(1)
             alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
                 "utf-8").rstrip().replace(' ', '').split('\n')
-            while str(pgid) in alive_pgids:
-                time.sleep(1)
-                alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
-                    "utf-8").rstrip().replace(' ', '').split('\n')
-            self._run_process = None
+        self._status = Launcher.Status.IDLE
+        self._run_process = None
+
+    def _wait_for_ready(self):
+        while True:
+            next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
+            if next_line == 'TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!':
+                self._status = Launcher.Status.READY
+                return
+
+    def launch(self, config_dir, drone_ips):
+        if self._status == Launcher.Status.IDLE:
+            self._status = Launcher.Status.LAUNCHING
+            self._start_script(config_dir, drone_ips)
+            wait_process = multiprocessing.Process(target=self._wait_for_ready)
+            wait_process.start()
+        else:
+            raise ValueError(
+                'Script can only be launched if current state is IDLE, but the current state is: '
+                '' + str(self._status))
+
+    def start_flying(self):
+        if self._status == Launcher.Status.READY:
+            self._status = Launcher.Status.FLYING
+            self._run_process.communicate(b'\n')
+        else:
+            raise ValueError(
+                'Can only start flying if the current state is READY, but the current state is: '
+                + str(
+                    self._status))
+
+    def stop(self):
+        if self._status == Launcher.Status.STOPPING:
+            raise ValueError('Waiting for all processes being killed. Please be patient...')
+        elif self._status == Launcher.Status.IDLE:
+            raise ValueError('There is no process running')
+        else:
+            self._status = Launcher.Status.STOPPING
+            stopping_process = multiprocessing.Process(target=self._stop_script)
+            stopping_process.start()
 
     class Status(enum.Enum):
         IDLE = 1
         LAUNCHING = 2
         READY = 3
-        RUNNING = 4
+        FLYING = 4
         STOPPING = 5
-
-    class ClientEvent(enum.Enum):
-        LAUNCH = 1
-        START_FLYING = 2
-        STOP = 3
