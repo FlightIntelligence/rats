@@ -55,19 +55,19 @@ class Launcher:
             time.sleep(1)
             alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
                 "utf-8").rstrip().replace(' ', '').split('\n')
-        self._status = Launcher.Status.IDLE
+        self._change_status(Launcher.Status.IDLE)
         self._run_process = None
 
     def _wait_for_ready(self):
         while True:
             next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
             if next_line == 'TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!':
-                self._status = Launcher.Status.READY
+                self._change_status(Launcher.Status.READY)
                 return
 
     def launch(self, config_dir, drone_ips):
         if self._status == Launcher.Status.IDLE:
-            self._status = Launcher.Status.LAUNCHING
+            self._change_status(Launcher.Status.LAUNCHING)
             self._start_script(config_dir, drone_ips)
             wait_process = multiprocessing.Process(target=self._wait_for_ready)
             wait_process.start()
@@ -78,7 +78,7 @@ class Launcher:
 
     def start_flying(self):
         if self._status == Launcher.Status.READY:
-            self._status = Launcher.Status.FLYING
+            self._change_status(Launcher.Status.FLYING)
             self._run_process.communicate(b'\n')
         else:
             raise ValueError(
@@ -92,13 +92,17 @@ class Launcher:
         elif self._status == Launcher.Status.IDLE:
             raise ValueError('There is no process running')
         else:
-            self._status = Launcher.Status.STOPPING
+            self._change_status(Launcher.Status.STOPPING)
             stopping_process = multiprocessing.Process(target=self._stop_script)
             stopping_process.start()
 
-    def _write_state_to_file(self, state):
-        with open(self._status_file, 'a+') as file:
-            file.write(str(state.name))
+    def _change_status(self, new_status):
+        self._status = new_status
+        self._write_current_state_to_file()
+
+    def _write_current_state_to_file(self):
+        with open(self._status, 'a+') as file:
+            file.write(str(self._status.name))
 
     def _read_last_state_from_file(self):
         with open(self._status_file) as file:
