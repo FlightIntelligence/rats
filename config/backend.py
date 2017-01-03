@@ -7,6 +7,7 @@ import signal
 import yaml
 from SwarmBootstrapUtils import yaml_parser
 import subprocess
+import enum
 
 
 class Launcher:
@@ -54,3 +55,10 @@ class Launcher:
                 time.sleep(1)
                 alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
                     "utf-8").rstrip().replace(' ', '').split('\n')
+
+    class Status(enum.Enum):
+        IDLE = 1
+        LAUNCHING = 2
+        READY = 3
+        RUNNING = 4
+        STOPPING = 5
