@@ -55,6 +55,7 @@ class Launcher:
                 time.sleep(1)
                 alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
                     "utf-8").rstrip().replace(' ', '').split('\n')
+            self._run_process = None
 
     class Status(enum.Enum):
         IDLE = 1
@@ -62,3 +63,8 @@ class Launcher:
         READY = 3
         RUNNING = 4
         STOPPING = 5
+
+    class ClientEvent(enum.Enum):
+        LAUNCH = 1
+        START_FLYING = 2
+        STOP = 3
