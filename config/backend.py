@@ -15,6 +15,7 @@ class Launcher:
     def __init__(self):
         self._run_process = None
         self._status = Launcher.Status.IDLE
+        self._status_file = 'status.txt'
 
     @staticmethod
     def _clone_config_folder(original_folder_dir):
@@ -73,7 +74,7 @@ class Launcher:
         else:
             raise ValueError(
                 'Script can only be launched if current state is IDLE, but the current state is: '
-                '' + str(self._status))
+                '' + str(self._status.name))
 
     def start_flying(self):
         if self._status == Launcher.Status.READY:
@@ -83,7 +84,7 @@ class Launcher:
             raise ValueError(
                 'Can only start flying if the current state is READY, but the current state is: '
                 + str(
-                    self._status))
+                    self._status.name))
 
     def stop(self):
         if self._status == Launcher.Status.STOPPING:
@@ -94,6 +95,16 @@ class Launcher:
             self._status = Launcher.Status.STOPPING
             stopping_process = multiprocessing.Process(target=self._stop_script)
             stopping_process.start()
+
+    def _write_state_to_file(self, state):
+        with open(self._status_file, 'a+') as file:
+            file.write(str(state.name))
+
+    def _read_last_state_from_file(self):
+        with open(self._status_file) as file:
+            # The last line is a blank line. We read the second last one
+            last_state = file.readlines()[-2]
+        return last_state
 
     class Status(enum.Enum):
         IDLE = 1
