@@ -17,6 +17,11 @@ class Launcher:
         self._status = Launcher.Status.IDLE
         self._status_file = 'status.txt'
 
+        if not self._has_valid_initial_state():
+            raise ValueError(
+                'Launcher was terminated improperly and the last state is: ' +
+                self._read_last_state_from_file())
+
     @staticmethod
     def _clone_config_folder(original_folder_dir):
         original_folder_name = original_folder_dir.split('/')[-1]
@@ -109,6 +114,13 @@ class Launcher:
             # The last line is a blank line. We read the second last one
             last_state = file.readlines()[-2]
         return last_state
+
+    def _has_valid_initial_state(self):
+        last_state = self._read_last_state_from_file()
+        if last_state == '' or last_state == Launcher.Status.IDLE.name:
+            return True
+        else:
+            return False
 
     class Status(enum.Enum):
         IDLE = 1
