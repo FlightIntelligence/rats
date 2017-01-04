@@ -45,6 +45,7 @@ def start():
     # to keep the script alive
     print('Start flying!! Press ENTER to terminate the program.')
     input()
+    clean_up.clean_up(tracker['processes'], tracker['opened_files'])
 
 
 def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir):
