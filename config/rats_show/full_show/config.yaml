@@ -10,7 +10,7 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.140'
+    bebop_ip: '192.168.13.170'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.NerveSwarmView
       nodename: BeSwarmNerve
@@ -25,14 +25,14 @@ bebops:
   Romeo:
     ros_master_port: '11312'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.130'
+    bebop_ip: '192.168.13.110'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.RomeoSwarmView
       nodename: BeSwarmRomeo
     rosparam:
       drone_name: Romeo
       unique_integer_id: 2
-      takeoff_time_in_secs: 158.0
+      takeoff_time_in_secs: 75.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
     topic_relay: ['/arlocros/fused_pose']
@@ -47,7 +47,7 @@ bebops:
     rosparam:
       drone_name: Juliet
       unique_integer_id: 3
-      takeoff_time_in_secs: 158.0
+      takeoff_time_in_secs: 75.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
     topic_relay: ['/arlocros/fused_pose']
@@ -55,14 +55,14 @@ bebops:
   Fievel:
     ros_master_port: '11314'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.140'
+    bebop_ip: '192.168.13.160'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.FievelSwarmView
       nodename: BeSwarmFievel
     rosparam:
       drone_name: Fievel
       unique_integer_id: 4
-      takeoff_time_in_secs: 50.0
+      takeoff_time_in_secs: 42.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
     topic_relay: ['/arlocros/fused_pose']
@@ -70,14 +70,14 @@ bebops:
   Dumbo:
     ros_master_port: '11315'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.110'
+    bebop_ip: '192.168.13.180'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.DumboSwarmView
       nodename: BeSwarmDumbo
     rosparam:
       drone_name: Dumbo
       unique_integer_id: 5
-      takeoff_time_in_secs: 220.0
+      takeoff_time_in_secs: 137.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
     topic_relay: ['/arlocros/fused_pose']
