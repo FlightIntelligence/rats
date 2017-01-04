@@ -38,8 +38,6 @@ class Launcher:
         for drone_name, ip in drone_ips.items():
             if drone_name in config['bebops']:
                 config['bebops'][drone_name]['bebop_ip'] = ip
-            else:
-                raise IndexError('There is no drone named ' + drone_name + ' in config.yaml')
         config_file = open(config_file_dir, 'w')
         yaml.dump(config, config_file, default_flow_style=False)
 
