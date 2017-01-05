@@ -25,14 +25,14 @@ bebops:
   Romeo:
     ros_master_port: '11312'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.110'
+    bebop_ip: '192.168.13.120'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.RomeoSwarmView
       nodename: BeSwarmRomeo
     rosparam:
       drone_name: Romeo
       unique_integer_id: 2
-      takeoff_time_in_secs: 75.0
+      takeoff_time_in_secs: 105.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
 #    topic_relay: ['/arlocros/fused_pose']
@@ -40,14 +40,14 @@ bebops:
   Juliet:
     ros_master_port: '11313'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.120'
+    bebop_ip: '192.168.13.110'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.theater.swarmview.JulietSwarmView
       nodename: BeSwarmJuliet
     rosparam:
       drone_name: Juliet
       unique_integer_id: 3
-      takeoff_time_in_secs: 75.0
+      takeoff_time_in_secs: 105.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
 #    topic_relay: ['/arlocros/fused_pose']
@@ -62,7 +62,7 @@ bebops:
     rosparam:
       drone_name: Fievel
       unique_integer_id: 4
-      takeoff_time_in_secs: 42.0
+      takeoff_time_in_secs: 74.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
 #    topic_relay: ['/arlocros/fused_pose']
@@ -77,17 +77,17 @@ bebops:
     rosparam:
       drone_name: Dumbo
       unique_integer_id: 5
-      takeoff_time_in_secs: 137.0
+      takeoff_time_in_secs: 168.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
 #    topic_relay: ['/arlocros/fused_pose']
 
-synchronizer:
-  ros_master_port: '11316'
-  sync_config: master_sync.yaml
-  python_node: Synchronizer.py
-  rosparam:
-    time_sync_topic: ${time_sync_topic}
+#synchronizer:
+#  ros_master_port: '11316'
+#  sync_config: master_sync.yaml
+#  python_node: Synchronizer.py
+#  rosparam:
+#    time_sync_topic: ${time_sync_topic}
 
 #pose_aggregation:
 #  ros_master_port: '11317'
