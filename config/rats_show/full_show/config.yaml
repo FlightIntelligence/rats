@@ -5,6 +5,7 @@ launch_components:
   launch_xbox_controller: true
   launch_arlocros: true
   launch_beswarm: true
+  common_takeoff_land: true
 
 bebops:
   Nerve:
