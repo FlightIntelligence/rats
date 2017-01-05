@@ -99,6 +99,9 @@ class Launcher:
             stopping_process = multiprocessing.Process(target=self._stop_script)
             stopping_process.start()
 
+    def get_status(self):
+        return self._status
+
     def _change_status(self, new_status):
         self._status = new_status
         self._write_current_state_to_file()
