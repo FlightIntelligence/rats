@@ -46,7 +46,7 @@ class Launcher:
         self._replace_drone_ip(cloned_config_dir, drone_ips)
         run_cmd = 'python3 run.py ' + cloned_config_dir
         self._run_process = subprocess.Popen(run_cmd.split(), start_new_session=True,
-                                             stdin=subprocess.PIPE)
+                                             stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
     def _stop_script(self):
         pgid = os.getpgid(self._run_process.pid)
@@ -64,6 +64,7 @@ class Launcher:
     def _wait_for_ready(self):
         while True:
             next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
+            print(next_line)
             if next_line == 'TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!':
                 self._change_status(Launcher.Status.READY)
                 return
