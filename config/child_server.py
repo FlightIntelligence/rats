@@ -8,7 +8,7 @@ launcher = backend.Launcher()
 child_server = flask.Flask(__name__)
 
 
-@child_server.route('/', methods=['POST'])
+@child_server.route('/rats/launch', methods=['POST'])
 def launch():
     data = flask.request.get_json()
     data_object = json.loads(data)
@@ -26,7 +26,7 @@ def launch():
     return flask.Response(status=202)
 
 
-@child_server.route('/', methods=['POST'])
+@child_server.route('/rats/start-flying', methods=['POST'])
 def start_flying():
     try:
         launcher.start_flying()
@@ -36,7 +36,7 @@ def start_flying():
     return flask.Response(status=202)
 
 
-@child_server.route('/', methods=['POST'])
+@child_server.route('/stop', methods=['POST'])
 def stop():
     try:
         launcher.stop()
@@ -46,7 +46,7 @@ def stop():
     return flask.Response(status=202)
 
 
-@child_server.route('/', methods=['GET'])
+@child_server.route('/status', methods=['GET'])
 def get_status():
     return str(launcher.get_status())
 
