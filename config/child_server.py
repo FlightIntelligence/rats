@@ -1,4 +1,5 @@
 import flask
+import sys
 from flask import json
 import backend
 
@@ -51,4 +52,6 @@ def get_status():
 
 
 if __name__ == '__main__':
-    child_server.run(host='127.0.0.1', port=8001, threaded=True)
+    host_ip = str(sys.argv[1])
+    port = int(sys.argv[2])
+    child_server.run(host=host_ip, port=port, threaded=True)
