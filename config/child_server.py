@@ -8,7 +8,7 @@ launcher = backend.Launcher()
 child_server = flask.Flask(__name__)
 
 
-@child_server.route('/rats/launch', methods=['POST'])
+@child_server.route('/launch', methods=['POST'])
 def launch():
     data = flask.request.get_json()
     data_object = json.loads(data)
@@ -26,7 +26,7 @@ def launch():
     return flask.Response(status=202)
 
 
-@child_server.route('/rats/start-flying', methods=['POST'])
+@child_server.route('/start-flying', methods=['POST'])
 def start_flying():
     try:
         launcher.start_flying()
