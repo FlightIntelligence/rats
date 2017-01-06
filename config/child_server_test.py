@@ -19,22 +19,22 @@ def send_launch():
     json_data = json.dumps(data)
 
     response = requests.post('http://192.168.0.103:8001/launch', json=json_data)
-    print(response)
+    print(response.content)
 
 
 def send_start_flying():
     response = requests.post('http://192.168.0.103:8001/start-flying')
-    print(response)
+    print(response.content)
 
 
 def send_stop():
     response = requests.post('http://192.168.0.103:8001/stop')
-    print(response)
+    print(response.content)
 
 
 def get_status():
     response = requests.get('http://192.168.0.103:8001/status')
-    print(response)
+    print(response.content)
 
 
 if __name__ == '__main__':
