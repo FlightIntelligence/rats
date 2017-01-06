@@ -107,13 +107,17 @@ class Launcher:
         self._write_current_state_to_file()
 
     def _write_current_state_to_file(self):
-        with open(self._status, 'a+') as file:
+        with open(self._status_file, 'a+') as file:
             file.write(str(self._status.name))
 
     def _read_last_state_from_file(self):
-        with open(self._status_file) as file:
+        with open(self._status_file, 'a+') as file:
             # The last line is a blank line. We read the second last one
-            last_state = file.readlines()[-2]
+            lines = file.readlines()
+            if len(lines) >= 2:
+                last_state = file.readlines()[-2]
+            else:
+                last_state = ''
         return last_state
 
     def _has_valid_initial_state(self):
