@@ -32,6 +32,11 @@ def send_stop():
     print(response)
 
 
+def get_status():
+    response = requests.get('http://192.168.0.103:8001/status')
+    print(response)
+
+
 if __name__ == '__main__':
     while True:
         usr_input = int(input('Press 1 to launch, 2 to start flying, 3 to stop, 4 to get status: '))
@@ -41,3 +46,5 @@ if __name__ == '__main__':
             send_start_flying()
         elif usr_input == 3:
             send_stop()
+        elif usr_input == 4:
+            get_status()
