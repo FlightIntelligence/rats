@@ -17,10 +17,10 @@ class Launcher:
         self._status = Launcher.Status.IDLE
         self._status_file = 'status.txt'
 
-        if not self._has_valid_initial_state():
-            raise ValueError(
-                'Launcher was terminated improperly and the last state is: ' +
-                self._read_last_state_from_file())
+        # if not self._has_valid_initial_state():
+        #     raise ValueError(
+        #         'Launcher was terminated improperly and the last state is: ' +
+        #         self._read_last_state_from_file())
 
     @staticmethod
     def _clone_config_folder(original_folder_dir):
@@ -116,22 +116,22 @@ class Launcher:
         with open(self._status_file, 'a+') as file:
             file.write(str(self._status.name) + '\n')
 
-    def _read_last_state_from_file(self):
-        with open(self._status_file, 'a+') as file:
-            # The last line is a blank line. We read the second last one
-            lines = file.readlines()
-            if len(lines) >= 2:
-                last_state = file.readlines()[-2]
-            else:
-                last_state = ''
-        return last_state
+    # def _read_last_state_from_file(self):
+    #     with open(self._status_file, 'a+') as file:
+    #         # The last line is a blank line. We read the second last one
+    #         lines = file.readlines()
+    #         if len(lines) >= 2:
+    #             last_state = file.readlines()[-2]
+    #         else:
+    #             last_state = ''
+    #     return last_state
 
-    def _has_valid_initial_state(self):
-        last_state = self._read_last_state_from_file()
-        if last_state == '' or last_state == Launcher.Status.IDLE.name:
-            return True
-        else:
-            return False
+    # def _has_valid_initial_state(self):
+    #     last_state = self._read_last_state_from_file()
+    #     if last_state == '' or last_state == Launcher.Status.IDLE.name:
+    #         return True
+    #     else:
+    #         return False
 
     class Status(enum.Enum):
         IDLE = 1
