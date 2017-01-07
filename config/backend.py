@@ -84,7 +84,11 @@ class Launcher:
     def start_flying(self):
         if self._status == Launcher.Status.READY:
             self._change_status(Launcher.Status.FLYING)
-            self._run_process.communicate(b'\n')
+            try:
+                self._run_process.communicate(b'\n', timeout=0.5)
+            except subprocess.TimeoutExpired:
+                # we don't expect the child process to terminate
+                return
         else:
             raise ValueError(
                 'Can only start flying if the current state is READY, but the current state is: '
