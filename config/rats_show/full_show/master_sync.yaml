@@ -4,5 +4,6 @@ sync_topics:
   - '${virtual_environment_topic}'
   - '/common/takeoff'
   - '/common/land'
+  - '${emergency_landing_topic}'
 
 sync_services: ["/dump_service"]
