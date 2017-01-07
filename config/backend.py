@@ -114,7 +114,7 @@ class Launcher:
 
     def _write_current_state_to_file(self):
         with open(self._status_file, 'a+') as file:
-            file.write(str(self._status.name))
+            file.write(str(self._status.name) + '\n')
 
     def _read_last_state_from_file(self):
         with open(self._status_file, 'a+') as file:
