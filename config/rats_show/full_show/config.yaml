@@ -86,7 +86,7 @@ bebops:
     rosparam:
       drone_name: Dumbo
       unique_integer_id: 5
-      takeoff_time_in_secs: 168.0
+      takeoff_time_in_secs: 165.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
     topic_relay:
