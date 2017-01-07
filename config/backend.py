@@ -66,7 +66,8 @@ class Launcher:
             next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
             print(next_line)
             if next_line == 'TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!':
-                self._change_status(Launcher.Status.READY)
+                if self._status == Launcher.Status.LAUNCHING:
+                    self._change_status(Launcher.Status.READY)
                 return
 
     def launch(self, config_dir, drone_ips):
