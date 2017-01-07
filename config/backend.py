@@ -8,7 +8,7 @@ import yaml
 from SwarmBootstrapUtils import yaml_parser
 import subprocess
 import enum
-import multiprocessing
+import threading
 
 
 class Launcher:
@@ -62,7 +62,7 @@ class Launcher:
         self._run_process = None
 
     def _wait_for_ready(self):
-        while True:
+        while self._status == Launcher.Status.LAUNCHING:
             next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
             print(next_line)
             if next_line == 'TEST YOUR XBOX CONTROLLER, PRESS ENTER WHEN YOU ARE READY!':
@@ -73,8 +73,8 @@ class Launcher:
         if self._status == Launcher.Status.IDLE:
             self._change_status(Launcher.Status.LAUNCHING)
             self._start_script(config_dir, drone_ips)
-            wait_process = multiprocessing.Process(target=self._wait_for_ready)
-            wait_process.start()
+            wait_thread = threading.Thread(target=self._wait_for_ready)
+            wait_thread.start()
         else:
             raise ValueError(
                 'Script can only be launched if current state is IDLE, but the current state is: '
@@ -97,8 +97,8 @@ class Launcher:
             raise ValueError('There is no process running')
         else:
             self._change_status(Launcher.Status.STOPPING)
-            stopping_process = multiprocessing.Process(target=self._stop_script)
-            stopping_process.start()
+            stopping_thread = threading.Thread(target=self._stop_script)
+            stopping_thread.start()
 
     def get_status(self):
         return self._status
