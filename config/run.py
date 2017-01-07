@@ -7,6 +7,7 @@ import datetime
 import os
 import multiprocessing
 import sys
+import signal
 
 from SwarmBootstrapUtils import configs
 from SwarmBootstrapUtils import clean_up
@@ -44,9 +45,7 @@ def start():
 
     # to keep the script alive
     print('Start flying!! Press Ctrl+C to terminate the program.')
-    input()
-    input()
-    input()
+    signal.pause()
 
 
 def start_bebops(bebop_configs, launch_components, tracker, log_dir, config_dir):
