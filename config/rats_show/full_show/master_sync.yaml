@@ -2,8 +2,8 @@ sync_topics:
   - "/dump_topic"
   - '${time_sync_topic}'
   - '${virtual_environment_topic}'
-  - '/common/takeoff'
-  - '/common/land'
+  - '${common_takeoff_topic}'
+  - '${common_land_topic}'
   - '${emergency_landing_topic}'
 
 sync_services: ["/dump_service"]

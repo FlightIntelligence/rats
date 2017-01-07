@@ -94,11 +94,8 @@ def start_single_bebop(tracker, bebop_name, config, launch_components, log_dir, 
         executor.launch_beswarm(my_env, tracker, config['beswarm_config'], log_dir)
 
     if 'topic_relay' in config:
-        executor.relay_topics(my_env, config['topic_relay'], bebop_name, tracker, log_dir)
-
-    if launch_components['common_takeoff_land']:
-        executor.relay_one_topic(my_env, '/common/takeoff', '/bebop/takeoff', tracker, log_dir)
-        executor.relay_one_topic(my_env, '/common/land', '/bebop/land', tracker, log_dir)
+        for key, value in config['topic_relay'].items():
+            executor.relay_one_topic(my_env, key, value, tracker, log_dir)
 
 
 def test_xbox_controller():
