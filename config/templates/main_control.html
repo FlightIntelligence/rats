@@ -66,58 +66,65 @@
 	             eventOutputContainer.innerHTML = e.data;
 	         };
 			*/
-			function loadLaunch() {
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 202) {
-						document.getElementById("launch_button").className = "inactive_processing_button";
-					}
-				};
-				xhttp.open("GET", "/launch", true);
-				xhttp.send();
-			}
 
-			function loadStart() {
+			function loadRemoteFunction(remoteURL, populateElementId) {
+				if (remoteURL == '') {
+					return;
+				}
+				
 				var xhttp = new XMLHttpRequest();
 				xhttp.onreadystatechange = function() {
 					if (this.readyState == 4 && this.status == 200) {
-						//document.getElementById("launch_button").className = "inactive_button";
+						if (populateElementId != '') {
+							document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+						}
+						changeStateButtons(xhttp.responseText);
 					}
 				};
-				xhttp.open("GET", "/start_flying", true);
+				xhttp.open("GET", remoteURL, true);
 				xhttp.send();
 			}
-
-			function loadStop() {
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						//document.getElementById("launch_button").className = "inactive_button";
-					}
-				};
-				xhttp.open("GET", "/stop", true);
-				xhttp.send();
+			function changeStateButtons(serverState) {
+				if (serverState == 'IDLE') {
+					document.getElementById("launch_button").className = "green_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+				} else if (serverState == 'LAUNCHING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+				} else if (serverState == 'READY') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "green_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "green_button";
+				} else if (serverState == 'FLYING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+				} else if (serverState == 'STOPPING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+				}
 			}
-
-			function loadStatus() {
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						document.getElementById("status").innerHTML = xhttp.responseText;
-					}
-				};
-				xhttp.open("GET", "/status", true);
-				xhttp.send();
-			}
+			
+			setInterval(function() {loadRemoteFunction('/status', 'status')}, 2000);
 		</script>
 	         
 		<title>Rats Control center</title>
 		<div id="control">
-			<button class="green_button" id="launch_button" onclick="loadLaunch()">Launch</button>
+			<button class="green_button" id="launch_button" onclick="loadRemoteFunction('/launch')">Launch</button>
 			<BR>		
-			<button class="green_button" id="start_button" onclick="loadStart()">Start</button>
-			<button class="green_button" id="stop_button" onclick="loadStop()">STOP</button>
-			<button class="green_button" id="status_button" onclick="loadStatus()">STATUS</button>
+			<button class="inactive_button" id="start_button" onclick="loadRemoteFunction('/start_flying')">Start</button>
+			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction('/stop')">STOP</button>
+			<button class="green_button" id="status_button" onclick="loadRemoteFunction('/status', 'status')">STATUS</button>
+			<BR>
+			<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction('/takeoff')">Takeoff</button>
+			<button class="green_button" id="land_button" onclick="loadRemoteFunction('/land', 'status')">Land</button>
 		</div>
 		<div id="status" />
 	</body>

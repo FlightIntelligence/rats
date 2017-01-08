@@ -5,7 +5,7 @@
 	<body>
 		<title>Rats Configuration</title>
 		
-		<form action="{{ url_for('config') }}" method="post" enctype="application/json" class=add-entry>
+		<form action="{{ url_for('set_config') }}" method="post" enctype="application/json" class=add-entry>
 			<ul>
 			{% for k,v in drone_ips.items() %}
 				<li> 
