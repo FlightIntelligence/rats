@@ -76,12 +76,14 @@ def common_land():
 def restart():
     command = "/sbin/reboot"
     subprocess.call(command, shell=True)
+    return flask.Response(status=202)
 
 
 @child_server.route('/shutdown', methods=['POST', 'GET'])
 def shutdown():
     command = "/sbin/shutdown -h now"
     subprocess.call(command, shell=True)
+    return flask.Response(status=202)
 
 
 if __name__ == '__main__':
