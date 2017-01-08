@@ -1,8 +1,8 @@
 launch_components:
   bebop_autonomy: true
   point_camera_downward: true
-  record_rosbag: true
-  launch_xbox_controller: true
+  record_rosbag: false
+  launch_xbox_controller: false
   launch_arlocros: true
   launch_beswarm: true
   common_takeoff_land: true
