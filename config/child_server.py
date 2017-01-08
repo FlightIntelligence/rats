@@ -79,7 +79,7 @@ def restart():
 
 
 @child_server.route('/shutdown', methods=['POST', 'GET'])
-def restart():
+def shutdown():
     command = "/sbin/shutdown -h now"
     subprocess.call(command, shell=True)
 
