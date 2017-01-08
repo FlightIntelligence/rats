@@ -21,36 +21,13 @@ config_dir = 'rats_show/full_show'
 
 
 parent_server = flask.Flask(__name__)
-# subscriptions = []
-
-# class ServerSentEvent(object):
-# 
-#     def __init__(self, data):
-#         self.data = data
-#         self.event = None
-#         self.id = None
-#         self.desc_map = {
-#             self.data : "data",
-#             self.event : "event",
-#             self.id : "id"
-#         }
-# 
-#     def encode(self):
-#         return self.data
-#         if not self.data:
-#             return ""
-#         lines = ["%s: %s" % (v, k) 
-#                  for k, v in self.desc_map.iteritems() if k]
-#         
-#         return "%s\n\n" % "\n".join(lines)
-    
 
 @parent_server.route('/', methods=['POST', 'GET'])
 def main():
     return flask.render_template('main_control.html')
 
-@parent_server.route('/config', methods=['POST'])
-def config():
+@parent_server.route('/set_config', methods=['POST'])
+def set_config():
     global config_dir
     global drone_ips
     
@@ -70,10 +47,11 @@ def config():
     if incorrect_form:
         return flask.Response('drone_ips not found', status=400)
 
+    persist_config(config_dir, drone_ips)
     return flask.Response("OK", status=202)
 
-@parent_server.route('/get_config', methods=['GET'])
-def get_config():
+@parent_server.route('/config', methods=['GET'])
+def config():
     global drone_ips
     global config_dir
     
@@ -136,6 +114,56 @@ def start_flying():
 
     return response
 
+@parent_server.route('/takeoff', methods=['GET'])
+def takeoff():
+    response = ''
+    remote_response_content = ''
+    
+    try:
+        start_taking_ok = True
+        for conf in child_server_ips:
+            response = send_takeoff(conf[0], conf[1])
+            remote_response_content += str(response.content)
+            
+            if not response.status_code == 202:
+                start_flying_ok = False
+            
+        
+        if start_flying_ok:
+            response = flask.Response("Taking-off ", status=202)
+        else:
+            response = flask.Response(remote_response_content, status=409)
+            
+    except ValueError as err:
+        return flask.Response(str(err), status=409)
+
+    return response
+
+@parent_server.route('/land', methods=['GET'])
+def land():
+    response = ''
+    remote_response_content = ''
+    
+    try:
+        start_landing_ok = True
+        for conf in child_server_ips:
+            response = send_land(conf[0], conf[1])
+            remote_response_content += str(response.content)
+            
+            if not response.status_code == 202:
+                start_flying_ok = False
+            
+        
+        if start_flying_ok:
+            response = flask.Response("Landing", status=202)
+        else:
+            response = flask.Response(remote_response_content, status=409)
+            
+    except ValueError as err:
+        return flask.Response(str(err), status=409)
+
+    return response
+
 
 @parent_server.route('/stop', methods=['GET'])
 def stop():
@@ -171,21 +199,6 @@ def get_status():
 #     return parent_status
     return flask.Response(parent_status, status=200)
 
-# @parent_server.route("/subscribe")
-# def subscribe():
-#     def gen():
-#         q = Queue()
-#         subscriptions.append(q)
-#         try:
-#             while True:
-#                 result = get_status()
-#                 ev = ServerSentEvent(str(result))
-#                 yield ev.encode()
-#         except GeneratorExit: # Or maybe use flask signals
-#             subscriptions.remove(q)
-# 
-#     return flask.Response(gen(), mimetype="text/event-stream")
-
 def send_launch_to_child_server(child_ip, child_port):
     global drone_ips
     global config_dir
@@ -212,13 +225,25 @@ def send_stop(child_server_ip, child_server_port):
         'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/stop')
     return response
 
+def send_takeoff(child_server_ip, child_server_port):
+    response = requests.post(
+        'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/takeoff')
+    return response
+
+def send_land(child_server_ip, child_server_port):
+    response = requests.post(
+        'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/land')
+    return response
+
 
 def get_status_child_servers(child_server_ip, child_server_port):
     response = requests.get(
         'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/status')
     return response
 
-
+# def persist_config(config_dir, drone_ips):
+#     yaml_parser.read(config_file_dir)
+    
 if __name__ == '__main__':
     global child_server_ips
     
