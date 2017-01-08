@@ -28,6 +28,19 @@
     cursor: pointer;
 }
 
+.orange_button {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .inactive_button {
     background-color: #808080;
     border: none;
@@ -90,25 +103,30 @@
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "inactive_button";
 					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
 				} else if (serverState == 'LAUNCHING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
 				} else if (serverState == 'READY') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "green_button";
 					document.getElementById("stop_button").className = "green_button";
 					document.getElementById("takeoff_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
 				} else if (serverState == 'FLYING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "green_button";
 					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "green_button";
 				} else if (serverState == 'STOPPING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "inactive_button";
 					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
 				}
 			}
 			
@@ -117,14 +135,19 @@
 	         
 		<title>Rats Control center</title>
 		<div id="control">
-			<button class="green_button" id="launch_button" onclick="loadRemoteFunction('/launch')">Launch</button>
+			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch</button>
 			<BR>		
-			<button class="inactive_button" id="start_button" onclick="loadRemoteFunction('/start_flying')">Start</button>
-			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction('/stop')">STOP</button>
+			<button class="inactive_button" id="start_button" onclick="loadRemoteFunction('/start_flying')">Start SHOW</button>
+			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction('/stop')">STOP SHOW</button>
 			<button class="green_button" id="status_button" onclick="loadRemoteFunction('/status', 'status')">STATUS</button>
 			<BR>
 			<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction('/takeoff')">Takeoff</button>
-			<button class="green_button" id="land_button" onclick="loadRemoteFunction('/land', 'status')">Land</button>
+			<button class="green_button" id="land_button" onclick="loadRemoteFunction('/land')">Land</button>
+
+			<BR>
+			<button class="green_button" id="reboot_button" onclick="loadRemoteFunction('/restart')">Reboot system</button>
+			<button class="green_button" id="shutdown_button" onclick="loadRemoteFunction('/shutdown')">ShuTDOWN</button>
+			
 		</div>
 		<div id="status" />
 	</body>
