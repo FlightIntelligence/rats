@@ -4,8 +4,8 @@ from flask import json, render_template, url_for
 import requests
 
 
-child_server_ips = [('192.168.13.104', 8080),
-                    ('192.168.13.108', 8080)]
+child_server_ips = [('192.168.13.108', 8080),
+                    ('192.168.13.104', 8080)]
 
 # config_dir = 0
 # drone_ips = 0
@@ -47,7 +47,7 @@ def set_config():
     if incorrect_form:
         return flask.Response('drone_ips not found', status=400)
 
-    persist_config(config_dir, drone_ips)
+#     persist_config(config_dir, drone_ips)
     return flask.Response("OK", status=202)
 
 @parent_server.route('/config', methods=['GET'])
@@ -176,6 +176,28 @@ def stop():
 
     return flask.Response(status=202)
 
+@parent_server.route('/restart', methods=['GET'])
+def restart():
+    response = ''
+    try:
+        for conf in child_server_ips:
+            response = response + str(send_restart(conf[0], conf[1]).content)  
+    except ValueError as err:
+        return flask.Response(str(err), status=409)
+
+    return flask.Response(status=202)
+
+@parent_server.route('/shutdown', methods=['GET'])
+def shutdown():
+    response = ''
+    try:
+        for conf in child_server_ips:
+            response = response + str(send_shutdown(conf[0], conf[1]).content)  
+    except ValueError as err:
+        return flask.Response(str(err), status=409)
+
+    return flask.Response(status=202)
+
 
 @parent_server.route('/status', methods=['GET'])
 def get_status():
@@ -217,6 +239,16 @@ def send_launch_to_child_server(child_ip, child_port):
 def send_start_flying(child_server_ip, child_server_port):
     response = requests.post(
         'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/start-flying')
+    return response
+
+def send_restart(child_server_ip, child_server_port):
+    response = requests.post(
+        'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/restart')
+    return response
+
+def send_shutdown(child_server_ip, child_server_port):
+    response = requests.post(
+        'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/shutdown')
     return response
 
 
