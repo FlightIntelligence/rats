@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+</head>
+	<body>
+		<title>Rats Configuration</title>
+		
+		<form action="{{ url_for('config') }}" method="post" enctype="application/json" class=add-entry>
+			<ul>
+			{% for k,v in drone_ips.items() %}
+				<li> 
+					{{ k }} : <input type="text" name="{{k}}" value="{{v}}">
+				</li>
+			{% endfor %}
+			
+			</ul>
+			<input type="hidden" name="config_dir" value="rats_show/full_show">
+			
+			<input type="submit" value="Save new Configuration">
+		</form>
+	</body>
+</html>
