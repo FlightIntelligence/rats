@@ -2,6 +2,7 @@ import flask
 import sys
 from flask import json, render_template, url_for
 import requests
+import yaml
 
 
 child_server_ips = [('192.168.13.108', 8080),
@@ -274,14 +275,13 @@ def get_status_child_servers(child_server_ip, child_server_port):
     return response
 
 # def persist_config(config_dir, drone_ips):
-#     with open("drones_config.yaml", 'r') as stream:
+#     with open("drones_config.yaml", 'w') as stream:
 #         try:
-#             return yaml.load(stream)
+#             conf_file = yaml.load(stream)
 #         except yaml.YAMLError as exc:
 #             print(exc)
-# 
-#     yaml_parser.read("drones_config.yaml")
-#     yaml_parser.write("drones_config.yaml")
+#     
+#     conf_file.dump()
     
     
 if __name__ == '__main__':
