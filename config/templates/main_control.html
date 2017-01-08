@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+<head>
+	<style>
+.green_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.red_button {
+    background-color: #FF0000;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.inactive_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: not-allowed;
+}
+.inactive_processing_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: progress;
+}
+	</style>
+</head>
+	<body>
+		<script type="text/javascript">
+	
+	         /*var eventOutputContainer = document.getElementById("status");
+	         
+	         var evtSrc = new EventSource("/subscribe");
+	
+	         evtSrc.onmessage = function(e) {
+	             console.log(e.data);
+	             eventOutputContainer.innerHTML = e.data;
+	         };
+			*/
+			function loadLaunch() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 202) {
+						document.getElementById("launch_button").className = "inactive_processing_button";
+					}
+				};
+				xhttp.open("GET", "/launch", true);
+				xhttp.send();
+			}
+
+			function loadStart() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//document.getElementById("launch_button").className = "inactive_button";
+					}
+				};
+				xhttp.open("GET", "/start_flying", true);
+				xhttp.send();
+			}
+
+			function loadStop() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						//document.getElementById("launch_button").className = "inactive_button";
+					}
+				};
+				xhttp.open("GET", "/stop", true);
+				xhttp.send();
+			}
+
+			function loadStatus() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						document.getElementById("status").innerHTML = xhttp.responseText;
+					}
+				};
+				xhttp.open("GET", "/status", true);
+				xhttp.send();
+			}
+		</script>
+	         
+		<title>Rats Control center</title>
+		<div id="control">
+			<button class="green_button" id="launch_button" onclick="loadLaunch()">Launch</button>
+			<BR>		
+			<button class="green_button" id="start_button" onclick="loadStart()">Start</button>
+			<button class="green_button" id="stop_button" onclick="loadStop()">STOP</button>
+			<button class="green_button" id="status_button" onclick="loadStatus()">STATUS</button>
+		</div>
+		<div id="status" />
+	</body>
+</html>
