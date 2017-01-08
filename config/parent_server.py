@@ -126,10 +126,10 @@ def takeoff():
             remote_response_content += str(response.content)
             
             if not response.status_code == 202:
-                start_flying_ok = False
+                start_taking_ok = False
             
         
-        if start_flying_ok:
+        if start_taking_ok:
             response = flask.Response("Taking-off ", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
@@ -151,10 +151,10 @@ def land():
             remote_response_content += str(response.content)
             
             if not response.status_code == 202:
-                start_flying_ok = False
+                start_landing_ok = False
             
         
-        if start_flying_ok:
+        if start_landing_ok:
             response = flask.Response("Landing", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
@@ -184,7 +184,7 @@ def get_status():
         result = get_status_child_servers(conf[0], conf[1])
         child_status += str(result.content)
         
-    parent_status = ''
+    parent_status = 'NO_INFORMATION'
     if child_status.count("IDLE") == 2:
         parent_status = "IDLE"
     elif child_status.count("LAUNCHING") == 2:
@@ -242,7 +242,15 @@ def get_status_child_servers(child_server_ip, child_server_port):
     return response
 
 # def persist_config(config_dir, drone_ips):
-#     yaml_parser.read(config_file_dir)
+#     with open("drones_config.yaml", 'r') as stream:
+#         try:
+#             return yaml.load(stream)
+#         except yaml.YAMLError as exc:
+#             print(exc)
+# 
+#     yaml_parser.read("drones_config.yaml")
+#     yaml_parser.write("drones_config.yaml")
+    
     
 if __name__ == '__main__':
     global child_server_ips

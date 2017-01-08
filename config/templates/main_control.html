@@ -89,18 +89,26 @@
 					document.getElementById("launch_button").className = "green_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
 				} else if (serverState == 'LAUNCHING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
-					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+				} else if (serverState == 'READY') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "green_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "green_button";
 				} else if (serverState == 'FLYING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
 				} else if (serverState == 'STOPPING') { 
 					document.getElementById("launch_button").className = "inactive_button";
 					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
 				}
 			}
 			
@@ -115,8 +123,8 @@
 			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction('/stop')">STOP</button>
 			<button class="green_button" id="status_button" onclick="loadRemoteFunction('/status', 'status')">STATUS</button>
 			<BR>
-			<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction('/takeoff')">STOP</button>
-			<button class="green_button" id="land_button" onclick="loadRemoteFunction('/land', 'status')">STATUS</button>
+			<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction('/takeoff')">Takeoff</button>
+			<button class="green_button" id="land_button" onclick="loadRemoteFunction('/land', 'status')">Land</button>
 		</div>
 		<div id="status" />
 	</body>
