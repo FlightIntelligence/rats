@@ -54,20 +54,22 @@ def get_status():
     return str(launcher.get_status())
 
 
-@child_server.route('/takeoff', methods=['POST'])
+@child_server.route('/takeoff', methods=['POST', 'GET'])
 def common_takeoff():
     my_env = os.environ.copy()
     my_env['ROS_MASTER_URI'] = 'http://localhost:11316'
     cmd = 'rostopic pub -1 /common/takeoff std_msgs/Empty'
     subprocess.Popen(cmd.split(), env=my_env)
+    return flask.Response(status=202)
 
 
-@child_server.route('/land', methods=['POST'])
+@child_server.route('/land', methods=['POST', 'GET'])
 def common_land():
     my_env = os.environ.copy()
     my_env['ROS_MASTER_URI'] = 'http://localhost:11316'
     cmd = 'rostopic pub -1 /common/land std_msgs/Empty'
     subprocess.Popen(cmd.split(), env=my_env)
+    return flask.Response(status=202)
 
 
 if __name__ == '__main__':
