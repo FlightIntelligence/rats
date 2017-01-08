@@ -72,6 +72,18 @@ def common_land():
     return flask.Response(status=202)
 
 
+@child_server.route('/restart', methods=['POST', 'GET'])
+def restart():
+    command = "/sbin/reboot"
+    subprocess.call(command, shell=True)
+
+
+@child_server.route('/shutdown', methods=['POST', 'GET'])
+def restart():
+    command = "/sbin/shutdown -h now"
+    subprocess.call(command, shell=True)
+
+
 if __name__ == '__main__':
     host_ip = str(sys.argv[1])
     port = int(sys.argv[2])
