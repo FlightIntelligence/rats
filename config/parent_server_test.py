@@ -8,7 +8,7 @@ parent_server.child_server_ips = [('0.0.0.0', 8080),
 if __name__ == '__main__':
 
     while True:
-        usr_input = int(input('Press 1 to launch, 2 to start flying, 3 to stop, 4 to get status, 5 to get config: '))
+        usr_input = int(input('Press 1 to launch, 2 to start flying, 3 to stop, 4 to get status, 5 to get config, 6 takeoff : '))
         if usr_input == 1:
             parent_server.start_launch()
         elif usr_input == 2:

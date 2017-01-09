@@ -2,9 +2,8 @@ import flask
 import sys
 from flask import json, render_template, url_for
 import requests
-import yaml
 import Pinger
-
+import gevent
 
 child_server_ips = [('192.168.13.108', 8080),
                     ('192.168.13.104', 8080)]
@@ -139,7 +138,20 @@ def takeoff():
             response = flask.Response("Taking-off ", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
-            
+        
+    except ValueError as err:
+        return flask.Response(str(err), status=409)
+
+    return response
+
+@parent_server.route('/takeoff_and_land', methods=['GET'])
+def takeoff_land():
+    response = ''
+    try:
+        response = takeoff()
+        gevent.sleep(1)
+        response = land()
+        
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
