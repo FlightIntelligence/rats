@@ -19,7 +19,10 @@ bebops:
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
-    topic_relay: ['/arlocros/fused_pose']
+    topic_relay:
+      ${common_takeoff_topic}: /bebop/takeoff
+      ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
 synchronizer:
   ros_master_port: '11313'
