@@ -152,6 +152,7 @@ def takeoff():
 
 @parent_server.route('/takeoff_and_land', methods=['GET'])
 def takeoff_land():
+    publisher.stop()
     response = ''
     try:
         response = takeoff()
@@ -191,6 +192,7 @@ def land():
 
 @parent_server.route('/stop', methods=['GET'])
 def stop():
+    publisher.stop()
     response = ''
     try:
         for conf in child_server_ips:
