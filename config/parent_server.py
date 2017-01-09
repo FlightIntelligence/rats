@@ -149,7 +149,7 @@ def takeoff_land():
     response = ''
     try:
         response = takeoff()
-        gevent.sleep(1)
+        gevent.sleep(2)
         response = land()
         
     except ValueError as err:
