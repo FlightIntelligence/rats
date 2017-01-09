@@ -1,7 +1,7 @@
 import requests
 import threading
 import enum
-import time
+import gevent
 
 
 class LandPublisher:
@@ -11,7 +11,7 @@ class LandPublisher:
     def _publish_land_message(self, child_server_ips):
         while self._status == LandPublisher.Status.RUNNING:
             self._land(child_server_ips)
-            time.sleep(0.5)
+            gevent.sleep(0.5)
 
         self._status = LandPublisher.Status.IDLE
 
@@ -25,8 +25,8 @@ class LandPublisher:
     def stop(self):
         self._status = LandPublisher.Status.STOPPING
         while self._status != LandPublisher.Status.IDLE:
-            time.sleep(0.5)
-        time.sleep(2)
+            gevent.sleep(0.5)
+        gevent.sleep(2)
 
     class Status(enum.Enum):
         IDLE = 1
