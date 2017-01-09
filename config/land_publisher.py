@@ -18,7 +18,7 @@ class LandPublisher:
     def start(self, child_server_ips):
         self._status = LandPublisher.Status.RUNNING
         publisher_thread = threading.Thread(target=self._publish_land_message,
-                                            args=child_server_ips)
+                                            args=(child_server_ips,))
         publisher_thread.start()
 
     def stop(self):
