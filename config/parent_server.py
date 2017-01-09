@@ -3,6 +3,7 @@ import sys
 from flask import json, render_template, url_for
 import requests
 import yaml
+import Pinger
 
 
 child_server_ips = [('192.168.13.108', 8080),
@@ -20,12 +21,16 @@ drone_ips['Dumbo'] = '192.168.13.180'
 
 config_dir = 'rats_show/full_show'
 
-
 parent_server = flask.Flask(__name__)
 
 @parent_server.route('/', methods=['POST', 'GET'])
 def main():
-    return flask.render_template('main_control.html')
+    drones_info = dict()
+    for k, v in drone_ips.items():
+        temp = v.split(".")
+        drones_info[k] = k + " " + temp[len(temp)-1]
+         
+    return flask.render_template('main_control.html', drone_ips=drones_info)
 
 @parent_server.route('/set_config', methods=['POST'])
 def set_config():
@@ -222,6 +227,11 @@ def get_status():
 #     return parent_status
     return flask.Response(parent_status, status=200)
 
+@parent_server.route('/drones_status', methods=['GET'])
+def get_drone_status():
+    drone_status = get_drone_status_ping()
+    return flask.jsonify(drone_status)
+
 def send_launch_to_child_server(child_ip, child_port):
     global drone_ips
     global config_dir
@@ -274,6 +284,16 @@ def get_status_child_servers(child_server_ip, child_server_port):
         'http://' + str(child_server_ip) + ':' + str(child_server_port) + '/status')
     return response
 
+def get_drone_status_ping():
+    drone_status = Pinger.ping_all_drones(drone_ips)
+#     drone_status = dict()
+#     drone_status["Nerve"] = 0
+#     drone_status["Juliet"] = 0
+#     drone_status["Romeo"] = 1
+#     drone_status["Fievel"] = 0
+#     drone_status["Dumbo"] = 1
+    return drone_status
+    
 # def persist_config(config_dir, drone_ips):
 #     with open("drones_config.yaml", 'w') as stream:
 #         try:
@@ -286,11 +306,20 @@ def get_status_child_servers(child_server_ip, child_server_port):
     
 if __name__ == '__main__':
     global child_server_ips
+    global drone_ips
     
     host_ip = str(sys.argv[1])
     port = int(sys.argv[2])
     if len(sys.argv) == 4:
         child_server_ips = [('0.0.0.0', 8080),
                             ('0.0.0.0', 8081)]
+        
+        drone_ips = dict()
+        drone_ips['Nerve'] = '127.0.0.1'
+        drone_ips['Romeo'] = '127.0.0.1'
+        drone_ips['Juliet'] = '8.8.8.8'
+        drone_ips['Fievel'] = '127.0.0.1'
+        drone_ips['Dumbo'] = '8.8.8.9'
+
      
     parent_server.run(host=host_ip, port=port, threaded=True)

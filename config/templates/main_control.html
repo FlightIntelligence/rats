@@ -122,7 +122,26 @@
 				}
 			}
 			
+			function getDronesStatus() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						jsonResponse = JSON.parse(xhttp.responseText);
+						for (var key in jsonResponse) {
+							if (jsonResponse[key] == 0) {
+								document.getElementById(key).className = "green_button"
+							} else { 
+								document.getElementById(key).className = "red_button"
+							}
+						}
+					}
+				};
+				xhttp.open("GET", "/drones_status", true);
+				xhttp.send();
+			}
+			
 			setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
+			setInterval(function() {getDronesStatus()}, 2500);
 		</script>
 	         
 		<title>Rats Control center</title>
@@ -141,6 +160,12 @@
 			<button class="green_button" id="shutdown_button" onclick="loadRemoteFunction(this, '/shutdown')">ShuTDOWN</button>
 			
 		</div>
-		<div id="status" />
+		<div id="status">
+		</div>
+		<div id="drone_status">
+			{% for drone_name, status in drone_ips.items() %}
+				<button class="green_button" id="{{drone_name}}">{{status}}</button>
+			{% endfor %}
+		</div>
 	</body>
 </html>
