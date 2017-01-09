@@ -4,6 +4,7 @@ from flask import json, render_template, url_for
 import requests
 import Pinger
 import gevent
+import land_publisher
 
 child_server_ips = [('192.168.13.108', 8080),
                     ('192.168.13.104', 8080)]
@@ -22,33 +23,35 @@ config_dir = 'rats_show/full_show'
 
 parent_server = flask.Flask(__name__)
 
+publisher = land_publisher.LandPublisher()
+
 @parent_server.route('/', methods=['POST', 'GET'])
 def main():
     drones_info = dict()
     for k, v in drone_ips.items():
         temp = v.split(".")
         drones_info[k] = k + " " + temp[len(temp)-1]
-         
+
     return flask.render_template('main_control.html', drone_ips=drones_info)
 
 @parent_server.route('/set_config', methods=['POST'])
 def set_config():
     global config_dir
     global drone_ips
-    
+
     incorrect_form = False
-    
+
     for k in drone_ips:
         if flask.request.form[k]:
             drone_ips[k] = flask.request.form[k]
         else:
             incorrect_form = True
-    
+
     if flask.request.form['config_dir']:
         config_dir = flask.request.form['config_dir']
     else:
         incorrect_form = True
-    
+
     if incorrect_form:
         return flask.Response('drone_ips not found', status=400)
 
@@ -59,11 +62,11 @@ def set_config():
 def config():
     global drone_ips
     global config_dir
-    
+
     data = dict()
     data['drone_ips'] = drone_ips
     data['config_dir'] = config_dir
-    
+
     return render_template('config.html', drone_ips = drone_ips)
 #     return json.dumps(data)
 
@@ -72,22 +75,24 @@ def config():
 def start_launch():
     response = ''
     remote_response_content = ''
-    
+
     try:
         launch_ok = True
         for conf in child_server_ips:
             response = send_launch_to_child_server(conf[0], conf[1])
             remote_response_content += str(response.content)
-            
+
             if not response.status_code == 202:
                 launch_ok = False
-            
-        
+
+
         if launch_ok:
             response = flask.Response("launching", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
-            
+
+        publisher.start(child_server_ips)
+
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -98,22 +103,23 @@ def start_launch():
 def start_flying():
     response = ''
     remote_response_content = ''
-    
+
     try:
+        publisher.stop()
         start_flying_ok = True
         for conf in child_server_ips:
             response = send_start_flying(conf[0], conf[1])
             remote_response_content += str(response.content)
-            
+
             if not response.status_code == 202:
                 start_flying_ok = False
-            
-        
+
+
         if start_flying_ok:
             response = flask.Response("Starting the Show", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
-            
+
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -123,22 +129,22 @@ def start_flying():
 def takeoff():
     response = ''
     remote_response_content = ''
-    
+
     try:
         start_taking_ok = True
         for conf in child_server_ips:
             response = send_takeoff(conf[0], conf[1])
             remote_response_content += str(response.content)
-            
+
             if not response.status_code == 202:
                 start_taking_ok = False
-            
-        
+
+
         if start_taking_ok:
             response = flask.Response("Taking-off ", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
-        
+
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -151,7 +157,7 @@ def takeoff_land():
         response = takeoff()
         gevent.sleep(2)
         response = land()
-        
+
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -161,22 +167,22 @@ def takeoff_land():
 def land():
     response = ''
     remote_response_content = ''
-    
+
     try:
         start_landing_ok = True
         for conf in child_server_ips:
             response = send_land(conf[0], conf[1])
             remote_response_content += str(response.content)
-            
+
             if not response.status_code == 202:
                 start_landing_ok = False
-            
-        
+
+
         if start_landing_ok:
             response = flask.Response("Landing", status=202)
         else:
             response = flask.Response(remote_response_content, status=409)
-            
+
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -188,7 +194,7 @@ def stop():
     response = ''
     try:
         for conf in child_server_ips:
-            response = response + str(send_stop(conf[0], conf[1]).content)  
+            response = response + str(send_stop(conf[0], conf[1]).content)
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -199,7 +205,7 @@ def restart():
     response = ''
     try:
         for conf in child_server_ips:
-            response = response + str(send_restart(conf[0], conf[1]).content)  
+            response = response + str(send_restart(conf[0], conf[1]).content)
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -210,7 +216,7 @@ def shutdown():
     response = ''
     try:
         for conf in child_server_ips:
-            response = response + str(send_shutdown(conf[0], conf[1]).content)  
+            response = response + str(send_shutdown(conf[0], conf[1]).content)
     except ValueError as err:
         return flask.Response(str(err), status=409)
 
@@ -223,19 +229,19 @@ def get_status():
     for conf in child_server_ips:
         result = get_status_child_servers(conf[0], conf[1])
         child_status += str(result.content)
-        
+
     parent_status = 'NO_INFORMATION'
     if child_status.count("IDLE") == 2:
         parent_status = "IDLE"
     elif child_status.count("LAUNCHING") == 2:
-        parent_status = 'LAUNCHING' 
+        parent_status = 'LAUNCHING'
     elif child_status.count("READY") == 2:
-        parent_status = 'READY' 
+        parent_status = 'READY'
     elif child_status.count("FLYING") == 2:
-        parent_status = 'FLYING' 
+        parent_status = 'FLYING'
     elif child_status.count("STOPPING") == 2:
-        parent_status = 'STOPPING' 
-    
+        parent_status = 'STOPPING'
+
 #     return parent_status
     return flask.Response(parent_status, status=200)
 
@@ -247,7 +253,7 @@ def get_drone_status():
 def send_launch_to_child_server(child_ip, child_port):
     global drone_ips
     global config_dir
-    
+
     data = dict()
     data['drone_ips'] = drone_ips
     data['config_dir'] = config_dir
@@ -305,7 +311,7 @@ def get_drone_status_ping():
 #     drone_status["Fievel"] = 0
 #     drone_status["Dumbo"] = 1
     return drone_status
-    
+
 # def persist_config(config_dir, drone_ips):
 #     with open("drones_config.yaml", 'w') as stream:
 #         try:
@@ -314,18 +320,18 @@ def get_drone_status_ping():
 #             print(exc)
 #     
 #     conf_file.dump()
-    
-    
+
+
 if __name__ == '__main__':
     global child_server_ips
     global drone_ips
-    
+
     host_ip = str(sys.argv[1])
     port = int(sys.argv[2])
     if len(sys.argv) == 4:
         child_server_ips = [('0.0.0.0', 8080),
                             ('0.0.0.0', 8081)]
-        
+
         drone_ips = dict()
         drone_ips['Nerve'] = '127.0.0.1'
         drone_ips['Romeo'] = '127.0.0.1'
@@ -333,5 +339,5 @@ if __name__ == '__main__':
         drone_ips['Fievel'] = '127.0.0.1'
         drone_ips['Dumbo'] = '8.8.8.9'
 
-     
+
     parent_server.run(host=host_ip, port=port, threaded=True)
