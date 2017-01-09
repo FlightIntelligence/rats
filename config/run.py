@@ -88,7 +88,7 @@ def start_single_bebop(tracker, bebop_name, config, launch_components, log_dir, 
         executor.launch_xbox_controller(my_env, tracker, log_dir)
 
     if launch_components['launch_arlocros']:
-        executor.launch_arlocros(my_env, tracker, log_dir)
+        executor.launch_arlocros(my_env, config['number_of_arlocros'], tracker, log_dir)
 
     if launch_components['launch_beswarm']:
         executor.launch_beswarm(my_env, tracker, config['beswarm_config'], log_dir)

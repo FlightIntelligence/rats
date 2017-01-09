@@ -24,6 +24,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
   Romeo:
     ros_master_port: '11312'
@@ -41,6 +42,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
   Juliet:
     ros_master_port: '11313'
@@ -58,6 +60,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
   Fievel:
     ros_master_port: '11314'
@@ -75,6 +78,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
   Dumbo:
     ros_master_port: '11315'
@@ -92,6 +96,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+    number_of_arlocros: 3
 
 #synchronizer:
 #  ros_master_port: '11316'
