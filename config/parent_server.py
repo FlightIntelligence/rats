@@ -20,7 +20,20 @@ drone_ips['Dumbo'] = '192.168.13.180'
 
 config_dir = 'rats_show/full_show'
 
+deadmanswitch_state = '1'
+
 parent_server = flask.Flask(__name__)
+
+
+@parent_server.route('/alive', methods=['POST', 'GET'])
+def alive():
+    global deadmanswitch_state
+    if deadmanswitch_state == '1':
+        return flask.Response(deadmanswitch_state, status=200)
+    else:
+        return flask.Response(deadmanswitch_state, status=202)
+
+
 
 @parent_server.route('/', methods=['POST', 'GET'])
 def main():
@@ -96,6 +109,9 @@ def start_launch():
 
 @parent_server.route('/start_flying', methods=['GET'])
 def start_flying():
+    global deadmanswitch_state
+    deadmanswitch_state = '0'
+    
     response = ''
     remote_response_content = ''
     
