@@ -165,7 +165,6 @@ def takeoff_land():
 
 @parent_server.route('/land', methods=['GET'])
 def land():
-    publisher.stop()
     response = ''
     remote_response_content = ''
 
