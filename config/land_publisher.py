@@ -16,11 +16,10 @@ class LandPublisher:
         self._status = LandPublisher.Status.IDLE
 
     def start(self, child_server_ips):
-        if self._status == LandPublisher.Status.IDLE:
-            self._status = LandPublisher.Status.RUNNING
-            publisher_thread = threading.Thread(target=self._publish_land_message,
-                                                args=(child_server_ips,))
-            publisher_thread.start()
+        self._status = LandPublisher.Status.RUNNING
+        publisher_thread = threading.Thread(target=self._publish_land_message,
+                                            args=(child_server_ips,))
+        publisher_thread.start()
 
     def stop(self):
         self._status = LandPublisher.Status.STOPPING
