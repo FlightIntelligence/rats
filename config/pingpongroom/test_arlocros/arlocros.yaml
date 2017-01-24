@@ -7,7 +7,8 @@ marker_config_file: ${config_dir}/pingpong_markers.yaml
 bad_pose_reject: true
 fused_pose_topic_name: ${fused_pose_topic}
 marker_pose_topic_name: ${marker_pose_topic}
-visualization: true
+visualization: false
 filter_block_size: 161
 subtracted_constant: -30.0
 invert_black_white_color: true
+heartbeat_topic_name: '/heartbeat'
