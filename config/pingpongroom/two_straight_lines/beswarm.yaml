@@ -1,0 +1,35 @@
+time_sync_topic: ${time_sync_topic}
+fused_pose_topic: ${fused_pose_topic}
+marker_pose_topic: ${marker_pose_topic}
+virtual_environment_topic: ${virtual_environment_topic}
+emergency_landing_topic: ${emergency_landing_topic}
+
+bebop/bebop_driver/SpeedSettingsMaxVerticalSpeedCurrent: 2.5
+bebop/bebop_driver/PilotingSettingsMaxTiltCurrent: 30.0
+bebop/bebop_driver/SpeedSettingsMaxRotationSpeedCurrent: 200.0
+bebop/bebop_driver/SpeedSettingsHullProtectionPresent: 1
+bebop/bebop_driver/SpeedSettingsOutdoorOutdoor: 0
+bebop/bebop_driver/NetworkSettingsWifiSelectionType: 1
+bebop/bebop_driver/NetworkSettingsWifiSelectionBand: 1
+bebop/bebop_driver/PictureSettingsVideoFramerateFramerate: 2
+bebop/bebop_driver/PictureSettingsVideoResolutionsType: 0
+bebop/bebop_driver/PilotingSettingsBankedTurnValue: 1
+
+ros_driver_drone_name: bebop
+
+control_frequency_in_hz: 40.0
+pid_lag_time_in_seconds: 0.0
+
+pid_velocity_x_kp: 1.0
+pid_velocity_x_kd: 0.15
+
+pid_velocity_y_kp: 1.0
+pid_velocity_y_kd: 0.15
+
+pid_velocity_z_kp: 1.0
+pid_velocity_z_kd: 0.1
+
+pid_velocity_yaw_kp: 0.9
+
+pid_acceleration_x_kp: 1.0
+pid_acceleration_y_kp: 1.0
