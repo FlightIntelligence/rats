@@ -24,6 +24,7 @@ bebops:
       end_pose: '[3.0,-3.0,1.5,-3.14]'
       velocity: 1.0
     topic_relay:
+      ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
     number_of_arlocros: 3
 
@@ -44,6 +45,7 @@ bebops:
       end_pose: '[2.5,1.0,1.5,-3.14]'
       velocity: 1.0
     topic_relay:
+      ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
     number_of_arlocros: 3
 
