@@ -10,7 +10,7 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.62.1'
+    bebop_ip: '192.168.0.190'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.applications.parrot.bebop.rats.BebopFlyStraightLine
       nodename: BeSwarmNerve
@@ -26,15 +26,15 @@ bebops:
     number_of_arlocros: 3
 
   Romeo:
-    ros_master_port: '11311'
+    ros_master_port: '11312'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.62.1'
+    bebop_ip: '192.168.0.191'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.applications.parrot.bebop.rats.BebopFlyStraightLine
-      nodename: BeSwarmNerve
+      nodename: BeSwarmRomeo
     rosparam:
-      drone_name: Nerve
-      unique_integer_id: 1
+      drone_name: Romeo
+      unique_integer_id: 2
       takeoff_time_in_secs: 5.0
       start_flying_time_in_secs: 10.0
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
@@ -49,7 +49,3 @@ synchronizer:
   python_node: Synchronizer.py
   rosparam:
     time_sync_topic: ${time_sync_topic}
-
-pose_aggregation:
-  ros_master_port: '11317'
-  sync_config: pose_sync.yaml
