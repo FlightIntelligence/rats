@@ -23,6 +23,8 @@ bebops:
       start_pose: '[3.0,1.0,1.5,-3.14]'
       end_pose: '[3.0,-3.0,1.5,-3.14]'
       velocity: 1.0
+    topic_relay:
+      ${common_land_topic}: /bebop/land
     number_of_arlocros: 3
 
   Romeo:
@@ -41,6 +43,8 @@ bebops:
       start_pose: '[2.5,-3.0,1.5,-3.14]'
       end_pose: '[2.5,1.0,1.5,-3.14]'
       velocity: 1.0
+    topic_relay:
+      ${common_land_topic}: /bebop/land
     number_of_arlocros: 3
 
 synchronizer:
