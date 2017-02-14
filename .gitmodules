@@ -10,3 +10,6 @@
 [submodule "config/SwarmBootstrapUtils"]
 	path = config/SwarmBootstrapUtils
 	url = https://github.com/hoangtungdinh/SwarmBootstrapUtils.git
+[submodule "rats_ws/src/constraint_msgs"]
+	path = rats_ws/src/constraint_msgs
+	url = https://github.com/hoangtungdinh/constraint_msgs.git
