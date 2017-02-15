@@ -26,6 +26,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+      /virt_env: ${virtual_environment_topic}
     number_of_arlocros: 3
 
   D2:
@@ -47,6 +48,7 @@ bebops:
     topic_relay:
       ${common_takeoff_topic}: /bebop/takeoff
       ${common_land_topic}: /bebop/land
+      /virt_env: ${virtual_environment_topic}
     number_of_arlocros: 3
 
 synchronizer:
