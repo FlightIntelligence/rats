@@ -1,6 +1,6 @@
 import flask
 import sys
-from flask import json, render_template, url_for
+from flask import json, render_template, url_for, request
 import requests
 import Pinger
 import gevent
@@ -18,63 +18,14 @@ parent_server = flask.Flask(__name__)
 def main():
     return flask.render_template('demo_main_control.html')
 
-@parent_server.route('/set_config', methods=['POST'])
-def set_config():
-    global config_dir
-    global drone_ips
-    
-    incorrect_form = False
-    
-    for k in drone_ips:
-        if flask.request.form[k]:
-            drone_ips[k] = flask.request.form[k]
-        else:
-            incorrect_form = True
-    
-    if flask.request.form['config_dir']:
-        config_dir = flask.request.form['config_dir']
-    else:
-        incorrect_form = True
-    
-    if incorrect_form:
-        return flask.Response('drone_ips not found', status=400)
-
-#     persist_config(config_dir, drone_ips)
-    return flask.Response("OK", status=202)
-
-@parent_server.route('/config', methods=['GET'])
-def config():
-    global drone_ips
-    global config_dir
-    
-    data = dict()
-    data['drone_ips'] = drone_ips
-    data['config_dir'] = config_dir
-    
-    return render_template('config.html', drone_ips = drone_ips)
-#     return json.dumps(data)
-
-
-@parent_server.route('/launch', methods=['GET'])
-def start_launch():
+@parent_server.route('/new_mission', methods=['POST'])
+def new_mission():
     response = ''
-    remote_response_content = ''
-    
+    remote_response_content = request.get_json()
+    print(remote_response_content)
+
     try:
-        launch_ok = True
-        for conf in child_server_ips:
-            response = send_launch_to_child_server(conf[0], conf[1])
-            remote_response_content += str(response.content)
-
-            if not response.status_code == 202:
-                launch_ok = False
-
-
-        if launch_ok:
-            response = flask.Response("launching", status=202)
-        else:
-            response = flask.Response(remote_response_content, status=409)
-            
+        response = flask.Response(remote_response_content, status=200)
     except ValueError as err:
         return flask.Response(str(err), status=409)
 

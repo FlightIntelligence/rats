@@ -30,6 +30,19 @@
     cursor: pointer;
 }
 
+.canvas_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
 .red_button {
     background-color: #FF0000;
     border: none;
@@ -116,7 +129,7 @@
 					};
 					xhttp.open("POST", remoteURL, true);
 					xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-					xhttp.send(JSON.stringify(x_coordinates: mx, y_coordinates: my));
+					xhttp.send(JSON.stringify({x_coordinates: mx, y_coordinates: my}));
 				}
 			}
 			function changeStateButtons(serverState) {
@@ -170,8 +183,8 @@
 				xhttp.send();
 			}
 			
-			setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
-			setInterval(function() {getDronesStatus()}, 2500);
+			//setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
+			//setInterval(function() {getDronesStatus()}, 2500);
 		</script>
 	         
 		<title>FlightIntelligence.AI Demo Control center</title>
@@ -186,8 +199,8 @@
 			<button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
 
 			<BR>
-			<button class="action_button" id="new_mission_button" onclick="loadRemoteFunction(this, '/new_mission')">New Mission</button>
-			<!--<button class="green_button" id="shutdown_button" onclick="loadRemoteFunction(this, '/shutdown')">ShuTDOWN</button>-->
+			<button class="action_button" id="execute_mission_button" onclick="loadRemoteFunction(this, '/new_mission');executeMission();">Execute Mission</button>
+			<button class="canvas_button" id="record_mission_button" onclick="recordMission();">Record Mission</button>
 			
 		</div>
 
@@ -211,48 +224,78 @@
 var num = 600;
 var mx = [];
 var my = [];
+var statusElement = "status";
+var debugMode = true;
+var prev = 0;
+var recordingState = false;
+var xLim = 640;
+var yLim = 360;
 
 function setup() {
-  var canvas = createCanvas(640, 360);
+  var canvas = createCanvas(xLim, yLim);
   canvas.parent("p5container");
+  background(51);
   noStroke();
-  fill(255, 153);
+  clearPath();
+}
+
+function draw() {
+  if (recordingState == true) {
+    if (prev >= num) {
+      return;
+    }
+
+    if (mouseX < 0 || mouseX > xLim || mouseY < 0 || mouseY > yLim) {
+      return;
+    }
+
+    prev++;
+    mx[prev] = mouseX;
+    my[prev] = mouseY;
+
+    fill(255, 153);
+    for (var i = 0; i < num; i++) {
+      ellipse(mx[i], my[i], 10, 10);
+    }
+    ellipse(mx[prev], my[prev], 10, 10);
+
+  } else {
+    fill('red');
+    for (var i = 0; i < num; i++) {
+      ellipse(mx[i], my[i], 10, 10);
+    }
+  }
+
+  if (debugMode == true) {
+    document.getElementById(statusElement).innerHTML = "mx: " + mx[prev] + ", my: " + my[prev];
+  }
+}
+
+/**
+* Clears the path array of the drawing
+*/
+function clearPath() {
   for (var i = 0; i < num; i++) {
     mx[i] = 0;
     my[i] = 0;
   }
+  prev = 0;
 }
 
-var prev = 0;
-
-function draw() {
+function recordMission() {
+  clear();
   background(51);
+  noStroke();
 
-   var diff = frameCount - prev;
+  clearPath();
+  recordingState = true;
+}
 
-  // Cycle through the array, using a different entry on each frame.
-  // Using modulo (%) like this is faster than moving all the values over.
-  // var which = frameCount % num;
-  prev++;
-  mx[prev] = mouseX;
-  my[prev] = mouseY;
-
-  var count = 0;
-  for (var i = 0; i < num; i++) {
-    // which+1 is the smallest (the oldest in the array)
-    // var index = (which + 1 + i) % num;
-    ellipse(mx[i], my[i], 10, 10);
-  }
-  ellipse(mx[prev], my[prev], 60, 60);
-  //prev = frameCount;
+function executeMission() {
+  recordingState = false;
 }
 </script>
 
 
-		<!--<div id="drone_status">-->
-			<!--{% for drone_name, status in drone_ips.items() %}-->
-				<!--<button class="green_button" id="{{drone_name}}">{{status}}</button>-->
-			<!--{% endfor %}-->
-		<!--</div>-->
 	</body>
 </html>
