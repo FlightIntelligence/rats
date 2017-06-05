@@ -17,20 +17,8 @@ bebop/bebop_driver/PilotingSettingsBankedTurnValue: 1
 
 ros_driver_drone_name: bebop
 
-control_frequency_in_hz: 40.0
-pid_lag_time_in_seconds: 0.0
-
-pid_velocity_x_kp: 1.0
-pid_velocity_x_kd: 0.15
-
-pid_velocity_y_kp: 1.0
-pid_velocity_y_kd: 0.15
-
-pid_velocity_z_kp: 1.0
-pid_velocity_z_kd: 0.1
-
+linear_kp: [1.0, 1.0, 1.0]
 pid_yaw_kp: 0.9
-
 pid_acceleration_kp: 1.0
 
 max_velocity:
