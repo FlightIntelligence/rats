@@ -38,7 +38,7 @@ def start():
         executor.start_pose_aggregation(main_configs['pose_aggregation'], tracker,
                                         log_dir + '/pose_aggregation', config_dir)
 
-    test_xbox_controller()
+    # test_xbox_controller()
     if 'synchronizer' in main_configs:
         executor.start_synchronizer(main_configs['synchronizer'], tracker,
                                     log_dir + '/synchronizer', config_dir)
