@@ -12,9 +12,10 @@ bebops:
     sync_config: master_sync.yaml
     bebop_ip: '192.168.62.1'
     beswarm_config:
-      javanode: io.github.hoangtungdinh.beswarm.applications.parrot.bebop.rats.BebopFlyStraightLine
-      nodename: BeSwarmNerve
+      javanode: io.github.hoangtungdinh.beswarm.applications.fidemo.FiDemo
+      nodename: BeSwarmFiDemo
     rosparam:
+      scenario_number: 1
       drone_name: Bebop2White
       unique_integer_id: 1
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
