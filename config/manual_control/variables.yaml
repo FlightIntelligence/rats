@@ -1,0 +1,7 @@
+fused_pose_topic: '/arlocros/fused_pose'
+marker_pose_topic: '/arlocros/marker_pose'
+time_sync_topic: '/start_time'
+virtual_environment_topic: '/virtual_environment'
+emergency_landing_topic: '/bebop/land'
+common_takeoff_topic: '/common/takeoff'
+common_land_topic: '/common/land'

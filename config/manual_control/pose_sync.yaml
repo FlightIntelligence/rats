@@ -1,0 +1,9 @@
+sync_topics:
+  - "/dump_topic"
+  - "/Nerve/arlocros/fused_pose"
+  - "/Romeo/arlocros/fused_pose"
+  - "/Juliet/arlocros/fused_pose"
+  - "/Fievel/arlocros/fused_pose"
+  - "/Dumbo/arlocros/fused_pose"
+
+sync_services: ["/dump_service"]

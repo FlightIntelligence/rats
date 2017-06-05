@@ -1,0 +1,50 @@
+time_sync_topic: ${time_sync_topic}
+fused_pose_topic: ${fused_pose_topic}
+marker_pose_topic: ${marker_pose_topic}
+virtual_environment_topic: ${virtual_environment_topic}
+emergency_landing_topic: ${emergency_landing_topic}
+
+bebop/bebop_driver/SpeedSettingsMaxVerticalSpeedCurrent: 2.5
+bebop/bebop_driver/PilotingSettingsMaxTiltCurrent: 30.0
+bebop/bebop_driver/SpeedSettingsMaxRotationSpeedCurrent: 200.0
+bebop/bebop_driver/SpeedSettingsHullProtectionPresent: 1
+bebop/bebop_driver/SpeedSettingsOutdoorOutdoor: 0
+bebop/bebop_driver/NetworkSettingsWifiSelectionType: 1
+bebop/bebop_driver/NetworkSettingsWifiSelectionBand: 1
+bebop/bebop_driver/PictureSettingsVideoFramerateFramerate: 2
+bebop/bebop_driver/PictureSettingsVideoResolutionsType: 0
+bebop/bebop_driver/PilotingSettingsBankedTurnValue: 1
+
+ros_driver_drone_name: bebop
+
+control_frequency_in_hz: 40.0
+pid_lag_time_in_seconds: 0.0
+
+pid_velocity_x_kp: 1.0
+pid_velocity_x_kd: 0.15
+
+pid_velocity_y_kp: 1.0
+pid_velocity_y_kd: 0.15
+
+pid_velocity_z_kp: 1.0
+pid_velocity_z_kd: 0.1
+
+pid_yaw_kp: 0.9
+
+pid_acceleration_kp: 1.0
+
+max_velocity:
+  autonomous_flight:
+    horizontal: 2.0
+    vertical: 1.0
+    yaw: 1.0
+  manual_flight:
+    horizontal: 2.0
+    vertical: 1.0
+    yaw: 1.0
+
+max_abs_deacceleration: [0.5, 0.5, 0.5]
+manual_control_height: 0.0 # no horizontal velocity allowed if height is lower than this number
+stop_topic: /bebop/land
+yaw_angle: 0.0
+manual_velocity_topic: /manual_vel

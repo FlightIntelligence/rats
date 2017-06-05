@@ -1,0 +1,16 @@
+#markerpattern 4x6
+marker_size: 0.2885
+
+relative_corner_position:
+  upper_left: [0.0, 0.0, 0.2885]
+  upper_right: [0.0, 0.2885, 0.2885]
+  lower_right: [0.0, 0.2885, 0.0]
+  lower_left: [0.0, 0.0, 0.0]
+
+markers:
+  4x4_1.patt: [0.0, -1.0, 1.7]
+  4x4_2.patt: [0.0, 0.0, 1.7]
+  4x4_3.patt: [0.0, 1.0, 1.7]
+  4x4_4.patt: [0.0, -1.0, 1.0]
+  4x4_5.patt: [0.0, 0.0, 1.0]
+  4x4_6.patt: [0.0, 1.0, 1.0]
