@@ -1,0 +1,229 @@
+<!doctype html>
+<html>
+
+<head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.js"></script>
+	<style>
+.green_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.red_button {
+    background-color: #FF0000;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.orange_button {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.inactive_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: not-allowed;
+}
+.inactive_processing_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: progress;
+}
+	</style>
+</head>
+	<body>
+		<script type="text/javascript">
+	
+			function loadRemoteFunction(buttonElementObj, remoteURL, populateElementId) {
+				if (remoteURL == '') {
+					return;
+				}
+				
+				if (buttonElementObj.className == 'green_button') {
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							if (populateElementId != '') {
+								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+							}
+							changeStateButtons(xhttp.responseText);
+						}
+					};
+					xhttp.open("GET", remoteURL, true);
+					xhttp.send();
+				}
+			}
+			function changeStateButtons(serverState) {
+				if (serverState == 'IDLE') {
+					document.getElementById("launch_button").className = "green_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
+				} else if (serverState == 'LAUNCHING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'READY') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "green_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'FLYING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'STOPPING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
+				}
+			}
+			
+			function getDronesStatus() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						jsonResponse = JSON.parse(xhttp.responseText);
+						for (var key in jsonResponse) {
+							if (jsonResponse[key] == 0) {
+								document.getElementById(key).className = "green_button"
+							} else { 
+								document.getElementById(key).className = "red_button"
+							}
+						}
+					}
+				};
+				xhttp.open("GET", "/drones_status", true);
+				xhttp.send();
+			}
+			
+			setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
+			setInterval(function() {getDronesStatus()}, 2500);
+		</script>
+	         
+		<title>FlightIntelligence.AI Demo Control center</title>
+		<div id="control">
+			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch</button>
+			<BR>		
+			<button class="inactive_button" id="start_button" onclick="loadRemoteFunction(this, '/start_flying')">Start SHOW</button>
+			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction(this, '/stop')">STOP SHOW</button>
+			<!--<button class="green_button" id="status_button" onclick="loadRemoteFunction(this, '/status', 'status')">STATUS</button>-->
+			<BR>
+			<!--<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction(this, '/takeoff_and_land')">Test TakeOff</button>-->
+			<button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
+
+			<BR>
+			<!--<button class="green_button" id="reboot_button" onclick="loadRemoteFunction(this, '/restart')">Reboot system</button>-->
+			<!--<button class="green_button" id="shutdown_button" onclick="loadRemoteFunction(this, '/shutdown')">ShuTDOWN</button>-->
+			
+		</div>
+
+		<div id="status">
+		</div>
+
+<div id="p5container"></div>
+            <script type="text/javascript">// This needs to be resolved
+// https://github.com/lmccart/p5.js/issues/406
+
+// /**
+//  * Storing Input.
+//  *
+//  * Move the mouse across the screen to change the position
+//  * of the circles. The positions of the mouse are recorded
+//  * into an array and played back every frame. Between each
+//  * frame, the newest value are added to the end of each array
+//  * and the oldest value is deleted.
+//  */
+
+var num = 600;
+var mx = [];
+var my = [];
+
+function setup() {
+  var canvas = createCanvas(640, 360);
+  canvas.parent("p5container");
+  noStroke();
+  fill(255, 153);
+  for (var i = 0; i < num; i++) {
+    mx[i] = 0;
+    my[i] = 0;
+  }
+}
+
+var prev = 0;
+
+function draw() {
+  background(51);
+
+   var diff = frameCount - prev;
+
+  // Cycle through the array, using a different entry on each frame.
+  // Using modulo (%) like this is faster than moving all the values over.
+  var which = frameCount % num;
+  mx[which] = mouseX;
+  my[which] = mouseY;
+
+  var count = 0;
+  for (var i = 0; i < num; i++) {
+    // which+1 is the smallest (the oldest in the array)
+    var index = (which + 1 + i) % num;
+    ellipse(mx[index], my[index], 10, 10);
+  }
+  ellipse(mx[which], my[which], 60, 60);
+  prev = frameCount;
+}
+</script>
+
+
+		<!--<div id="drone_status">-->
+			<!--{% for drone_name, status in drone_ips.items() %}-->
+				<!--<button class="green_button" id="{{drone_name}}">{{status}}</button>-->
+			<!--{% endfor %}-->
+		<!--</div>-->
+	</body>
+</html>
