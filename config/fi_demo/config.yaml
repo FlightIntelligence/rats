@@ -4,7 +4,7 @@ launch_components:
   record_rosbag: false
   launch_xbox_controller: true
   launch_arlocros: true
-  launch_beswarm: false
+  launch_beswarm: true
 
 bebops:
   Nerve:

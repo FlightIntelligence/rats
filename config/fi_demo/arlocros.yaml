@@ -9,6 +9,6 @@ fused_pose_topic_name: ${fused_pose_topic}
 marker_pose_topic_name: ${marker_pose_topic}
 visualization: false
 filter_block_size: 161
-subtracted_constant: -30.0
-invert_black_white_color: true
+subtracted_constant: 50.0
+invert_black_white_color: false
 heartbeat_topic_name: '/heartbeat'
