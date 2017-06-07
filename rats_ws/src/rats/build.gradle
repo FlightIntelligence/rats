@@ -19,7 +19,21 @@ task wrapper(type: Wrapper) {
 }
 
 buildscript {
-  apply from: "https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle"
+  def buildscriptCacheDir = "${System.properties['user.home']}/.safedroneware"
+    
+    def cacheDirObject = new File(buildscriptCacheDir)
+    // create cache directory if not exist
+    if (!cacheDirObject.exists()) {
+        cacheDirObject.mkdirs()
+    }
+
+    def cachedBuildScriptFile = new File(cacheDirObject, "buildscript.gradle") 
+    try{ 
+        new URL("https://github.com/rosjava/rosjava_bootstrap/raw/kinetic/buildscript.gradle").withInputStream{ i -> cachedBuildScriptFile.withOutputStream{ it << i }}    
+    } catch (all) { 
+        println "Cannot connect to internet, will use cached buildscript file."
+    }  
+    apply from: "${buildscriptCacheDir}/buildscript.gradle"
 }
 
 apply plugin: 'catkin'

@@ -4,7 +4,7 @@ launch_components:
   record_rosbag: false
   launch_xbox_controller: true
   launch_arlocros: true
-  launch_beswarm: true
+  launch_beswarm: false
 
 bebops:
   Nerve:
@@ -15,7 +15,7 @@ bebops:
       javanode: io.github.hoangtungdinh.beswarm.applications.fidemo.FiDemo
       nodename: BeSwarmFiDemo
     rosparam:
-      scenario_number: 1
+      scenario_number: 2
       drone_name: Bebop2White
       unique_integer_id: 1
       bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
