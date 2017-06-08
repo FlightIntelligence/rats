@@ -34,7 +34,7 @@ max_velocity:
 max_abs_deacceleration: [0.5, 0.5, 0.5]
 manual_control_height: 0.1 # no horizontal velocity allowed if height is lower than this number
 stop_topic: /bebop/land
-yaw_angle: 0.0
+yaw_angle: -3.14
 manual_velocity_topic: /manual_vel
 
 geofences:
