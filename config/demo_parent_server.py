@@ -4,7 +4,7 @@ from flask import json, render_template, url_for, request
 import requests
 import Pinger
 import gevent
-
+from SwarmBootstrapUtils import executor
 
 child_server_ips = [('192.168.13.108', 8080)]
 
@@ -22,9 +22,18 @@ def main():
 def new_mission():
     response = ''
     remote_response_content = request.get_json()
-    print(remote_response_content)
+    x = remote_response_content['x_coordinates']
+    y = remote_response_content['y_coordinates']
+
+    list_waypoints = list()
+    for i in range(0, 600):
+        list_waypoints.append({'position': [x[i], y[i], 0]})
+
+    ros_topic_message = {'header': 'auto', 'poses': list_waypoints}
 
     try:
+        executor.send_new_mission(my_env="", tracker="", log_dir="", mission=ros_topic_message)
+
         response = flask.Response(remote_response_content, status=200)
     except ValueError as err:
         return flask.Response(str(err), status=409)
@@ -184,20 +193,6 @@ def get_status():
 def get_drone_status():
     drone_status = get_drone_status_ping()
     return flask.jsonify(drone_status)
-
-def send_launch_to_child_server(child_ip, child_port):
-    global drone_ips
-    global config_dir
-    
-    data = dict()
-    data['drone_ips'] = drone_ips
-    data['config_dir'] = config_dir
-
-    json_data = json.dumps(data)
-
-    response = requests.post(
-        'http://' + str(child_ip) + ':' + str(child_port) + '/launch', json=json_data)
-    return response
 
 
 def send_start_flying(child_server_ip, child_server_port):
