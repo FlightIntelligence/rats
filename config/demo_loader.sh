@@ -8,6 +8,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/JSCIPOpt/build
 export ROS_IP=127.0.0.1
 
 
-cd /home/controller/rats/config
+cd $HOME/rats/config
 python3 fidemo_child_server.py 0.0.0.0 8080
 
