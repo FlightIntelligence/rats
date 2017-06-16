@@ -102,20 +102,36 @@
 				if (remoteURL == '') {
 					return;
 				}
-				
-				if (buttonElementObj.className == 'green_button') {
-					var xhttp = new XMLHttpRequest();
-					xhttp.onreadystatechange = function() {
-						if (this.readyState == 4 && this.status == 200) {
-							if (populateElementId != '') {
-								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
-							}
-							changeStateButtons(xhttp.responseText);
-						}
-					};
-					xhttp.open("GET", remoteURL, true);
-					xhttp.send();
-				}
+
+				if (buttonElementObj.id == 'launch_button') {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (populateElementId != '') {
+                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+                            }
+                            changeStateButtons(xhttp.responseText);
+                        }
+                    };
+                    xhttp.open("POST", remoteURL, true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send(JSON.stringify({config_dir: 'fi_demo', drone_ips: {Nerve: '192.168.0.191'}}));
+
+                }
+
+//				if (buttonElementObj.className == 'green_button') {
+//					var xhttp = new XMLHttpRequest();
+//					xhttp.onreadystatechange = function() {
+//						if (this.readyState == 4 && this.status == 200) {
+//							if (populateElementId != '') {
+//								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+//							}
+//							changeStateButtons(xhttp.responseText);
+//						}
+//					};
+//					xhttp.open("GET", remoteURL, true);
+//					xhttp.send();
+//				}
 
 				if (buttonElementObj.className == 'action_button') {
 					var xhttp = new XMLHttpRequest();
