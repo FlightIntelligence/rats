@@ -38,7 +38,7 @@ def start():
         executor.start_pose_aggregation(main_configs['pose_aggregation'], tracker,
                                         log_dir + '/pose_aggregation', config_dir)
 
-    test_xbox_controller()
+    # test_xbox_controller()
     if 'synchronizer' in main_configs:
         executor.start_synchronizer(main_configs['synchronizer'], tracker,
                                     log_dir + '/synchronizer', config_dir)
@@ -112,7 +112,8 @@ def create_env(port):
     :type port: str
     """
     my_env = os.environ.copy()
-    my_env['ROS_MASTER_URI'] = 'http://localhost:' + port
+    my_env['ROS_MASTER_URI'] = 'http://127.0.0.1:' + port
+    my_env['ROS_IP'] = '127.0.0.1'
     return my_env
 
 

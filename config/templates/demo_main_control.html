@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.js"></script>
+<script src="{{ url_for('static', filename='js/p5.js') }}"></script>
 	<style>
 .green_button {
     background-color: #4CAF50;
@@ -190,12 +190,6 @@
 		<title>FlightIntelligence.AI Demo Control center</title>
 		<div id="control">
 			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch</button>
-			<BR>		
-			<button class="inactive_button" id="start_button" onclick="loadRemoteFunction(this, '/start_flying')">Start SHOW</button>
-			<button class="inactive_button" id="stop_button" onclick="loadRemoteFunction(this, '/stop')">STOP SHOW</button>
-			<!--<button class="green_button" id="status_button" onclick="loadRemoteFunction(this, '/status', 'status')">STATUS</button>-->
-			<BR>
-			<!--<button class="green_button" id="takeoff_button" onclick="loadRemoteFunction(this, '/takeoff_and_land')">Test TakeOff</button>-->
 			<button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
 
 			<BR>
@@ -224,6 +218,7 @@
 var num = 600;
 var mx = [];
 var my = [];
+var my_screen = [];
 var statusElement = "status";
 var debugMode = true;
 var prev = 0;
@@ -251,23 +246,24 @@ function draw() {
 
     prev++;
     mx[prev] = mouseX;
-    my[prev] = mouseY;
+    my[prev] = yLim - mouseY;
+    my_screen[prev] = mouseY;
 
     fill(255, 153);
     for (var i = 0; i < num; i++) {
-      ellipse(mx[i], my[i], 10, 10);
+      ellipse(mx[i], my_screen[i], 10, 10);
     }
-    ellipse(mx[prev], my[prev], 10, 10);
+    ellipse(mx[prev], my_screen[prev], 10, 10);
 
   } else {
     fill('red');
     for (var i = 0; i < num; i++) {
-      ellipse(mx[i], my[i], 10, 10);
+      ellipse(mx[i], my_screen[i], 10, 10);
     }
   }
 
   if (debugMode == true) {
-    document.getElementById(statusElement).innerHTML = "mx: " + mx[prev] + ", my: " + my[prev];
+    document.getElementById(statusElement).innerHTML = "mx: " + mx[prev] + ", my_screen: " + my_screen[prev] + ", my: " + my[prev];
   }
 }
 
@@ -278,6 +274,7 @@ function clearPath() {
   for (var i = 0; i < num; i++) {
     mx[i] = 0;
     my[i] = 0;
+    my_screen[i] = 0;
   }
   prev = 0;
 }

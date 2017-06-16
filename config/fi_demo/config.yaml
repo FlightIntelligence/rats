@@ -1,0 +1,33 @@
+launch_components:
+  bebop_autonomy: true
+  point_camera_downward: false
+  record_rosbag: false
+  launch_xbox_controller: true
+  launch_arlocros: true
+  launch_beswarm: true 
+
+bebops:
+  Nerve:
+    ros_master_port: '11311'
+    sync_config: master_sync.yaml
+    bebop_ip: '192.168.0.191'
+    beswarm_config:
+      javanode: io.github.hoangtungdinh.beswarm.applications.fidemo.FiDemo
+      nodename: BeSwarmFiDemo
+    rosparam:
+      scenario_number: 2 
+      drone_name: Bebop2White
+      unique_integer_id: 1
+      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 36
+    number_of_arlocros: 3
+
+# synchronizer:
+#   ros_master_port: '11316'
+#   sync_config: master_sync.yaml
+#   python_node: Synchronizer.py
+#   rosparam:
+#     time_sync_topic: ${time_sync_topic}
+
+# pose_aggregation:
+#   ros_master_port: '11317'
+#   sync_config: pose_sync.yaml

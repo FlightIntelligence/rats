@@ -10,7 +10,7 @@ bebops:
   Nerve:
     ros_master_port: '11311'
     sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.140'
+    bebop_ip: '192.168.62.1'
     beswarm_config:
       javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.CircleOT
       nodename: BeSwarmNerve
@@ -28,99 +28,7 @@ bebops:
       frequency: 0.075
       phase: 0.0
       duration: 60.0
-    topic_relay: ['/arlocros/fused_pose']
-
-  Romeo:
-    ros_master_port: '11312'
-    sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.130'
-    beswarm_config:
-      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.CircleOT
-      nodename: BeSwarmRomeo
-    rosparam:
-      drone_name: Romeo
-      unique_integer_id: 2
-      takeoff_time_in_secs: 5.0
-      start_flying_time_in_secs: 10.0
-      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 40
-      center_x: 3.0
-      center_y: 0.0
-      center_z: 1.0
-      yaw: -3.14
-      radius: 1.0
-      frequency: 0.075
-      phase: 1.57
-      duration: 60.0
-    topic_relay: ['/arlocros/fused_pose']
-
-  Juliet:
-    ros_master_port: '11313'
-    sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.120'
-    beswarm_config:
-      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.CircleOT
-      nodename: BeSwarmJuliet
-    rosparam:
-      drone_name: Juliet
-      unique_integer_id: 3
-      takeoff_time_in_secs: 5.0
-      start_flying_time_in_secs: 10.0
-      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 44
-      center_x: 3.0
-      center_y: 0.0
-      center_z: 1.5
-      yaw: -3.14
-      radius: 1.0
-      frequency: 0.075
-      phase: 3.14
-      duration: 60.0
-    topic_relay: ['/arlocros/fused_pose']
-
- # Fievel:
-    #ros_master_port: '11314'
-    #sync_config: master_sync.yaml
-    #bebop_ip: '192.168.13.140'
-    #beswarm_config:
-      #javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.CircleOT
-      #nodename: BeSwarmFievel
-    #rosparam:
-      #drone_name: Fievel
-      #unique_integer_id: 4
-      #takeoff_time_in_secs: 5.0
-      #start_flying_time_in_secs: 10.0
-      #bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
-      #center_x: 2.5
-      #center_y: -0.5
-      #center_z: 1.5
-      #yaw: -3.14
-      #radius: 1.5
-      #frequency: 0.075
-      #phase: 4.71
-      #duration: 60.0
- #   topic_relay: ['/arlocros/fused_pose']
-
-  Dumbo:
-    ros_master_port: '11315'
-    sync_config: master_sync.yaml
-    bebop_ip: '192.168.13.110'
-    beswarm_config:
-      javanode: io.github.hoangtungdinh.beswarm.operationaltest.ratsflight.CircleOT
-      nodename: BeSwarmDumbo
-    rosparam:
-      drone_name: Dumbo
-      unique_integer_id: 5
-      takeoff_time_in_secs: 5.0
-      start_flying_time_in_secs: 10.0
-      bebop/bebop_driver/NetworkSettingsWifiSelectionChannel: 48
-      center_x: 3.0
-      center_y: 0.0
-      center_z: 1.0
-      yaw: -3.14
-      radius: 1.0
-      frequency: 0.075
-      phase: 4.71
-      duration: 60.0
-    topic_relay: ['/arlocros/fused_pose']
+    number_of_arlocros: 3
 
 synchronizer:
   ros_master_port: '11316'

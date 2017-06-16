@@ -11,3 +11,4 @@ visualization: true
 filter_block_size: 161
 subtracted_constant: -30.0
 invert_black_white_color: true
+heartbeat_topic_name: '/heartbeat'
