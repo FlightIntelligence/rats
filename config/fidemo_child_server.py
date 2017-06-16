@@ -59,7 +59,11 @@ def launch():
     else:
         return flask.Response('drone_ips not found', status=400)
 
-    launcher.launch(config_dir, drone_ips)
+    try:
+        launcher.launch(config_dir, drone_ips)
+    except ValueError as err:
+        return flask.Response(str(err), status=400)
+    
     return flask.Response(status=202)
 
 
