@@ -4,7 +4,6 @@ import flask
 import sys
 from flask import json, request
 from SwarmBootstrapUtils import executor
-from demo_backend import DemoLauncher
 import demo_backend
 import subprocess
 
@@ -18,7 +17,7 @@ tracker['opened_files'] = list()
 logging_path = "/tmp/log"
 
 
-launcher = backend.DemoLauncher()
+launcher = demo_backend.DemoLauncher()
 
 child_server = flask.Flask(__name__)
 
