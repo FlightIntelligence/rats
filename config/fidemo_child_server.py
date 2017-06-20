@@ -4,6 +4,7 @@ import flask
 import sys
 from flask import json, request
 from SwarmBootstrapUtils import executor
+from demo_backend import DemoLauncher
 import demo_backend
 import subprocess
 
