@@ -14,7 +14,7 @@ import threading
 class DemoLauncher:
     def __init__(self):
         self._run_process = None
-        self._status = Launcher.Status.IDLE
+        self._status = DemoLauncher.Status.IDLE
         self._status_file = 'status.txt'
 
         # if not self._has_valid_initial_state():
@@ -24,9 +24,7 @@ class DemoLauncher:
 
 
     def _start_script(self, config_dir, drone_ips):
-        cloned_config_dir = self._clone_config_folder(config_dir)
-        self._replace_drone_ip(cloned_config_dir, drone_ips)
-        run_cmd = 'python3 run.py ' + cloned_config_dir
+        run_cmd = 'python3 run.py ' + config_dir
         self._run_process = subprocess.Popen(run_cmd.split(), start_new_session=True,
                                              stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 
@@ -40,21 +38,21 @@ class DemoLauncher:
             time.sleep(1)
             alive_pgids = subprocess.check_output('ps x o pgid'.split()).decode(
                 "utf-8").rstrip().replace(' ', '').split('\n')
-        self._change_status(Launcher.Status.IDLE)
+        self._change_status(DemoLauncher.Status.IDLE)
         self._run_process = None
 
     def _wait_for_ready(self):
-        while self._status == Launcher.Status.LAUNCHING:
+        while self._status == DemoLauncher.Status.LAUNCHING:
             next_line = self._run_process.stdout.readline().decode("utf-8").rstrip()
             print(next_line)
             if next_line == 'Start flying!! Press Ctrl+C to terminate the program.':
-                if self._status == Launcher.Status.LAUNCHING:
-                    self._change_status(Launcher.Status.FLYING)
+                if self._status == DemoLauncher.Status.LAUNCHING:
+                    self._change_status(DemoLauncher.Status.FLYING)
                 return
 
     def launch(self, config_dir, drone_ips):
-        if self._status == Launcher.Status.IDLE:
-            self._change_status(Launcher.Status.LAUNCHING)
+        if self._status == DemoLauncher.Status.IDLE:
+            self._change_status(DemoLauncher.Status.LAUNCHING)
             self._start_script(config_dir, drone_ips)
             wait_thread = threading.Thread(target=self._wait_for_ready)
             wait_thread.start()
@@ -64,12 +62,12 @@ class DemoLauncher:
                 '' + str(self._status.name))
 
     def stop(self):
-        if self._status == Launcher.Status.STOPPING:
+        if self._status == DemoLauncher.Status.STOPPING:
             raise ValueError('Waiting for all processes being killed. Please be patient...')
-        elif self._status == Launcher.Status.IDLE:
+        elif self._status == DemoLauncher.Status.IDLE:
             raise ValueError('There is no process running')
         else:
-            self._change_status(Launcher.Status.STOPPING)
+            self._change_status(DemoLauncher.Status.STOPPING)
             stopping_thread = threading.Thread(target=self._stop_script)
             stopping_thread.start()
 
@@ -96,7 +94,7 @@ class DemoLauncher:
 
     # def _has_valid_initial_state(self):
     #     last_state = self._read_last_state_from_file()
-    #     if last_state == '' or last_state == Launcher.Status.IDLE.name:
+    #     if last_state == '' or last_state == DemoLauncher.Status.IDLE.name:
     #         return True
     #     else:
     #         return False
