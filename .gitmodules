@@ -9,7 +9,7 @@
 	url = ../../hoangtungdinh/BeSwarm.git
 [submodule "config/SwarmBootstrapUtils"]
 	path = config/SwarmBootstrapUtils
-	url = ../../hoangtungdinh/SwarmBootstrapUtils.git
+	url = ../../mhct/SwarmBootstrapUtils.git
 [submodule "rats_ws/src/constraint_msgs"]
 	path = rats_ws/src/constraint_msgs
 	url = ../../hoangtungdinh/constraint_msgs.git
