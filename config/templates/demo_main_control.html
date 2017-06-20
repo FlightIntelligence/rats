@@ -133,7 +133,7 @@
 //					xhttp.send();
 //				}
 
-				if (buttonElementObj.className == 'action_button') {
+				if (buttonElementObj.id == 'execute_mission_button') {
 					var xhttp = new XMLHttpRequest();
 					xhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
@@ -147,6 +147,24 @@
 					xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 					xhttp.send(JSON.stringify({x_coordinates: mx, y_coordinates: my}));
 				}
+
+                if (buttonElementObj.id == 'land_button') {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (populateElementId != '') {
+                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+                            }
+                            changeStateButtons(xhttp.responseText);
+                        }
+                    };
+                    xhttp.open("POST", remoteURL, true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send();
+                }
+
+
+
 			}
 			function changeStateButtons(serverState) {
 				if (serverState == 'IDLE') {
