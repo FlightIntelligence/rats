@@ -29,9 +29,9 @@ parent_server = flask.Flask(__name__)
 def alive():
     global deadmanswitch_state
     if deadmanswitch_state == '1':
-        return flask.Response(deadmanswitch_state, status=200)
+        return flask.Response(deadmanswitch_state, status=409)
     else:
-        return flask.Response(deadmanswitch_state, status=202)
+        return flask.Response(deadmanswitch_state, status=200)
 
 
 

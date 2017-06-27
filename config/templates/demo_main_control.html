@@ -1,0 +1,332 @@
+<!doctype html>
+<html>
+
+<head>
+<script src="{{ url_for('static', filename='js/p5.js') }}"></script>
+	<style>
+.green_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.action_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.canvas_button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.red_button {
+    background-color: #FF0000;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.orange_button {
+    background-color: #FFA500;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.inactive_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: not-allowed;
+}
+.inactive_processing_button {
+    background-color: #808080;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: progress;
+}
+	</style>
+</head>
+	<body>
+		<script type="text/javascript">
+	
+			function loadRemoteFunction(buttonElementObj, remoteURL, populateElementId) {
+				if (remoteURL == '') {
+					return;
+				}
+
+				if (buttonElementObj.id == 'launch_button') {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (populateElementId != '') {
+                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+                            }
+                            changeStateButtons(xhttp.responseText);
+                        }
+                    };
+                    xhttp.open("POST", remoteURL, true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send(JSON.stringify({config_dir: 'fi_demo', drone_ips: {Nerve: '192.168.0.191'}}));
+
+                }
+
+//				if (buttonElementObj.className == 'green_button') {
+//					var xhttp = new XMLHttpRequest();
+//					xhttp.onreadystatechange = function() {
+//						if (this.readyState == 4 && this.status == 200) {
+//							if (populateElementId != '') {
+//								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+//							}
+//							changeStateButtons(xhttp.responseText);
+//						}
+//					};
+//					xhttp.open("GET", remoteURL, true);
+//					xhttp.send();
+//				}
+
+				if (buttonElementObj.id == 'execute_mission_button') {
+					var xhttp = new XMLHttpRequest();
+					xhttp.onreadystatechange = function() {
+						if (this.readyState == 4 && this.status == 200) {
+							if (populateElementId != '') {
+								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+							}
+							changeStateButtons(xhttp.responseText);
+						}
+					};
+					xhttp.open("POST", remoteURL, true);
+					xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+					xhttp.send(JSON.stringify({x_coordinates: mx, y_coordinates: my}));
+				}
+
+                if (buttonElementObj.id == 'land_button') {
+                    var xhttp = new XMLHttpRequest();
+                    xhttp.onreadystatechange = function() {
+                        if (this.readyState == 4 && this.status == 200) {
+                            if (populateElementId != '') {
+                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+                            }
+                            changeStateButtons(xhttp.responseText);
+                        }
+                    };
+                    xhttp.open("POST", remoteURL, true);
+                    xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                    xhttp.send();
+                }
+
+
+
+			}
+			function changeStateButtons(serverState) {
+				if (serverState == 'IDLE') {
+					document.getElementById("launch_button").className = "green_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
+				} else if (serverState == 'LAUNCHING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'READY') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "green_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "green_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'FLYING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "green_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "green_button";
+				} else if (serverState == 'STOPPING') { 
+					document.getElementById("launch_button").className = "inactive_button";
+					document.getElementById("start_button").className = "inactive_button";
+					document.getElementById("stop_button").className = "inactive_button";
+					document.getElementById("takeoff_button").className = "inactive_button";
+					document.getElementById("land_button").className = "inactive_button";
+				}
+			}
+			
+			function getDronesStatus() {
+				var xhttp = new XMLHttpRequest();
+				xhttp.onreadystatechange = function() {
+					if (this.readyState == 4 && this.status == 200) {
+						jsonResponse = JSON.parse(xhttp.responseText);
+						for (var key in jsonResponse) {
+							if (jsonResponse[key] == 0) {
+								document.getElementById(key).className = "green_button"
+							} else { 
+								document.getElementById(key).className = "red_button"
+							}
+						}
+					}
+				};
+				xhttp.open("GET", "/drones_status", true);
+				xhttp.send();
+			}
+			
+			//setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
+			//setInterval(function() {getDronesStatus()}, 2500);
+		</script>
+	         
+		<title>FlightIntelligence.AI Demo Control center</title>
+		<div id="control">
+			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch</button>
+			<button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
+
+			<BR>
+			<button class="action_button" id="execute_mission_button" onclick="loadRemoteFunction(this, '/new_mission');executeMission();">Execute Mission</button>
+			<button class="canvas_button" id="record_mission_button" onclick="recordMission();">Record Mission</button>
+			
+		</div>
+
+		<div id="status">
+		</div>
+
+<div id="p5container"></div>
+            <script type="text/javascript">// This needs to be resolved
+// https://github.com/lmccart/p5.js/issues/406
+
+// /**
+//  * Storing Input.
+//  *
+//  * Move the mouse across the screen to change the position
+//  * of the circles. The positions of the mouse are recorded
+//  * into an array and played back every frame. Between each
+//  * frame, the newest value are added to the end of each array
+//  * and the oldest value is deleted.
+//  */
+
+var num = 600;
+var mx = [];
+var my = [];
+var my_screen = [];
+var statusElement = "status";
+var debugMode = true;
+var prev = 0;
+var recordingState = false;
+var xLim = 640;
+var yLim = 360;
+
+function setup() {
+  var canvas = createCanvas(xLim, yLim);
+  canvas.parent("p5container");
+  background(51);
+  noStroke();
+  clearPath();
+}
+
+function draw() {
+  if (recordingState == true) {
+    if (prev >= num) {
+      return;
+    }
+
+    if (mouseX < 0 || mouseX > xLim || mouseY < 0 || mouseY > yLim) {
+      return;
+    }
+
+    prev++;
+    mx[prev] = mouseX;
+    my[prev] = yLim - mouseY;
+    my_screen[prev] = mouseY;
+
+    fill(255, 153);
+    for (var i = 0; i < num; i++) {
+      ellipse(mx[i], my_screen[i], 10, 10);
+    }
+    ellipse(mx[prev], my_screen[prev], 10, 10);
+
+  } else {
+    fill('red');
+    for (var i = 0; i < num; i++) {
+      ellipse(mx[i], my_screen[i], 10, 10);
+    }
+  }
+
+  if (debugMode == true) {
+    document.getElementById(statusElement).innerHTML = "mx: " + mx[prev] + ", my_screen: " + my_screen[prev] + ", my: " + my[prev];
+  }
+}
+
+/**
+* Clears the path array of the drawing
+*/
+function clearPath() {
+  for (var i = 0; i < num; i++) {
+    mx[i] = 0;
+    my[i] = 0;
+    my_screen[i] = 0;
+  }
+  prev = 0;
+}
+
+function recordMission() {
+  clear();
+  background(51);
+  noStroke();
+
+  clearPath();
+  recordingState = true;
+}
+
+function executeMission() {
+  recordingState = false;
+}
+</script>
+
+
+	</body>
+</html>
