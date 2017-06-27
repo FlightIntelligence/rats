@@ -27,7 +27,7 @@ max_velocity:
     vertical: 1.0
     yaw: 1.0
   manual_flight:
-    horizontal: 2.0
+    horizontal: 6.0
     vertical: 1.0
     yaw: 1.0
 
