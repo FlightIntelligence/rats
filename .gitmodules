@@ -1,9 +1,9 @@
 [submodule "bebop_ws/src/bebop_autonomy"]
 	path = bebop_ws/src/bebop_autonomy
-	url = ../../hoangtungdinh/bebop_autonomy.git
+	url = ../bebop_autonomy.git
 [submodule "rats_ws/src/rats/ARLocROS"]
 	path = rats_ws/src/rats/ARLocROS
-	url = ../../hoangtungdinh/ARLocROS.git
+	url = ../ARLocROS.git
 [submodule "rats_ws/src/rats/BeSwarm"]
 	path = rats_ws/src/rats/BeSwarm
 	url = ../BeSwarm.git
@@ -12,4 +12,4 @@
 	url = ../SwarmBootstrapUtils.git
 [submodule "rats_ws/src/constraint_msgs"]
 	path = rats_ws/src/constraint_msgs
-	url = ../../hoangtungdinh/constraint_msgs.git
+	url = ../constraint_msgs.git
