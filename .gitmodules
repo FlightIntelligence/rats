@@ -6,7 +6,7 @@
 	url = ../../hoangtungdinh/ARLocROS.git
 [submodule "rats_ws/src/rats/BeSwarm"]
 	path = rats_ws/src/rats/BeSwarm
-	url = ../../hoangtungdinh/BeSwarm.git
+	url = ../BeSwarm.git
 [submodule "config/SwarmBootstrapUtils"]
 	path = config/SwarmBootstrapUtils
 	url = ../SwarmBootstrapUtils.git
