@@ -105,5 +105,8 @@ sudo apt-get install python3-yaml
 # add cplex
 echo "export LD_LIBRARY_PATH=/opt/ibm/ILOG/CPLEX_Studio1263/cplex/bin/x86-64_linux/:$LD_LIBRARY_PATH" >> ~/.zshrc
 
+# add scip
+echo "export LD_LIBRARY_PATH=~/rats/rats_ws/src/rats/BeSwarm/NativeLibs/scip-4.0.0/linux/x86_64:$LD_LIBRARY_PATH" >> ~/.zshrc
+
 # General tools (optional)
 sudo apt-get install openssh-server
