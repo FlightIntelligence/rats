@@ -160,6 +160,8 @@
 
 			}
 			function changeStateButtons(serverState) {
+                return;
+
 				if (serverState == 'IDLE') {
 					document.getElementById("launch_button").className = "green_button";
                     document.getElementById("stop_button").className = "inactive_button";
@@ -299,9 +301,7 @@ function recordMission() {
 }
 
 function executeMission(buttonElementObj) {
-    if (buttonElementObj.className == "green_button") {
-        recordingState = false;
-    }
+    recordingState = false;
 }
 </script>
 
