@@ -61,8 +61,7 @@ cd ~
 git clone https://github.com/hoangtungdinh/rats.git
 # need git checkout to specify the tag
 cd rats/
-git submodule init
-git submodule update
+git submodule update --init --recursive
 
 # install ARLocROS and BeSwarm
 # we have to install java packages before installing bebop-autonomy. It is because of a weird bug that says bebop_msgs package does not exist if we install bebop_autonomy first (it could be because there is another ros package named bebop_msgs as well in bebop-autonomy). If you already have bebop-autonomy, a way to work around is not sourcing bebop-autonomy before installing java packages.
