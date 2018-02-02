@@ -97,7 +97,19 @@
 </head>
 	<body>
 		<script type="text/javascript">
-	
+
+            function loadStatusServer(remoteUrl) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        changeStateButtons(xhttp.responseText);
+                    }
+                };
+                xhttp.open("GET", remoteUrl, true);
+                xhttp.send();
+            }
+
+
 			function loadRemoteFunction(buttonElementObj, remoteURL, populateElementId) {
 				if (remoteURL == '') {
 					return;
@@ -107,9 +119,6 @@
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
-                            if (populateElementId != '') {
-                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
-                            }
                             changeStateButtons(xhttp.responseText);
                         }
                     };
@@ -119,21 +128,7 @@
 
                 }
 
-//				if (buttonElementObj.className == 'green_button') {
-//					var xhttp = new XMLHttpRequest();
-//					xhttp.onreadystatechange = function() {
-//						if (this.readyState == 4 && this.status == 200) {
-//							if (populateElementId != '') {
-//								document.getElementById(populateElementId).innerHTML = xhttp.responseText;
-//							}
-//							changeStateButtons(xhttp.responseText);
-//						}
-//					};
-//					xhttp.open("GET", remoteURL, true);
-//					xhttp.send();
-//				}
-
-				if (buttonElementObj.id == 'execute_mission_button') {
+				if (buttonElementObj.id == 'execute_mission_button' && buttonElementObj.className == "green_button") {
 					var xhttp = new XMLHttpRequest();
 					xhttp.onreadystatechange = function() {
 						if (this.readyState == 4 && this.status == 200) {
@@ -148,12 +143,12 @@
 					xhttp.send(JSON.stringify({x_coordinates: mx, y_coordinates: my}));
 				}
 
-                if (buttonElementObj.id == 'land_button') {
+                if (buttonElementObj.id == 'land_button' || buttonElementObj.id == 'stop_button') {
                     var xhttp = new XMLHttpRequest();
                     xhttp.onreadystatechange = function() {
                         if (this.readyState == 4 && this.status == 200) {
                             if (populateElementId != '') {
-                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
+//                                document.getElementById(populateElementId).innerHTML = xhttp.responseText;
                             }
                             changeStateButtons(xhttp.responseText);
                         }
@@ -163,72 +158,53 @@
                     xhttp.send();
                 }
 
-
-
 			}
 			function changeStateButtons(serverState) {
 				if (serverState == 'IDLE') {
 					document.getElementById("launch_button").className = "green_button";
-					document.getElementById("start_button").className = "inactive_button";
-					document.getElementById("stop_button").className = "inactive_button";
-					document.getElementById("takeoff_button").className = "inactive_button";
-					document.getElementById("land_button").className = "inactive_button";
-				} else if (serverState == 'LAUNCHING') { 
+                    document.getElementById("stop_button").className = "inactive_button";
+                    document.getElementById("land_button").className = "green_button";
+                    document.getElementById("execute_mission_button").className = "inactive_button";
+                    document.getElementById("record_mission_button").className = "green_button";
+				} else if (serverState == 'LAUNCHING') {
 					document.getElementById("launch_button").className = "inactive_button";
-					document.getElementById("start_button").className = "inactive_button";
-					document.getElementById("stop_button").className = "green_button";
-					document.getElementById("land_button").className = "green_button";
+                    document.getElementById("stop_button").className = "green_button";
+                    document.getElementById("land_button").className = "green_button";
+                    document.getElementById("execute_mission_button").className = "inactive_button";
+                    document.getElementById("record_mission_button").className = "green_button";
 				} else if (serverState == 'READY') { 
 					document.getElementById("launch_button").className = "inactive_button";
-					document.getElementById("start_button").className = "green_button";
 					document.getElementById("stop_button").className = "green_button";
-					document.getElementById("takeoff_button").className = "green_button";
-					document.getElementById("land_button").className = "green_button";
-				} else if (serverState == 'FLYING') { 
+                    document.getElementById("land_button").className = "green_button";
+                    document.getElementById("execute_mission_button").className = "green_button";
+                    document.getElementById("record_mission_button").className = "green_button";
+				} else if (serverState == 'FLYING') {
 					document.getElementById("launch_button").className = "inactive_button";
-					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "green_button";
-					document.getElementById("takeoff_button").className = "inactive_button";
 					document.getElementById("land_button").className = "green_button";
+                    document.getElementById("execute_mission_button").className = "green_button";
+                    document.getElementById("record_mission_button").className = "green_button";
 				} else if (serverState == 'STOPPING') { 
 					document.getElementById("launch_button").className = "inactive_button";
-					document.getElementById("start_button").className = "inactive_button";
 					document.getElementById("stop_button").className = "inactive_button";
-					document.getElementById("takeoff_button").className = "inactive_button";
 					document.getElementById("land_button").className = "inactive_button";
+                    document.getElementById("execute_mission_button").className = "inactive_button";
+                    document.getElementById("record_mission_button").className = "inactive_button";
 				}
 			}
 			
-			function getDronesStatus() {
-				var xhttp = new XMLHttpRequest();
-				xhttp.onreadystatechange = function() {
-					if (this.readyState == 4 && this.status == 200) {
-						jsonResponse = JSON.parse(xhttp.responseText);
-						for (var key in jsonResponse) {
-							if (jsonResponse[key] == 0) {
-								document.getElementById(key).className = "green_button"
-							} else { 
-								document.getElementById(key).className = "red_button"
-							}
-						}
-					}
-				};
-				xhttp.open("GET", "/drones_status", true);
-				xhttp.send();
-			}
-			
-			//setInterval(function() {loadRemoteFunction(document.getElementById('status_button'),'/status', 'status')}, 1000);
-			//setInterval(function() {getDronesStatus()}, 2500);
+			setInterval(function() {loadStatusServer('/status')}, 1000);
 		</script>
 	         
 		<title>FlightIntelligence.AI Demo Control center</title>
 		<div id="control">
-			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch</button>
-			<button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
+			<button class="green_button" id="launch_button" onclick="loadRemoteFunction(this, '/launch')">Launch Demo</button>
+            <button class="green_button" id="stop_button" onclick="loadRemoteFunction(this, '/stop')">Stop Demo</button>
+            <button class="green_button" id="land_button" onclick="loadRemoteFunction(this, '/land')">Land</button>
 
 			<BR>
-			<button class="action_button" id="execute_mission_button" onclick="loadRemoteFunction(this, '/new_mission');executeMission();">Execute Mission</button>
-			<button class="canvas_button" id="record_mission_button" onclick="recordMission();">Record Mission</button>
+			<button class="green_button" id="execute_mission_button" onclick="loadRemoteFunction(this, '/new_mission');executeMission();">Execute Mission</button>
+			<button class="green_button" id="record_mission_button" onclick="recordMission();">Record Mission</button>
 			
 		</div>
 
@@ -322,8 +298,10 @@ function recordMission() {
   recordingState = true;
 }
 
-function executeMission() {
-  recordingState = false;
+function executeMission(buttonElementObj) {
+    if (buttonElementObj.className == "green_button") {
+        recordingState = false;
+    }
 }
 </script>
 

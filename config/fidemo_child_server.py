@@ -75,6 +75,7 @@ def launch():
 @child_server.route('/stop', methods=['POST'])
 def stop():
     try:
+        common_land()
         launcher.stop()
     except ValueError as err:
         return flask.Response(str(err), status=409)
@@ -84,7 +85,21 @@ def stop():
 
 @child_server.route('/status', methods=['GET'])
 def get_status():
-    return str(launcher.get_status())
+    parent_status = 'NO_INFORMATION'
+    status = launcher.get_status()
+
+    if status == demo_backend.DemoLauncher.Status.IDLE:
+        parent_status = "IDLE"
+    elif status == demo_backend.DemoLauncher.Status.LAUNCHING:
+        parent_status = 'LAUNCHING'
+    elif status == demo_backend.DemoLauncher.Status.READY:
+        parent_status = 'READY'
+    elif status == demo_backend.DemoLauncher.Status.FLYING:
+        parent_status = 'FLYING'
+    elif status == demo_backend.DemoLauncher.Status.STOPPING:
+        parent_status = 'STOPPING'
+
+    return flask.Response(parent_status, status=200)
 
 
 @child_server.route('/land', methods=['POST', 'GET'])
