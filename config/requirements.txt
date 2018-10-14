@@ -1,5 +1,6 @@
-pyyaml==16.12.2
+pyyaml
 Flask==0.12
 requests==2.12.4
 pyping==0.0.5
+pyros_setup
 
