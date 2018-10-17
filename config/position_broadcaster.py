@@ -3,29 +3,35 @@
 import rospy
 import requests
 from std_msgs.msg import String
-
+from geometry_msgs.msg import Pose
 
 
 box_dimensions = [10, 10, 5]  # given in rats coordinates, x, y, z
-ugo_server = "http://localhost:9090/"
+ugo_server = "http://192.168.0.112:9000/location/"
 
 _box_dimensions = [box_dimensions[0]/2.0, box_dimensions[2]/2.0, box_dimensions[2]/2.0]
+_previous_position_code = ''
 
 def _callback(data):
     """ treat the data
     # convert the data into proper alphabet letter
     # send to Ugo computer
     """
-    position_code = _get_letter_code(data.x, data.y, data.z)
-
+    global _previous_position_code
+    print("Received data" + str(data))
+    
+    position_code = _get_position_code(data.position.x, data.position.y, data.position.z)
+    print (position_code)
     try:
-        response = requests.get(ugo_server + position_code)
+        if position_code != _previous_position_code:
+            response = requests.get(ugo_server + position_code)
+            _previous_position_code = position_code
     except requests.ConnectionError:
         rospy.loginfo("Could not connect to Ugo")
         pass
 
 
-def _get_letter_code(current_x, current_y, current_z):
+def _get_position_code(current_x, current_y, current_z):
     """
         Converts the current coordinate from a drone to a letter code, according to Ugo drawing.
 
@@ -39,11 +45,11 @@ def _get_letter_code(current_x, current_y, current_z):
     :return: letter code
     """
 
-    letter_code = ''
+    letter_code = 'F'
     if current_x <= _box_dimensions[0]:
-        letter_code = 'B'
+        letter_code += 'B'
     else:
-        letter_code = 'F'
+        letter_code += 'F'
 
     if current_y <= _box_dimensions[1]:
         letter_code += 'L'
@@ -61,7 +67,7 @@ def _get_letter_code(current_x, current_y, current_z):
 
 def listener():
     rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber("bebop_drone_pose", String, _callback)
+    rospy.Subscriber("bebop_drone_pose", Pose, _callback)
 
     rospy.spin()
 
